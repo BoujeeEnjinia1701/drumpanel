@@ -1,0 +1,97 @@
+tag,quantity,value,unit
+A1,Panel length (body circumference at mid-wall),1800,mm
+A2,"Panel widths (outer, middle, outer)",233 / 234 / 233,mm
+A3,"Head discs, two, diameter",552,mm
+A4,Flat area per drum: three panels,1.26,m2
+A5,Flat area per drum: two head discs,0.48,m2
+A6,Empty drum mass (estimate),19.2,kg
+A7,Mass of the three panels at 1.0 mm,9.9,kg
+B1,Drum volume (inside),221,L
+B2,Mass of a drum full of water,240,kg
+B3,Fill time at 20 L/min,11.0,min
+B4,"Drain time through the 2 in bung at the bottom of the low head, full to nearly empty",2.3,min
+B5,"Water left below the bung opening, stand sloping 2.9 deg",1.4,L
+B6,"Contact angle of the drum on the chocks, from vertical",31.5,deg
+B7,"Normal force on each chock, full drum",691,N
+B8,"Bending stress in a saddle (40 x 40 x 3 RHS), full drum",10.4,MPa
+B9,"Compressive stress in a drain stand leg, full drum",1.3,MPa
+C10,"End cutter, head 1.0 mm: cut force 429 N, feed 70 N, drive torque 1.8 N m, crank force",12,N
+C12,"End cutter, head 1.2 mm: cut force 571 N, feed 100 N, drive torque 2.6 N m, crank force",17,N
+C15,"End cutter, head 1.5 mm: cut force 807 N, feed 156 N, drive torque 4.1 N m, crank force",27,N
+C20,"Pinch needed between drive wheel and guide roller for 1.5 mm heads (knurl, friction 0.3)",520,N
+C21,Crank turns to go once round a head,13.8,
+C22,Cutting time per head at 30 crank turns a minute,0.46,min
+D8,"Shear head, wall 0.8 mm: separating force 482 N, nip angle 10.8 deg, feed resistance 85 N, crank force",26,N
+D8t,"Shear head, wall 0.8 mm: traction of the driven disc over resistance",1.69,
+D10,"Shear head, wall 1.0 mm: separating force 713 N, nip angle 11.4 deg, feed resistance 139 N, crank force",42,N
+D10t,"Shear head, wall 1.0 mm: traction of the driven disc over resistance",1.54,
+D12,"Shear head, wall 1.2 mm: separating force 977 N, nip angle 12.0 deg, feed resistance 213 N, crank force",64,N
+D12t,"Shear head, wall 1.2 mm: traction of the driven disc over resistance",1.38,
+D15,"Shear head, wall 1.5 mm: separating force 1429 N, nip angle 12.8 deg, feed resistance 365 N, crank force",111,N
+D15t,"Shear head, wall 1.5 mm: traction of the driven disc over resistance",1.17,
+D20,Stress in the 10 mm web at 1.5 mm wall,12.1,MPa
+D21,Bending stress in a 25 mm head shaft at 1.5 mm wall,17.7,MPa
+D22,Cutting speed at 30 crank turns a minute,9.5,m/min
+D23,"Mass of the trolley, drop bar and shear head",24.8,kg
+D24,Rail beam deflection with the head at mid-span,0.13,mm
+E1,Drum curvature to take out (radius),286.5,mm
+E2,Width fed at once (three panels side by side),700,mm
+E200-8,"Yield 200 MPa, 0.8 mm: bent to reverse radius 278 mm, bending roll 13.4 mm above the lower roll, moment 21.5 N m, bending roll force 239 N, feed resistance",71,N
+E200-10,"Yield 200 MPa, 1.0 mm: bent to reverse radius 345 mm, bending roll 11.0 mm above the lower roll, moment 33.9 N m, bending roll force 376 N, feed resistance",112,N
+E200-12,"Yield 200 MPa, 1.2 mm: bent to reverse radius 411 mm, bending roll 9.3 mm above the lower roll, moment 49.1 N m, bending roll force 545 N, feed resistance",163,N
+E250-8,"Yield 250 MPa, 0.8 mm: bent to reverse radius 225 mm, bending roll 16.4 mm above the lower roll, moment 26.6 N m, bending roll force 295 N, feed resistance",87,N
+E250-10,"Yield 250 MPa, 1.0 mm: bent to reverse radius 278 mm, bending roll 13.4 mm above the lower roll, moment 41.9 N m, bending roll force 466 N, feed resistance",138,N
+E250-12,"Yield 250 MPa, 1.2 mm: bent to reverse radius 331 mm, bending roll 11.4 mm above the lower roll, moment 60.8 N m, bending roll force 676 N, feed resistance",201,N
+E300-8,"Yield 300 MPa, 0.8 mm: bent to reverse radius 189 mm, bending roll 19.3 mm above the lower roll, moment 31.6 N m, bending roll force 351 N, feed resistance",103,N
+E300-10,"Yield 300 MPa, 1.0 mm: bent to reverse radius 234 mm, bending roll 15.8 mm above the lower roll, moment 49.9 N m, bending roll force 554 N, feed resistance",164,N
+E300-12,"Yield 300 MPa, 1.2 mm: bent to reverse radius 278 mm, bending roll 13.4 mm above the lower roll, moment 72.5 N m, bending roll force 805 N, feed resistance",239,N
+E10,"Nominal setting (250 MPa, 1.0 mm): bending roll above the lower roll",13.4,mm
+E11,Range of settings over 200 to 300 MPa and 0.8 to 1.2 mm,9.3 to 19.3,mm
+E12,Worst sag over 1 m if the nominal setting is used on other drum steel (no trial pass),188,mm
+E13,Allowed error in the bending roll height to stay within 10 mm over 1 m,0.29,mm
+E14,That is this much of a turn of the M20 x 2.5 bending screw,42,deg
+E29,Strain at a rolling hoop's crown if the hoop were rolled flat with the panel (why the hoops are cut out),8.5,%
+E15,Leading end left unbent (pinch to bending roll),90,mm
+E16,Rise of that unbent end above flat,14.1,mm
+E17,Worst bending roll force,805,N
+E18,Worst feed resistance (plastic work per mm),239,N
+E19,"Pinch force needed for traction (both pinch rolls driven by the gears, friction 0.15, margin 1.5)",1193,N
+E20,Pinch force set with the two M16 screws (1 kN each),2000,N
+E21,M16 screw torque for 1 kN; force on the 90 mm handwheel rim,3.2 N m; 71,N
+E22,Torque to turn the pinch rolls (worst),16.8,N m
+E23,Crank force at 300 mm through the 3:1 chain,20,N
+E24,Feed speed at 30 crank turns a minute,1.88,m/min
+E25,"Upper pinch roll: load, mid-span deflection",2805 N; 0.25,mm
+E26,Upper pinch roll bending stress,15.5,MPa
+E27,Bronze bush bearing pressure (30 x 20 mm),2.3,MPa
+E28,"Pinch gear tooth stress (Lewis, module 3, 20 mm face)",15,MPa
+F1,Drum axis height; top of the drum,603; 890,mm
+F2,"Roller contact on the hoops, from vertical",33.0,deg
+F3,"Roller shaft at 1 kN on the drum: stress, deflection",72 MPa; 3.2,mm
+F4,Side push that rolls an empty drum over a roller,122,N
+G1,"Slip roll in-feed slot under the nip guard: slot 8.0 mm, distance to the nip 45 mm, needed 20 mm",meets,
+G2,"Slip roll out-feed slot: slot 8.0 mm, distance to the nip 85 mm, needed 20 mm",meets,
+G3,"Shear head front skirt over the sheet: slot 7.5 mm, distance to the nip 52 mm, needed 20 mm",meets,
+H1,"Purge and vapour check, hands-on minutes per drum",14,
+H2,Cutting cradle minutes per drum,30.1,
+H3,Slip roll and finishing minutes per drum,17.1,
+H4,Total hands-on minutes per drum,61.2,
+H5,"Drums per hour for two people, work shared evenly",2.0,
+H6,"Elapsed purge time per drum (fill, soak 10 min, drain), done while the cradle works",22.9,min
+H7,"Heads off a drum, both ends, one person (R3)",3.9,min
+I1,Drain and purge stand with tray,15,kg
+I2,"Cutting cradle with posts, beam, shear head and end cutter",130,kg
+I3,Slip roll stand with tables,190,kg
+I4,"Lift 1: Cradle frame, one welded piece",33.7,kg
+I5,Lift 2: Lower pinch roll,21.0,kg
+I6,"Lift 3: Shear head with its shafts, discs, guard and drop bar",20.2,kg
+I7,"Lift 4: Side frame with its legs and bridge, each",20.1,kg
+I8,"Lift 5: Roller shaft with its two rollers, each",16.3,kg
+I9,"Lift 6: Table frame, each",16.1,kg
+J1,Estimated cost of the constructable design (bom/bom.csv),"2,794",USD
+J2,Value-engineering target (project.yaml),"3,000",USD
+J3,Under (-) or over (+) the target,-206,USD
+J4,Cost driver 1: 4 Vapour check kit,600,USD
+J5,Cost driver 2: 14 Rolls,285,USD
+J6,Cost driver 3: 10 Rotary shear head,265,USD
+J7,Cost driver 4: 13 Side frames,150,USD
