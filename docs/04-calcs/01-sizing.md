@@ -3,7 +3,7 @@ doc_id: DMP-CAL-001
 title: DrumPanel sizing calculations
 project: DrumPanel
 doc_type: Calculation
-version: "0.1"
+version: "0.2"
 status: Draft
 date: '2026-10-03'
 author: Amish Chadha
@@ -13,17 +13,21 @@ revisions:
   date: '2026-10-03'
   author: Amish Chadha
   change: First issue at TRL 3, on the constructable design of DMP-DDR-002
+- version: "0.2"
+  date: '2026-10-03'
+  author: Amish Chadha
+  change: Amish's requirement decisions of 2026-10-03 (DMP-DDR-003); lever notching punch (new section 9), ring head and raised shear head drive, fine-pitch dial adjuster, throughput against R7 restated to 2.5 drums an hour, masses and cost
 ---
 
 # DrumPanel sizing calculations
 
-On paper the DrumPanel bench set meets ten of its twelve requirements, has one at risk and misses one. Every crank force is at or below 111 N against the 150 N limit of R6, the guards meet ISO 13857 on paper, and the estimated cost is USD 2,794, USD 206 under the USD 3,000 value-engineering target. R7 is not met: two people would turn about 2.0 drums an hour into flat panels, not 4. R5 is at risk: the slip roll can leave a panel flat only when its bending roll is within about 0.29 mm of the right height for that batch of drum steel, so the setting is found by a trial pass on the first panel of each batch, and the last 90 mm at each panel end is set by hand. Rolling the hoops flat would stretch their crowns about 8.5 %, which is why the hoops are cut out and the body becomes three panels about 233 x 1,800 mm. Every number in this note is printed by `docs/04-calcs/sizing.py`; the tag in brackets, for example [D15], is the line of that script's output that carries it.
+On paper the DrumPanel bench set meets ten of its twelve requirements and misses one, and its estimated cost is over the value-engineering target. Every crank and lever force is at or below 136 N against the 150 N limit of R6, and the guards meet ISO 13857 on paper. R7, restated by Amish on 2026-10-03 to 2.5 drums an hour, is not met: with the lever notching punch, the ring head and the dial-set bending roll, two people would turn about 2.26 drums an hour into flat panels, up from 2.0. R5 is met on paper with a trial pass for each batch: the slip roll leaves a panel flat only when its bending roll is within about 0.29 mm of the right height for that batch of drum steel, and the new fine-pitch dial sets and holds that height to 0.025 mm, about a twelfth of the allowance; the last 90 mm at each panel end is still set by hand. Value-engineering target: USD 3,000. Estimated cost of the constructable design: USD 3,489 (USD 489 over the target). Rolling the hoops flat would stretch their crowns about 8.5 %, which is why the hoops are cut out and the body becomes three panels about 233 x 1,800 mm. Every number in this note is printed by `docs/04-calcs/sizing.py`; the tag in brackets, for example [D15], is the line of that script's output that carries it.
 
 > **Safety:** These are first-principles estimates for a paper proof of concept. They do not show that a purged drum is free of vapour, that the guards are safe as built, or that the frames carry their loads in service. The vapour check, the guard openings and the drain stand must be checked on hardware before any drum is cut. See DMP-PRC-001, Safety.
 
 ## Scope and method
 
-The note checks every requirement in DMP-REQ-001 v0.3 against the design in DMP-PRC-001 v0.3 and the parametric model `cad/src/model.py`. The script imports the model's `PARAMS`, `levels()` and `components()`, so the drum, rollers, shear head, slip roll and guards used here are the ones in the STEP files and in drawing DMP-DWG-001. It reads `bom/bom.csv` for the cost and `budget_usd` in `project.yaml` for the target. Run it from the repo root with `python docs/04-calcs/sizing.py`; it also writes `docs/04-calcs/results.csv`. The model's own checks (`python cad/src/model.py --check`) show that no two parts overlap, that every joint face touches, and that the shear head clears the drum in all six ring cut positions and at seven stations along the slit.
+The note checks every requirement in DMP-REQ-001 v0.4 against the design in DMP-PRC-001 v0.4 and the parametric model `cad/src/model.py`. The script imports the model's `PARAMS`, `levels()` and `components()`, so the drum, rollers, shear head, slip roll and guards used here are the ones in the STEP files and in drawing DMP-DWG-001. It reads `bom/bom.csv` for the cost and `budget_usd` in `project.yaml` for the target. Run it from the repo root with `python docs/04-calcs/sizing.py`; it also writes `docs/04-calcs/results.csv`. The model's own checks (`python cad/src/model.py --check`) show that no two of its 52 parts overlap, that every joint face touches, that the shear head with the ring head bolted on clears the drum in all three ring passes and alone at seven stations along the slit, that its crank sweeps clear of the drum, the posts, the rail beam and the trolley in both modes, and that the notching punch fits each of the four notches with its die faces on the steel.
 
 ## Assumptions
 
@@ -38,6 +42,7 @@ The note checks every requirement in DMP-REQ-001 v0.3 against the design in DMP-
 | Traction | Driven shear disc: effective friction 0.3 (the edge bites); knurled end cutter wheel 0.3; steel pinch rolls on painted steel 0.15 | Screening values |
 | Losses | 20 % for the shear head bearings and idle disc; 30 % for the end cutter's rollers; bronze bushes friction 0.10; chain 95 % | Screening values |
 | Slip roll | Panels fed three side by side (700 mm); pinch rolls 60 mm, bending roll 90 mm behind the pinch line; pinch force 2 kN set by two M16 screws | Model geometry |
+| Notching punch | Inclined-edge shear per edge 0.5 x shear strength x t² / tan(rake), punch faces raked 10 degrees; the chime is five layers; 20 % for stripping; Tr24 x 5 screw, friction 0.15 | Screening values; the chime force is to confirm on a scrap chime at TRL 4 |
 | Work rate | 30 crank turns a minute; times for loading, setting up and handling as listed in section 8 | Estimates for a practised two-person team |
 | Purge | Hose at 20 L/min; 50 mm bung, discharge coefficient 0.6 | Screening values |
 
@@ -93,18 +98,24 @@ The drive wheel and guide roller must pinch the chime with about 520 N for the k
 
 ## 4. Rotary shear head
 
-The shear head is the hardest crank in the set. At the thickest wall it still needs only 111 N, but its traction margin is smallest there.
+The shear head with the ring head bolted on is the hardest crank in the set: two ring cuts at once on a 1.5 mm wall need 136 N, inside the 150 N limit of R6.
 
-*Table 5. Shear head, 101 mm discs, 1.0 mm overlap, 200 mm crank.*
+The crank is no longer on the upper shaft. A 200 mm crank there swept through the drum wall in both slit and ring modes (the model's sweep check found about 13,700 mm³ of overlap), so it could not make a full turn. The crank now sits on a raised crank shaft in a drive case on the side of the head: a 12 tooth to 28 tooth #35 chain to a jackshaft, then a 15 tooth to 15 tooth chain down to the upper shaft, 2.33 to 1 overall, with a 155 mm crank (DMP-DDR-003, Q3). The reduction keeps two ring cuts on one crank within R6; the drive case is the chain guard.
 
-| Wall | Separating force | Nip angle | Feed resistance | Crank force | Traction over resistance | Tag |
-| --- | --- | --- | --- | --- | --- | --- |
-| 0.8 mm | 482 N | 10.8 deg | 85 N | 26 N | 1.69 | [D8] |
-| 1.0 mm | 713 N | 11.4 deg | 139 N | 42 N | 1.54 | [D10] |
-| 1.2 mm | 977 N | 12.0 deg | 213 N | 64 N | 1.38 | [D12] |
-| 1.5 mm | 1,429 N | 12.8 deg | 365 N | 111 N | 1.17 | [D15] |
+*Table 5. Shear head, 101 mm discs, 1.0 mm overlap, 155 mm crank through a 2.33 to 1 drive (chains 95 % each).*
 
-Only the upper disc is driven, because a gear between the discs would have to pass through the drum wall. At 1.5 mm the driven disc has 17 % more traction than it needs; if it slips on a thick drum, the operator pushes the trolley along by hand while cranking. The separating force is carried round the frame: the 10 mm web sees 12.1 MPa and a 25 mm shaft 17.7 MPa [D20, D21]. At 30 crank turns a minute the discs cut at 9.5 m/min [D22]. The trolley, drop bar and head weigh 24.6 kg and bend the rail beam 0.13 mm at mid-span [D23, D24].
+| Wall | Separating force | Nip angle | Feed resistance | Crank force, one cut (slit) | Crank force, two ring cuts | Traction over resistance | Tag |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 0.8 mm | 482 N | 10.8 deg | 85 N | 16 N | 32 N | 1.69 | [D8, D8r] |
+| 1.0 mm | 713 N | 11.4 deg | 139 N | 26 N | 52 N | 1.54 | [D10, D10r] |
+| 1.2 mm | 977 N | 12.0 deg | 213 N | 39 N | 79 N | 1.38 | [D12, D12r] |
+| 1.5 mm | 1,429 N | 12.8 deg | 365 N | 68 N | 136 N | 1.17 | [D15, D15r] |
+
+Only the upper disc of each head is driven, because a gear between the discs would have to pass through the drum wall. With the ring head on, a coupling shaft joins the two upper shafts, so each head drives its own cut and the traction margin is the same as for one head. At 1.5 mm the driven disc has 17 % more traction than it needs; if it slips on a thick drum, the operator pushes the trolley along by hand while cranking. The separating force is carried round the frame: the 10 mm web sees 12.1 MPa and a 25 mm shaft 17.7 MPa [D20, D21]. At 30 crank turns a minute the discs now cut at 4.08 m/min [D22], about 2.3 times slower than a direct crank; the ring head more than wins this back by halving the number of ring passes (section 8). The trolley, drop bar and head with its drive weigh 28.2 kg and bend the rail beam 0.15 mm at mid-span [D23, D24].
+
+### 4.1 Ring head
+
+The ring head is a second shear head, made to the same drawings without a drive, that is lowered through the slit and bolted to the main head with a 10 mm spacer plate once the main head is swivelled for ring cuts (DMP-DDR-003, Q2). Its nip sits 233 mm along the drum from the main head's (234 mm for the middle pass), so the six ring cuts are made in three passes: the left chime ring with the left hoop's outer side, the two inner hoop sides, and the right hoop's outer side with the right chime ring. It weighs 20.4 kg with its spacer plate and coupling [D25]; with both heads at mid-span the rail beam bends 0.26 mm [D26], and the spacer plate carrying the ring head 233 mm out sees 24.4 MPa [D27].
 
 ## 5. Slip roll: reverse bending to flat
 
@@ -132,9 +143,11 @@ A panel leaves the drum curled to a 286.5 mm radius [E1]. To come out flat, it m
 
 The nominal setting is 13.4 mm [E10]; the range over likely drum steel is 9.3 to 19.3 mm [E11], well inside the 60 mm of slot travel.
 
-### 5.3 Why the setting is found by a trial pass (R5 at risk)
+### 5.3 The trial pass and the dial adjuster (R5)
 
-The setting is sensitive. If the nominal setting were used on steel at the edges of the range, a panel could sag up to 188 mm over 1 m [E12]. To stay within the 10 mm over 1 m of R5, the bending roll must be within 0.29 mm of the right height [E13], about 42 degrees of a turn of the M20 bending screws [E14]. That is achievable with marked handwheels and the same setting at both ends, but only by trial: the first panel of each batch of drums is passed, checked with a straightedge, and the screws adjusted by a twelfth of a turn at a time until it comes out flat; a panel that is not flat can be passed again. R5 is therefore at risk until a TRL 4 trial shows how many passes a batch takes.
+The setting is sensitive. If the nominal setting were used on steel at the edges of the range, a panel could sag up to 188 mm over 1 m [E12]. To stay within the 10 mm over 1 m of R5, the bending roll must be within 0.29 mm of the right height [E13]. With the former M20 x 2.5 screws and 12-division handwheels that allowance was only about 1.4 divisions [E14c], so the setting was at risk.
+
+Each bending screw is now a fine-pitch M20 x 1.5 screw with an 80 mm dial of 60 divisions, 0.025 mm each, read against a pointer on the bridge, and a lock nut that holds the setting (DMP-DDR-003, Q4). The 0.29 mm allowance is 71 degrees of a turn, or 11.8 divisions [E14, E14d], so both ends can be set to the same reading well inside it and returned to after a change. The right height still depends on the batch of drum steel, so the first panel of each batch is passed, checked with a straightedge, and the dials adjusted until it comes out flat; the reading is then written on the batch and every later drum is set to it. R5 is met on paper with this trial pass; a TRL 4 trial will show how many passes the first panel of a batch takes.
 
 ### 5.4 Panel ends
 
@@ -177,46 +190,67 @@ ISO 13857 Table 4 allows a slot opening of up to 8 mm when the danger point is a
 | Slip roll out-feed slot | 8.0 mm | 85 mm | 20 mm | Meets | [G2] |
 | Shear head front skirt over the sheet | 7.5 mm | 52 mm | 20 mm | Meets | [G3] |
 
-The chain, sprockets and pinch gears are fully enclosed. The end cutter's wheel works inside the head recess under a sheet cover. These are desk checks on the model; a competent person checks the guards as built before any trial.
+The slip roll chain, sprockets and pinch gears are fully enclosed, and so are the shear head's two chains, inside its drive case. The coupling shaft between the main head and the ring head is a smooth 25 mm shaft turning at about 13 revolutions a minute inside a loose guard sleeve. The end cutter's wheel works inside the head recess under a sheet cover. The notching punch moves only as its screw is turned by the lever, with the hands 480 mm from the punch. These are desk checks on the model; a competent person checks the guards as built before any trial.
 
 ## 8. Throughput
 
-Two people turn about 2.0 drums an hour into flat panels [H5], half the 4 of R7. The cutting cradle is the bottleneck.
+Two people turn about 2.26 drums an hour into flat panels [H5], against the 2.5 of R7 as restated by Amish on 2026-10-03. R7 is not met: 2.5 drums an hour needs 48.0 hands-on minutes per drum [H9], and the estimate is 53.1 [H4].
 
 *Table 9. Hands-on minutes per drum.*
 
-| Station | Minutes | Tag |
-| --- | --- | --- |
-| Purge and vapour check | 14 | [H1] |
-| Cutting cradle: load, two heads, four notches, slit, six ring cuts, unload | 30.1 | [H2] |
-| Slip roll and finishing: trial setting, three passes, handling, panel ends, deburring | 17.1 | [H3] |
-| Total | 61.2 | [H4] |
+| Station | Before (DMP-CAL-001 v0.1) | Now | Tag |
+| --- | --- | --- | --- |
+| Purge and vapour check | 14 | 14 | [H1] |
+| Cutting cradle: load, two heads, four notches, slit, six ring cuts, unload | 30.1 | 23.6 | [H2] |
+| Slip roll and finishing: setting, three passes, handling, panel ends, deburring | 17.1 | 15.6 | [H3] |
+| Total | 61.2 | 53.1 | [H4] |
+| Drums per hour for two people | 2.0 | 2.26 | [H5] |
 
-The purge takes about 22.9 minutes elapsed but runs while the cradle works [H6]. Taking both heads off is about 3.9 minutes [H7]. The four hacksaw notches (8 minutes) and the six ring cuts (about 12 minutes) are most of the cradle time; ways to win time back, such as a second shear head or notching drums in a batch ahead of time, are listed in the design decisions register (DMP-DEC-001, Value engineering). Even at 2.0 drums an hour, a two-person team turns a drum into panels in about 30 minutes, against the hours of fire and chisel work the method replaces.
+What changed at the cradle [H8]: the four notches take 4.0 minutes with the lever notching punch, down from 8 with a hacksaw (1.2 minutes for each chime notch, 0.8 for each hoop slot [K9]). The six ring cuts take 9.5 minutes in three passes with the ring head, down from about 12.4 in six, including a minute a drum to bolt the ring head on and take it off. The slit takes 2.7 minutes, up from 2.3, because the new drive turns the discs 2.33 times slower. At the slip roll, the dial lets every drum after the first of a batch be set to a written reading: the trial pass is taken as 10 minutes for a batch of about ten drums plus half a minute a drum to check the dials, 1.5 minutes a drum in all, down from 3.
 
-## 9. Masses
+The purge takes about 22.9 minutes elapsed but runs while the cradle works [H6]. Taking both heads off is about 3.9 minutes [H7]. The remaining gap of about 5 minutes a drum is spread over handling, setting up the ring passes and deburring; ways to close it are listed in the design decisions register (DMP-DEC-001, Open decisions and Value engineering). Even at 2.26 drums an hour, a two-person team turns a drum into panels in under 30 minutes, against the hours of fire and chisel work the method replaces.
 
-*Table 10. Masses (steel at 7,850 kg/m³; chocks, tray, bushes and plywood at their own densities).*
+## 9. Lever notching punch
+
+The discs cannot start a cut through a folded chime or a hoop ridge, so four notches are made on the slit line first: an open-ended notch 60 x 35 mm at each drum end through the chime, and a slot 40 x 32 mm through each hoop. The lever notching punch replaces the hacksaw for these (DMP-DDR-003, Q1). It is a C-frame that slides into the open drum end with its lower jaw inside the drum: station 1, at the back of the frame, notches the chime with the frame's back face on the drum end; station 2, 338 mm out, slots the hoop with the drum end against the station 1 die block, its lower jaw passing in through the chime notch already cut. Each station has a D2 punch with its face raked 10 degrees, pushed into a matching die by a Tr24 x 5 screw turned by a 500 mm ratchet lever.
+
+*Table 10. Lever notching punch, 1.5 mm steel (the worst case of the accepted range).*
+
+| Quantity | Chime notch | Hoop slot | Tag |
+| --- | --- | --- | --- |
+| Punch force | 24.3 kN | 6.6 kN | [K1, K2] |
+| Screw torque; lever force at 480 mm | 63 N·m; 131 N | 17 N·m; 36 N | [K3, K4] |
+| Jaw root bending stress, lower and upper jaw | 18 and 18 MPa | 96 and 93 MPa | [K5, K6] |
+| Lever swings under load (60 degrees each) | 18 | 8 | [K8] |
+| Time per notch | 1.2 min | 0.8 min | [K9] |
+
+The chime notch is the hard one: the punch shears five layers of the folded seam. The lever force of 131 N is within R6, and the jaws, S355 plate, are at about a third of yield at the hoop station. Under the hoop slot force the jaws open about 1.3 mm at the hoop station [K7]; the punch is guided in its boss, so this is taken up in the screw stroke rather than shifting the punch off its die. The chime force is the least certain number here, because a real chime seam's layers and its clinch vary; it is to be confirmed on a scrap chime at TRL 4. The punch weighs 18.7 kg and is carried to the drum by one person [I9].
+
+## 10. Masses
+
+*Table 11. Masses (steel at 7,850 kg/m³; chocks, tray, bushes and plywood at their own densities).*
 
 | Item | Mass | Tag |
 | --- | --- | --- |
 | Drain and purge stand with tray | 15 kg | [I1] |
-| Cutting cradle with posts, beam, shear head and end cutter | 130 kg | [I2] |
-| Slip roll stand with tables | 189 kg | [I3] |
+| Cutting cradle with posts, beam, shear head, ring head, end cutter, notching punch and tool shelf | 196 kg | [I2] |
+| Slip roll stand with tables | 191 kg | [I3] |
 | Heaviest lift: cradle frame, one welded piece | 33.7 kg | [I4] |
-| Lower pinch roll | 21.0 kg | [I5] |
-| Shear head with shafts, discs, guard and drop bar | 20.0 kg | [I6] |
-| Side frame with legs and bridge, each | 19.6 kg | [I7] |
+| Shear head with shafts, discs, guard, drive and drop bar | 23.7 kg | [I5] |
+| Lower pinch roll | 21.0 kg | [I6] |
+| Ring head with its spacer plate and coupling | 20.4 kg | [I7] |
+| Side frame with legs and bridge, each | 20.1 kg | [I8] |
+| Notching punch, carried to the drum | 18.7 kg | [I9] |
 
-Only the cradle frame is over the 25 kg one-person limit of R11; it is lifted by two people.
+Only the cradle frame is over the 25 kg one-person limit of R11; it is lifted by two people. The shear head with its drive (23.7 kg) and the ring head (20.4 kg) are under the limit but awkward to hold while bolting; the build plan fits each with a second person steadying it.
 
-## 10. Cost
+## 11. Cost
 
-Value-engineering target: USD 3,000. Estimated cost of the constructable design: USD 2,794 (USD 206 under the target) [J1 to J3]. The largest lines are the vapour check kit (USD 600), the three rolls (USD 285), the shear head (USD 265) and the two side frames (USD 150) [J4 to J7].
+Value-engineering target: USD 3,000. Estimated cost of the constructable design: USD 3,489 (USD 489 over the target) [J1 to J3]. The decisions of 2026-10-03 added USD 695: the notching punch (USD 330, replacing the USD 45 hacksaw line), the ring head (USD 255), the shear head drive (USD 75), the dial adjusters (USD 40) and the tool shelf (USD 40). The largest lines are now the vapour check kit (USD 600), the shear head (USD 340), the notching punch (USD 330) and the three rolls (USD 285) [J4 to J7].
 
-## 11. Results against the requirements
+## 12. Results against the requirements
 
-*Table 11. Requirement status at TRL 3.*
+*Table 12. Requirement status at TRL 3.*
 
 | ID | Requirement | Result | Status |
 | --- | --- | --- | --- |
@@ -224,13 +258,13 @@ Value-engineering target: USD 3,000. Estimated cost of the constructable design:
 | R2 | Vapour check flags 10 % LEL | Detector alarm at 5 % LEL | Met by design |
 | R3 | Both heads off in under 10 min | 3.9 min [H7] | Met on paper |
 | R4 | Straight slit, 5 mm | Rail-guided head | Met by design |
-| R5 | Flat within 10 mm over 1 m | Needs 0.29 mm setting accuracy [E13]; ends hand-set [E16] | **At risk** |
-| R6 | Crank force at or below 150 N | 111 N worst [D15] | Met on paper |
-| R7 | 4 drums an hour, two people | 2.0 drums an hour [H5] | **Not met** |
+| R5 | Flat within 10 mm over 1 m | Needs 0.29 mm setting accuracy [E13]; dial reads 0.025 mm, the allowance is 11.8 divisions [E14d]; set by a trial pass for each batch; ends hand-set [E16] | Met on paper, with a trial pass for each batch |
+| R6 | Crank force at or below 150 N | 136 N worst, two ring cuts at 1.5 mm [D15r]; punch lever 131 N [K3] | Met on paper |
+| R7 | 2.5 drums an hour, two people (restated 2026-10-03) | 2.26 drums an hour [H5] | **Not met** |
 | R8 | Local build | Welding, drilling, turning; bought discs and bearings | Met by design |
-| R9 | Value-engineering target USD 3,000 | USD 2,794 [J1] | Met |
+| R9 | Value-engineering target USD 3,000 | USD 3,489 [J1] | Over the target by USD 489 |
 | R10 | Guarding | All slots meet ISO 13857 on paper [G1 to G3] | Met on paper |
-| R11 | Handling | 33.7 kg frame by two people [I4]; full drum never lifted | Met with a two-person rule |
+| R11 | Handling | 33.7 kg frame by two people [I4]; every other piece 23.7 kg or less [I5 to I9]; full drum never lifted | Met with a two-person rule |
 | R12 | Yield | Three panels 233 to 234 x 1,800 mm, two 552 mm heads [A1 to A3] | Met by design |
 
 ## Where the numbers come from

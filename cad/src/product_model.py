@@ -3,14 +3,16 @@
 Finished look of the bench set for photoreal renders, built from the constructable model: every component of
 cad/src/model.py components() is used as it is, with every main dimension from there (drain stand and tray, cradle
 frame, rollers, pillow blocks, brake, rail posts and beam, trolley, shear head, end cutter, slip roll stand with
-its rolls, blocks, screws, gears, crank drive, guards and tables). Only the look is added: a #40 roller chain drawn
+its rolls, blocks, screws and dial adjusters, gears, crank drive, guards and tables, the shear head's drive case,
+and the tool shelf with the notching punch, its lever and the ring head). Only the look is added: a #40 roller chain drawn
 as a plain band round the two sprockets, a nameplate on the right-hand side frame, a hazard label on the in-feed
 guard, painted drums, a workshop floor and a 1.75 m mannequin for scale. A second state, used only by the detail
 view, shows a drum with its heads off being slit, the shear head halfway along it.
 APPEARANCE MODEL ONLY: no tolerances, no fabrication detail. CONCEPT, NOT FOR FABRICATION.
 
 Groups: "purge" (drain stand and tray), "cradle" (cradle frame, rollers, brake, posts, beam), "head" (trolley and
-shear head parked at the left end), "cutter" (end cutter on the right chime), "roll" (slip roll stand), "drums"
+shear head with its drive case parked at the left end), "cutter" (end cutter on the right chime), "tools" (tool shelf
+on the left post with the notching punch, its lever and the ring head), "roll" (slip roll stand), "drums"
 (the drum on the cradle with its heads on, the drum on the drain stand), "panels" (three panels being fed),
 "slitting" (the opened drum and the shear head halfway along it), "context" (floor and mannequin).
 
@@ -24,25 +26,27 @@ HERE = Path(__file__).resolve().parent
 sys.path[:0] = [str(HERE), str(HERE.parents[1] / ".kit")]
 
 from build123d import Pos, Rot  # noqa: E402
-from model import PARAMS, box, comp, components, cylx, drum, levels, ringx, shear_head_local  # noqa: E402
+from model import PARAMS, box, comp, components, cylx, drum, levels, notch_boxes, ringx, shear_head_local  # noqa: E402
 
 TITLE = "DrumPanel: hand-powered bench set that opens oil drums into flat sheet without fire"
 
 RENDER_VIEWS = [
-    {"name": "hero", "groups": ["purge", "cradle", "head", "cutter", "roll", "drums", "panels", "context"], "explode": False,
+    {"name": "hero", "groups": ["purge", "cradle", "head", "cutter", "tools", "roll", "drums", "panels", "context"], "explode": False,
      "el": 28, "az": -38,
      "note": "Product render from the front right and above (about 28 deg elevation): drain and purge stand with a drum "
-             "bung end down over its tray (front), cutting cradle with a drum, the end cutter on its right chime and "
-             "the shear head parked on the rail (middle), slip roll stand feeding three panels (back); 1.75 m person "
-             "for scale"},
-    {"name": "exploded", "groups": ["cradle", "head", "cutter", "roll"], "explode": True, "el": 26, "az": -50,
+             "bung end down over its tray (front), cutting cradle with a drum, the end cutter on its right chime, "
+             "the shear head parked on the rail and the tool shelf with the notching punch and ring head on the left "
+             "post (middle), slip roll stand feeding three panels (back); 1.75 m person for scale"},
+    {"name": "exploded", "groups": ["cradle", "head", "cutter", "tools", "roll"], "explode": True, "el": 26, "az": -50,
      "note": "Exploded view from the front right and above (about 26 deg elevation): cradle frame, rollers, brake, "
-             "posts and rail beam, trolley and shear head, end cutter; slip roll base, side frames, rolls, slide "
-             "blocks and screws, crank drive, guards and tables; drain stand, drums and panels not shown"},
+             "posts and rail beam, trolley and shear head with its drive case, end cutter, tool shelf with the "
+             "notching punch and ring head; slip roll base, side frames, rolls, slide blocks, screws and dials, "
+             "crank drive, guards and tables; drain stand, drums and panels not shown"},
     {"name": "detail", "groups": ["cradle", "slitting"], "explode": False, "el": 30, "az": -30,
      "note": "Detail from the front right and above (about 30 deg elevation): a purged drum with its heads off on the "
              "cradle rollers, brake on, the hand-cranked shear head halfway along the seam slit, the cut edges "
-             "spread round its web; chime rings and hoops notched on the slit line"},
+             "spread round its web, its crank turning high on the drive case; chime rings and hoops notched on the "
+             "slit line by the notching punch"},
 ]
 
 C_STEEL = "#3A4048"
@@ -85,6 +89,15 @@ LOOK = {
     "discs": ("Slitting discs (D2)", "#D5D9DE", "metal", "head", (-250, -650, 500)),
     "head_shafts": ("Head shafts and crank", C_ORANGE, "painted", "head", (-250, -650, 500)),
     "head_guard": ("Disc guard", C_YELLOW, "painted", "head", (-250, -350, 700)),
+    "head_case": ("Shear head drive case (chain guard)", C_YELLOW, "painted", "head", (-250, -150, 600)),
+    "head_drive": ("Shear head crank and jackshaft", C_ORANGE, "painted", "head", (-250, 50, 650)),
+    "shelf": ("Tool shelf", C_STEEL, "painted", "tools", (-300, 0, -100)),
+    "punch_frame": ("Notching punch C-frame", "#7C2D12", "painted", "tools", (-500, 0, 250)),
+    "punch_parts": ("Notching punch screws and nut blocks", C_ZINC, "metal", "tools", (-500, 0, 300)),
+    "punch_lever": ("Notching punch ratchet lever", C_BLACK, "metal", "tools", (-500, 0, 150)),
+    "ring_frame": ("Ring head frame", C_TEAL, "painted", "tools", (-700, 0, 350)),
+    "ring_parts": ("Ring head discs, shafts and guard", "#D5D9DE", "metal", "tools", (-700, 0, 350)),
+    "ring_link": ("Ring head spacer plate and coupling", C_ORANGE, "painted", "tools", (-700, 0, 450)),
     "ec_body": ("End cutter body and torque arm", "#6D28D9", "painted", "cutter", (350, 0, 300)),
     "ec_guide": ("End cutter guide roller", C_BLACK, "metal", "cutter", (350, 0, 300)),
     "ec_drive": ("End cutter drive wheel and crank", C_ORANGE, "painted", "cutter", (350, 0, 300)),
@@ -94,6 +107,7 @@ LOOK = {
     "rs_bushes": ("Bronze bushes", C_BRONZE, "metal", "roll", (0, 0, 150)),
     "rs_blocks": ("Slide blocks", "#6B7280", "metal", "roll", (0, 0, 250)),
     "rs_screws": ("Pinch and bending screws with handwheels", "#B91C1C", "painted", "roll", (0, 0, 350)),
+    "rs_dials": ("Bending roll dials, lock nuts and pointers", C_BLACK, "metal", "roll", (0, 0, 300)),
     "roll_lower": ("Lower pinch roll", "#C9CED4", "metal", "roll", (0, 0, 150)),
     "roll_upper": ("Upper pinch roll", "#C9CED4", "metal", "roll", (0, 0, 250)),
     "roll_bend": ("Bending roll", "#C9CED4", "metal", "roll", (0, 200, 150)),
@@ -160,16 +174,17 @@ def product_parts():
     xn = 0.0
     body = Pos(0, 0, zax) * drum(P, heads=False)
     zt = zax + 200
-    for x0_, x1_ in ((-half - 1, -half + 35), (half - 35, half + 1), (-P["HOOP_X"] - 16, -P["HOOP_X"] + 16),
-                     (P["HOOP_X"] - 16, P["HOOP_X"] + 16)):
-        body = body - box(x0_, x1_, -20, 20, zt, zt + 200)
+    for nb in notch_boxes(P, z_top=zt):
+        body = body - nb
     body = body - box(-half - 10, xn + P["DISC_R"] * 0.2, -11, 11, zt, zt + 200)
     add("Drum with its heads off, being slit", body, C_BLUE_DRUM, "painted", "slitting")
     hl = shear_head_local(P)
     pl = Pos(xn, 0, znip)
     for k, name, color, mat in (("frame", "Shear head frame", C_TEAL, "painted"), ("guard", "Disc guard", C_YELLOW, "painted"),
                                 ("disc_u", "Upper slitting disc", "#D5D9DE", "metal"), ("disc_l", "Lower slitting disc", "#D5D9DE", "metal"),
-                                ("shaft_u", "Upper shaft and crank", C_ORANGE, "painted"), ("shaft_l", "Lower shaft", C_ORANGE, "painted")):
+                                ("shaft_u", "Upper shaft", C_ORANGE, "painted"), ("shaft_l", "Lower shaft", C_ORANGE, "painted"),
+                                ("drive_case", "Drive case", C_YELLOW, "painted"), ("crank", "Crank", C_ORANGE, "painted"),
+                                ("jack", "Jackshaft", C_ZINC, "metal")):
         add(name + " (slitting)", pl * hl[k], color, mat, "slitting")
     dx = xn - P["HEAD_PARK_X"]
     for key in ("trolley", "trolley_wheels", "drop", "pivot"):

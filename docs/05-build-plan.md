@@ -3,7 +3,7 @@ doc_id: DMP-BLD-001
 title: DrumPanel prototype build plan
 project: DrumPanel
 doc_type: Build plan
-version: "0.1"
+version: "0.2"
 status: Draft
 date: '2026-10-03'
 author: Amish Chadha
@@ -13,6 +13,10 @@ revisions:
   date: '2026-10-03'
   author: Amish Chadha
   change: First build plan; design made constructable (DMP-DDR-002)
+- version: "0.2"
+  date: '2026-10-03'
+  author: Amish Chadha
+  change: 'Amish''s requirement decisions of 2026-10-03 (DMP-DDR-003): lever notching punch, ring head, raised shear head drive, dial adjusters on the bending screws, tool shelf'
 ---
 
 # DrumPanel prototype build plan
@@ -25,13 +29,13 @@ revisions:
 
 *Figure 1. Every component pulled apart and numbered in build order.*
 
-The prototype is a hand-powered bench set in three stations that turns an empty 208 L oil drum into flat steel without fire: a drain and purge stand where the drum is washed out with water and checked for vapour, a cutting cradle where the heads are cut out and the body is slit and cut into three panels, and a slip roll that bends the curled panels flat. The overview shows the 20 groups of parts in the order you make or fit them. Nearly everything is sawn, drilled and stick-welded from square tube and plate; the three rolls are turned on a lathe; the slitting discs, the end cutter wheel, bearings, bushes, gears, chain, the gas detector and the hand tools are bought. The parts cost about USD 2,794 from the bill of materials, USD 206 under the USD 3,000 value-engineering target.
+The prototype is a hand-powered bench set in three stations that turns an empty 208 L oil drum into flat steel without fire: a drain and purge stand where the drum is washed out with water and checked for vapour, a cutting cradle where the heads are cut out and the body is slit and cut into three panels, and a slip roll that bends the curled panels flat. Beside the cradle stand a lever notching punch, which notches the drum on its slit line before it is slit, and a ring head, a second shear head that is bolted to the first so the ring cuts are made two at a time; both live on a shelf on the left rail post. The overview shows the 24 groups of parts in the order you make or fit them. Nearly everything is sawn, drilled and stick-welded from square tube and plate; the three rolls are turned on a lathe; the slitting discs, the end cutter wheel, the punches and dies, bearings, bushes, gears, chains, the gas detector and the hand tools are bought or made by a tool shop. The parts cost about USD 3,489 from the bill of materials, USD 489 over the USD 3,000 value-engineering target.
 
 > **Safety:** An empty oil drum can still hold flammable vapour and explode when cut, ground or heated. No drum comes near the workshop's welding area, and no drum is cut until it has been purged and has passed the vapour check below 5 % LEL. Building the bench set involves stick welding, grinding and lifts of up to 34 kg; using it involves sharp cut edges and in-running nips at the discs and rolls. Work only within the safety stops of section 6. Nothing in this plan authorises cutting a drum; the first cut is TRL 4 work.
 
 ## 2. What changed to make it buildable
 
-The concept named eight tools in words; some could not be made or could not work as described. Each change keeps what DrumPanel does and is recorded in decision record DMP-DDR-002, decided on 2026-10-03.
+The concept named eight tools in words; some could not be made or could not work as described. Each change keeps what DrumPanel does and is recorded in decision record DMP-DDR-002, decided on 2026-10-03. The last four rows carry out Amish's requirement decisions of 2026-10-03 and are recorded in DMP-DDR-003.
 
 *Table 1. Changes from the concept.*
 
@@ -39,16 +43,20 @@ The concept named eight tools in words; some could not be made or could not work
 | --- | --- | --- | --- |
 | Drain and purge station | A tilting stand | A fixed stand sloping 2.9 degrees to the bung end (Figure 2) | A drum full of water weighs about 240 kg and is never tipped |
 | Drum cradle and clamps | Not defined | Rollers under the rolling hoops and a screw brake (Figure 5) | The drum must turn for the ring cuts and stay still for the slit |
-| End cutter | Cuts each whole end off | Cuts the head out just inside the chime (Figure 20) | No hand wheel cuts the five-layer chime seam |
+| End cutter | Cuts each whole end off | Cuts the head out just inside the chime (Figure 21) | No hand wheel cuts the five-layer chime seam |
 | Seam slitter | A lever or crank tool | A rotary shear head on a trolley and overhead rail, web running in the cut (Figure 16) | Straight cut; the discs cannot be geared through the drum wall |
-| Start of the cut | Not shown | 40 mm hacksaw notches through the chime rings and hoops on the slit line | The discs cannot shear a seam or a ridge |
-| Flattening rolls | A three-roll set | A slip roll: geared pinch pair and adjustable bending roll (Figure 25) | A plain three-roll set cannot drive the sheet by friction |
+| Start of the cut | Not shown | Notches through the chime rings and hoops on the slit line | The discs cannot shear a seam or a ridge |
+| Flattening rolls | A three-roll set | A slip roll: geared pinch pair and adjustable bending roll (Figure 31) | A plain three-roll set cannot drive the sheet by friction |
 | Drum body | Rolled flat in one piece | Hoop strips cut out; three panels about 233 x 1,800 mm | Rolling a hoop flat would stretch it 8.5 % |
 | Ring cuts | A separate tool | The same shear head swivelled 90 degrees on its pivot | One tool |
-| Guards | None drawn | Disc guard with skirt, nip guards with 8 mm slots, chain and gear guards, cutter cover (Figure 30) | Fingers kept out of every nip |
+| Guards | None drawn | Disc guard with skirt, nip guards with 8 mm slots, chain and gear guards, cutter cover (Figure 36) | Fingers kept out of every nip |
 | Panel ends | Not considered | Last 90 mm set by hand on the bench plate | A slip roll cannot bend them |
 | Side frames | Not considered | Bolted to the base; rolls fitted in order | The lower roll cannot go between welded frames |
 | Rail posts | Not drawn | 712.5 mm each side of the middle on two cross members | Room for the end cutter and the parked head |
+| Notches | Cut with a hacksaw | Punched with a lever notching punch; the chime notches widened to 60 mm (Figure 23) | Four notches in about 4 minutes instead of 8 |
+| Ring cuts, faster | One cut a pass | A ring head bolted to the shear head, so two cuts are made each pass (Figure 26) | Three passes instead of six |
+| Shear head crank | On the upper shaft, 200 mm | On a raised crank shaft in a closed 2.33 to 1 chain drive case, 155 mm (Figure 19) | A crank on the upper shaft sweeps through the drum wall; two ring cuts on one crank stay under 150 N |
+| Bending roll setting | Screws with marked handwheels | Fine-pitch screws with dials of 0.025 mm and lock nuts (Figure 33) | The setting must be within 0.29 mm and must hold |
 
 ## 3. Making the components
 
@@ -156,6 +164,7 @@ The tray stands on the floor under the bung end, its near edge 60 mm beyond the 
 1. Cut each post 926.5 mm with square ends.
 2. Cut a base plate 200 x 100 mm with four 11 mm holes on a 75 x 140 mm rectangle, and a cap plate 120 x 80 mm with two 11 mm holes 80 mm apart on its centre line.
 3. Weld the post to the middle of both plates, square both ways.
+4. Left post only: drill two 11 mm holes straight across it, 550 and 700 mm up from the frame top, for the tool shelf's bolts.
 
 **How it fits the parts next to it.**
 
@@ -236,7 +245,7 @@ The tray stands on the floor under the bung end, its near edge 60 mm beyond the 
 
 *Figure 16. Shear head frame making sketch (DMP-DWG-109).*
 
-**What it is and what it is made from.** The frame that holds the two slitting discs. Its thin web runs in the cut behind the discs, so the head can travel the full length of the drum. 10 mm and 20 mm plate, S275; bought 6005-2RS bearings; an eccentric bush.
+**What it is and what it is made from.** The frame that holds the two slitting discs. Its thin web runs in the cut behind the discs, so the head can travel the full length of the drum. 10 mm and 20 mm plate, S275; bought 6005-2RS bearings; an eccentric bush. Make two frames: the second is the ring head (section 3.14).
 
 **How to make it.**
 
@@ -245,40 +254,48 @@ The tray stands on the floor under the bung end, its near edge 60 mm beyond the 
 3. Weld the top and lower plates across the ends of the web, the upper housing under the top plate beside the web, and the lower housing on the lower plate, as the sketch shows.
 4. Bore both housings in one setting so the shafts are parallel within 0.05 mm over 60 mm: the upper 57 mm on a line 49.5 mm above the nip line, for the eccentric bush; the lower 47 mm on a line 49.5 mm below it, for two bearings.
 5. Make the eccentric bush: 57 mm outside, 47 mm bore offset 3 mm, with a lever and a locking set screw.
+6. On the main head only, tap four M8 holes for the drive case: two in the outer face of the upper housing and two in the end of the top plate.
 
 **How it fits the parts next to it.**
 
 ![Figure 17. Joint 6: shear head slitting the drum wall](05-build-plan/joint-06.png)
 
-*Figure 17. Joint 6. The upper disc is driven by the crank, the lower disc runs inside the drum, and the 10 mm web follows in the cut; the cut edges spread round it. Guard left off for clarity.*
+*Figure 17. Joint 6. The upper disc is driven through the drive case, the lower disc runs inside the drum, and the 10 mm web follows in the cut; the cut edges spread round it. The crank turns high on the drive case, clear of the drum. Disc guard left off for clarity.*
 
 **Check before moving on.** Turning the eccentric moves the upper shaft through 6 mm.
 
-### 3.10 Head shafts, crank and discs
+### 3.10 Head shafts, discs and drive case
 
-![Figure 18. Making sketch of the head shafts and crank](../cad/drawings/DMP-DWG-110.png)
+![Figure 18. Making sketch of the head shafts](../cad/drawings/DMP-DWG-110.png)
 
-*Figure 18. Head shafts and crank making sketch (DMP-DWG-110).*
+*Figure 18. Head shafts making sketch (DMP-DWG-110).*
 
-**What it is and what it is made from.** The two shafts that carry the discs, and the crank that drives the upper one. 25 mm bright bar; 20 x 12 mm flat; 16 mm pin; two bought D2 slitting discs 101 x 10 mm.
+![Figure 19. Making sketch of the drive case and crank](../cad/drawings/DMP-DWG-120.png)
+
+*Figure 19. Drive case and crank making sketch (DMP-DWG-120).*
+
+**What it is and what it is made from.** The two shafts that carry the discs, and the drive case that turns the upper one from a crank set high on the side of the head, where it cannot hit the drum. 25 mm and 20 mm bright bar; 8 mm plate and 1.5 mm sheet; 20 x 12 mm flat; four bought 6004-2RS bearings; bought #35 sprockets of 12, 28 and two of 15 teeth and about 1 m of #35 chain; two bought D2 slitting discs 101 x 10 mm. Make a second set of shafts and discs, without the drive, for the ring head.
 
 **How to make it.**
 
-1. Turn the upper shaft 78 mm long with a 35 mm shoulder 10 mm from the disc end and a 6 mm keyway at the crank end; turn the lower shaft 74 mm long with the same shoulder.
-2. Make the crank: a 40 mm boss 12 mm thick, a 20 x 12 mm arm with 200 mm between centres, and a 24 mm grip 100 mm long that spins freely on a 16 mm pin.
-3. Clamp each disc against its shoulder with a countersunk M8 end screw that sits below the cutting face.
+1. Turn the upper shaft 120 mm long: a 24 mm stub on the disc side with a 6 mm slot across its end for the ring head coupling, a 35 mm shoulder at the disc, and a keyway at the far end for a 15 tooth sprocket. Turn the lower shaft 74 mm long with the same shoulder.
+2. Cut two plates 140 x 182 mm from 8 mm plate and drill them clamped together: a 26 mm clearance hole on the disc line for the upper shaft, and two 42 mm bearing bores, one 80 mm above the disc line for the jackshaft and one 60 mm back and 120 mm above the disc line for the crank shaft.
+3. Turn the jackshaft and the crank shaft from 20 mm bar, 38 mm and 44 mm long, with keyways for their sprockets.
+4. Fold a 1.5 mm sheet band to join the two plates all round, 22 mm apart; it is the chain guard. Screw it to both plates.
+5. Make the crank: a 20 x 12 mm arm with 155 mm between centres and a 24 mm grip 100 mm long that spins freely on a 16 mm pin.
+6. Clamp each disc against its shoulder: the lower disc with a countersunk M8 end screw, the upper disc with a clamp collar on the stub, both below the cutting face.
 
-**How it fits the parts next to it.** The two cutting faces meet on one plane with no gap and no rub; shim behind a disc with 0.05 mm shims to get there. Set the overlap to 1.0 mm with the eccentric and lock it.
+**How it fits the parts next to it.** The two cutting faces meet on one plane with no gap and no rub; shim behind a disc with 0.05 mm shims to get there. Set the overlap to 1.0 mm with the eccentric and lock it. The inner plate of the drive case bolts to the upper housing and the top plate with four M8 screws. The 12 tooth sprocket on the crank shaft drives the 28 tooth on the jackshaft; a 15 tooth beside it drives the 15 tooth on the upper shaft. Fit the chains with about 3 mm of slack before closing the band.
 
-**Check before moving on.** Turning the crank turns the upper disc; a strip of 1 mm sheet cuts cleanly by hand.
+**Check before moving on.** About 2.3 turns of the crank turn the discs once; nothing rubs; a strip of 1 mm sheet cuts cleanly by hand.
 
 ### 3.11 Disc guard
 
-![Figure 19. Making sketch of the disc guard](../cad/drawings/DMP-DWG-111.png)
+![Figure 20. Making sketch of the disc guard](../cad/drawings/DMP-DWG-111.png)
 
-*Figure 19. Disc guard making sketch (DMP-DWG-111).*
+*Figure 20. Disc guard making sketch (DMP-DWG-111).*
 
-**What it is and what it is made from.** A hood over the upper disc with a skirt at its front. 1.5 mm steel sheet.
+**What it is and what it is made from.** A hood over the upper disc with a skirt at its front. 1.5 mm steel sheet. Make two: one for the ring head.
 
 **How to make it.**
 
@@ -291,9 +308,9 @@ The tray stands on the floor under the bung end, its near edge 60 mm beyond the 
 
 ### 3.12 End cutter
 
-![Figure 20. Making sketch of the end cutter](../cad/drawings/DMP-DWG-112.png)
+![Figure 21. Making sketch of the end cutter](../cad/drawings/DMP-DWG-112.png)
 
-*Figure 20. End cutter making sketch (DMP-DWG-112).*
+*Figure 21. End cutter making sketch (DMP-DWG-112).*
 
 **What it is and what it is made from.** The tool that cuts each head out of the drum just inside the chime. 12 mm plate; 16 and 12 mm bar; 30 x 8 mm flat; a bought 50 mm hardened cutter wheel.
 
@@ -307,17 +324,84 @@ The tray stands on the floor under the bung end, its near edge 60 mm beyond the 
 
 **How it fits the parts next to it.**
 
-![Figure 21. Joint 7: end cutter on the chime](05-build-plan/joint-07.png)
+![Figure 22. Joint 7: end cutter on the chime](05-build-plan/joint-07.png)
 
-*Figure 21. Joint 7. The drive wheel bears on the inside of the chime and the guide roller on its outside; the cutter wheel bites the head just inside the chime wall.*
+*Figure 22. Joint 7. The drive wheel bears on the inside of the chime and the guide roller on its outside; the cutter wheel bites the head just inside the chime wall.*
 
 **Check before moving on.** On a scrap head or a purged drum, the wheel cuts just inside the chime and the torque arm rests on the post as the crank turns.
 
-### 3.13 Roll stand base
+### 3.13 Lever notching punch
 
-![Figure 22. Making sketch of the roll stand base](../cad/drawings/DMP-DWG-113.png)
+![Figure 23. Making sketch of the lever notching punch](../cad/drawings/DMP-DWG-121.png)
 
-*Figure 22. Roll stand base making sketch (DMP-DWG-113).*
+*Figure 23. Lever notching punch making sketch (DMP-DWG-121).*
+
+**What it is and what it is made from.** A C-shaped punch that slides into the open end of a drum, with one jaw inside and one outside, and punches the four notches on the slit line that let the shear head start and pass: an open-ended notch 60 mm wide and 35 mm deep through the chime at each end, and a slot 40 x 32 mm through each hoop. S355 plate for the frame; two D2 punches and dies, made and hardened by a tool shop; two Tr24 x 5 screws in bronze nut blocks; two needle thrust bearings; a bought 500 mm ratchet lever with a socket to suit the screws. About 19 kg.
+
+**How to make it.**
+
+1. Cut the back 50 x 76 x 150 mm, the lower jaw 385 x 56 x 50 mm and the upper jaw 385 x 40 x 60 mm from S355 plate. Weld the jaws to the back with a 40 mm gap between them, square and parallel.
+2. Weld a die block 45 x 76 mm under the back end of the gap (station 1) and a guide boss 56 mm wide over the jaw 338 mm out from the back (station 2), as the sketch shows.
+3. Cut the die openings through the lower jaw: 60 x 35 mm at station 1, starting at the back face; 40 x 32 mm at station 2. Cut matching guide bores through the upper jaw and its bosses.
+4. Grind the top of the lower jaw to the inside radius of the drum wall (286 mm) and the back part of the station 1 die block to the inside of the chime (280 mm), so the die faces sit on the steel.
+5. Have the punches made from D2 to slide in their bores, faces raked 10 degrees from the middle to each side, with 0.1 to 0.2 mm clearance a side in their dies; harden both.
+6. Bolt a nut block with its Tr24 x 5 bronze nut over each station; fit a screw with a hex head, and a needle thrust bearing between screw and punch.
+
+**How it fits the parts next to it.**
+
+![Figure 24. Joint 14: notching punch at a hoop](05-build-plan/joint-14.png)
+
+*Figure 24. Joint 14. Cut open on the slit line. For a hoop slot the drum end rests against the station 1 die block and the lower jaw goes in through the chime notch already cut; the die face sits on the inside of the wall under the hoop.*
+
+Cut the two chime notches first, with the back face of the punch on the drum end and the station 1 die under the chime. Then cut each hoop slot from its own end. Run each punch down by hand until it touches, then work the ratchet lever (about 18 swings for a chime, 8 for a hoop).
+
+**Check before moving on.** Each punch enters its die by hand with an even gap all round; on a scrap chime and a scrap hoop it cuts a clean notch with no more than 150 N on the lever.
+
+### 3.14 Ring head, spacer plate and coupling
+
+![Figure 25. Making sketch of the ring head spacer plate and coupling](../cad/drawings/DMP-DWG-122.png)
+
+*Figure 25. Ring head spacer plate and coupling making sketch (DMP-DWG-122).*
+
+**What it is and what it is made from.** A second shear head that is bolted to the main head for the ring cuts, so two cuts are made in each pass. Its frame, shafts, discs and guard are made to the same sketches as the main head's (sections 3.9 to 3.11) without a drive. 10 mm plate for the spacer plate; 25 mm bright bar for the coupling; a plastic tube for its guard sleeve. About 20 kg.
+
+**How to make it.**
+
+1. Make the second frame, shafts, discs and guard to sections 3.9 to 3.11. Its upper shaft is 98 mm long, with the same slotted stub, and has no sprocket.
+2. Cut the spacer plate 115 x 270 mm from 10 mm plate. Drill four 13 mm holes over the main head's top plate and slot four over the ring head's, so the nips can sit 233 or 234 mm apart.
+3. Cut the coupling shaft 135 mm long from 25 mm bar and weld a 6 mm dog across each end to engage the slots in the two upper shaft stubs.
+4. Cut a loose plastic guard sleeve, 31 mm outside, to cover the coupling between the two heads.
+
+**How it fits the parts next to it.**
+
+![Figure 26. Joint 13: ring head bolted to the main head](05-build-plan/joint-13.png)
+
+*Figure 26. Joint 13. With the main head swivelled for ring cuts, the ring head is lowered through the slit 233 mm along the drum; the spacer plate bolts across both top plates and the coupling joins the two upper shafts, so one crank drives both upper discs.*
+
+**Check before moving on.** Bolted together on the bench, both upper discs turn together when the crank is turned; the two cut planes are parallel within 0.5 mm.
+
+### 3.15 Tool shelf
+
+![Figure 27. Making sketch of the tool shelf](../cad/drawings/DMP-DWG-123.png)
+
+*Figure 27. Tool shelf making sketch (DMP-DWG-123).*
+
+**What it is and what it is made from.** A shelf on the outer face of the left rail post that holds the notching punch, its lever and the ring head with its spacer plate and coupling. 6 mm and 10 mm plate, S275; two M10 bolts. About 14 kg.
+
+**How to make it.**
+
+1. Cut the back plate 200 x 310 mm from 10 mm plate and drill two 11 mm holes on its centre line, 150 mm apart, to match the holes in the left post.
+2. Cut the shelf 380 x 600 mm and two brackets 250 x 80 mm from 6 mm plate. Weld the shelf square to the back plate, 150 mm above its bottom edge, with the brackets under it 200 mm apart.
+
+**How it fits the parts next to it.** Two M10 through-bolts hold it to the outer face of the left post, the shelf top 608 mm from the floor.
+
+**Check before moving on.** The shelf is level both ways and does not move when pressed down hard by hand.
+
+### 3.16 Roll stand base
+
+![Figure 28. Making sketch of the roll stand base](../cad/drawings/DMP-DWG-113.png)
+
+*Figure 28. Roll stand base making sketch (DMP-DWG-113).*
 
 **What it is and what it is made from.** A wide base that keeps the slip roll from tipping. 60 x 60 x 3 mm tube, S275.
 
@@ -331,11 +415,11 @@ The tray stands on the floor under the bung end, its near edge 60 mm beyond the 
 
 **Check before moving on.** The base does not rock on a flat floor; shim it if needed.
 
-### 3.14 Side frames (make 2, mirror pair)
+### 3.17 Side frames (make 2, mirror pair)
 
-![Figure 23. Making sketch of a side frame](../cad/drawings/DMP-DWG-114.png)
+![Figure 29. Making sketch of a side frame](../cad/drawings/DMP-DWG-114.png)
 
-*Figure 23. Side frame making sketch (DMP-DWG-114).*
+*Figure 29. Side frame making sketch (DMP-DWG-114).*
 
 **What it is and what it is made from.** The two frames that carry the rolls. 20 mm plate 370 x 250 mm; 50 x 50 x 3 mm tube legs; 6 mm foot plates; a 25 mm top bridge bar.
 
@@ -348,17 +432,17 @@ The tray stands on the floor under the bung end, its near edge 60 mm beyond the 
 
 **How it fits the parts next to it.**
 
-![Figure 24. Joint 9: rolls in a side frame](05-build-plan/joint-09.png)
+![Figure 30. Joint 9: rolls in a side frame](05-build-plan/joint-09.png)
 
-*Figure 24. Joint 9. The lower roll runs in a fixed bush; the upper and bending rolls run in bushes in slide blocks, moved by the screws in the bolted top bridge.*
+*Figure 30. Joint 9. The lower roll runs in a fixed bush; the upper and bending rolls run in bushes in slide blocks, moved by the screws in the bolted top bridge.*
 
 **Check before moving on.** With both frames on the base, a 30 mm bar passes through both lower bores; they line up within 0.5 mm.
 
-### 3.15 Rolls (make 3)
+### 3.18 Rolls (make 3)
 
-![Figure 25. Making sketch of the lower pinch roll](../cad/drawings/DMP-DWG-115.png)
+![Figure 31. Making sketch of the lower pinch roll](../cad/drawings/DMP-DWG-115.png)
 
-*Figure 25. Rolls making sketch, lower pinch roll drawn (DMP-DWG-115).*
+*Figure 31. Rolls making sketch, lower pinch roll drawn (DMP-DWG-115).*
 
 **What it is and what it is made from.** The lower and upper pinch rolls and the bending roll. 60 mm bright bar, C45 (EN8).
 
@@ -371,36 +455,38 @@ The tray stands on the floor under the bung end, its near edge 60 mm beyond the 
 
 **How it fits the parts next to it.**
 
-![Figure 26. Joint 10: pinch gears](05-build-plan/joint-10.png)
+![Figure 32. Joint 10: pinch gears](05-build-plan/joint-10.png)
 
-*Figure 26. Joint 10. The two pinch gears at the left-hand end keep the pinch rolls turning together; the bending roll has no gear.*
+*Figure 32. Joint 10. The two pinch gears at the left-hand end keep the pinch rolls turning together; the bending roll has no gear.*
 
 **Check before moving on.** Each roll turns freely in its bushes by hand.
 
-### 3.16 Slide blocks, bushes and screws
+### 3.19 Slide blocks, bushes and screws
 
-![Figure 27. Making sketch of the slide blocks, bushes and screws](../cad/drawings/DMP-DWG-116.png)
+![Figure 33. Making sketch of the slide blocks, bushes, screws and dials](../cad/drawings/DMP-DWG-116.png)
 
-*Figure 27. Slide blocks, bushes and screws making sketch (DMP-DWG-116).*
+*Figure 33. Slide blocks, bushes, screws and dials making sketch (DMP-DWG-116).*
 
-**What it is and what it is made from.** Blocks that let the upper and bending rolls move up and down, and the screws that move them. 20 mm plate; six bought flanged bronze bushes 30 x 40 x 20 mm; M16 and M20 screws; handwheels.
+**What it is and what it is made from.** Blocks that let the upper and bending rolls move up and down, the screws that move them, and the dials that set the bending roll. 20 mm plate; six bought flanged bronze bushes 30 x 40 x 20 mm; M16 screws and fine-pitch M20 x 1.5 screws; handwheels; two 80 mm dials, two M20 x 1.5 lock nuts and two pointers.
 
 **How to make it.**
 
 1. Cut four blocks 60 x 60 x 20 mm and bore each 40 mm in the middle. They should slide in the 60 mm slots with 0.2 mm clearance; break the edges.
 2. Press a flanged bush into each block and into each lower bore from the outside; drill a grease hole in each.
 3. Make a 3 mm keeper plate for the inside face of each block.
-4. Fit a captive collar at the tip of each screw (two M16 x 120 pinch screws, two M20 x 150 bending screws) so it can push and pull its block. Fit 90 mm handwheels on the pinch screws and 110 mm handwheels on the bending screws, each marked in 12 divisions.
+4. Fit a captive collar at the tip of each screw (two M16 x 120 pinch screws, two fine-pitch M20 x 1.5 x 150 bending screws) so it can push and pull its block. Fit 90 mm handwheels on the pinch screws and 110 mm handwheels on the bending screws. Tap the bending screw holes in the top bridges M20 x 1.5.
+5. Turn two dials 80 mm across and 8 mm thick, bored 20 mm, with a set screw; engrave 60 divisions round the rim, every tenth numbered. Each division is 0.025 mm of bending roll movement.
+6. Bend two pointers from 10 x 5 mm strip to stand on the bridge with their tips over the dial rims.
 
-**How it fits the parts next to it.** The screws run in the threaded holes of the top bridges (Joint 9).
+**How it fits the parts next to it.** The screws run in the threaded holes of the top bridges (Joint 9). On each bending screw, the lock nut runs down onto the bridge, the dial sits above it clamped to the screw, and the pointer is screwed to the bridge. To set the roll: slacken both lock nuts, turn both screws to the same dial reading, then tighten the lock nuts.
 
-**Check before moving on.** Each block slides through its full travel when its screw is turned.
+**Check before moving on.** Each block slides through its full travel when its screw is turned; one turn of a bending screw moves its roll 1.5 mm; with the lock nut tight, the dial reading does not change when the handwheel is pushed by hand.
 
-### 3.17 Crank bracket, crank and chain drive
+### 3.20 Crank bracket, crank and chain drive
 
-![Figure 28. Making sketch of the crank bracket and crank](../cad/drawings/DMP-DWG-117.png)
+![Figure 34. Making sketch of the crank bracket and crank](../cad/drawings/DMP-DWG-117.png)
 
-*Figure 28. Crank bracket and crank making sketch (DMP-DWG-117).*
+*Figure 34. Crank bracket and crank making sketch (DMP-DWG-117).*
 
 **What it is and what it is made from.** The 300 mm crank and the 3:1 chain that drive the lower roll. 10 mm plate; 50 mm round bar; 25 mm shaft; 24 x 12 mm flat; bought #40 sprockets of 13 and 39 teeth and chain.
 
@@ -412,17 +498,17 @@ The tray stands on the floor under the bung end, its near edge 60 mm beyond the 
 
 **How it fits the parts next to it.**
 
-![Figure 29. Joint 11: crank and chain drive](05-build-plan/joint-11.png)
+![Figure 35. Joint 11: crank and chain drive](05-build-plan/joint-11.png)
 
-*Figure 29. Joint 11. The 13 tooth sprocket on the crank shaft drives the 39 tooth sprocket on the lower roll. Chain guard off and chain not drawn.*
+*Figure 35. Joint 11. The 13 tooth sprocket on the crank shaft drives the 39 tooth sprocket on the lower roll. Chain guard off and chain not drawn.*
 
 **Check before moving on.** The sprockets line up under a straightedge; one crank turn moves a panel 63 mm.
 
-### 3.18 Roll guards
+### 3.21 Roll guards
 
-![Figure 30. Making sketch of the roll guards](../cad/drawings/DMP-DWG-118.png)
+![Figure 36. Making sketch of the roll guards](../cad/drawings/DMP-DWG-118.png)
 
-*Figure 30. Roll guards making sketch (DMP-DWG-118).*
+*Figure 36. Roll guards making sketch (DMP-DWG-118).*
 
 **What it is and what it is made from.** Guards that keep fingers out of the roll nips, the gears and the chain. 1.5 mm steel sheet; M6 screws.
 
@@ -434,19 +520,19 @@ The tray stands on the floor under the bung end, its near edge 60 mm beyond the 
 
 **How it fits the parts next to it.**
 
-![Figure 31. Joint 12: nip guards over the rolls](05-build-plan/joint-12.png)
+![Figure 37. Joint 12: nip guards over the rolls](05-build-plan/joint-12.png)
 
-*Figure 31. Joint 12. The in-feed guard stands 50 mm in front of the pinch line with an 8 mm slot over the in-feed table; the out-feed guard 150 mm behind it with an 8 mm slot.*
+*Figure 37. Joint 12. The in-feed guard stands 50 mm in front of the pinch line with an 8 mm slot over the in-feed table; the out-feed guard 150 mm behind it with an 8 mm slot.*
 
 All guards are held by M6 screws, so a tool is needed to remove them.
 
 **Check before moving on.** A 10 mm rod cannot reach any nip, gear or sprocket.
 
-### 3.19 In-feed and out-feed tables
+### 3.22 In-feed and out-feed tables
 
-![Figure 32. Making sketch of the tables](../cad/drawings/DMP-DWG-119.png)
+![Figure 38. Making sketch of the tables](../cad/drawings/DMP-DWG-119.png)
 
-*Figure 32. Tables making sketch (DMP-DWG-119).*
+*Figure 38. Tables making sketch (DMP-DWG-119).*
 
 **What it is and what it is made from.** Tables that carry the 1.8 m panels into and out of the rolls. 18 mm exterior plywood; 40 x 40 x 3 mm angle and tube.
 
@@ -460,17 +546,18 @@ All guards are held by M6 screws, so a tool is needed to remove them.
 
 **Check before moving on.** A straightedge from each table to its roll shows no step over 1 mm.
 
-### 3.20 Bought components
+### 3.23 Bought components
 
 - **Drain tray:** HDPE oil drain tray about 600 x 500 x 150 mm.
 - **Purge kit:** 15 m of 19 mm hose, 3/4 in bung hose adaptor, 2 in bung drain spout, a non-sparking (brass or bronze) bung wrench, a tap fitted to a spare drum as the settling drum, biodegradable detergent.
 - **Vapour check kit:** a portable combustible gas detector with a catalytic bead or infrared LEL sensor, a sampling pump and a 1 m probe hose, its alarm settable at 5 % LEL (a 4-gas meter is fine), and 50 % LEL bump-test gas with a regulator. Read its manual; set the alarm before first use.
 - **Pillow blocks:** four UCP205 (25 mm bore).
-- **Slitting discs:** two D2 discs 101 x 10 mm, 25 mm bore, 58 to 60 HRC.
+- **Slitting discs:** four D2 discs 101 x 10 mm, 25 mm bore, 58 to 60 HRC (two for the shear head, two for the ring head).
 - **End cutter wheel:** one hardened wheel 50 x 6 mm, sold as a drum deheader or rotary cutter spare; bore it to suit the arm if needed.
-- **Bearings and bushes:** four 6202-2RS (trolley), three 6005-2RS (shear head), six flanged bronze bushes 30 x 40 x 20 mm and two 25 x 30 x 20 mm.
-- **Gears and chain:** two spur gears module 3, 20 teeth, 20 mm face, bored 30 mm with keyway; #40 sprockets of 13 and 39 teeth; about 1.3 m of #40 chain.
-- **Finishing tools:** a 10 mm steel plate 600 x 400 mm, a 1.5 kg dead-blow mallet, a swivel-blade deburring tool, flat and half-round files; a 300 mm hacksaw with 24 tpi bimetal blades and aviation snips.
+- **Bearings and bushes:** four 6202-2RS (trolley), six 6005-2RS (shear head and ring head), four 6004-2RS (drive case), two needle thrust bearings to suit the punch screws, six flanged bronze bushes 30 x 40 x 20 mm and two 25 x 30 x 20 mm.
+- **Gears and chains:** two spur gears module 3, 20 teeth, 20 mm face, bored 30 mm with keyway; #40 sprockets of 13 and 39 teeth and about 1.3 m of #40 chain (slip roll); #35 sprockets of 12, 28 and two of 15 teeth and about 1 m of #35 chain (shear head drive case).
+- **Notching punch parts:** two Tr24 x 5 screws with bronze nuts; two D2 punch and die sets made and hardened by a tool shop to sketch DMP-DWG-121; a 500 mm ratchet lever with a socket to fit the screw heads.
+- **Finishing tools:** a 10 mm steel plate 600 x 400 mm, a 1.5 kg dead-blow mallet, a swivel-blade deburring tool, flat and half-round files.
 - **Procedure sheets and protective equipment:** laminated pictogram sheets; cut-resistant gloves (EN 388 level C or higher), safety glasses, ear defenders, leather aprons, nitrile gloves.
 
 ## 4. Putting it together
@@ -519,11 +606,11 @@ Slide the trolley onto one end of the beam with its lower wheels fitted. Two peo
 
 Two people: lift the head (about 20 kg with its drop bar), push the pivot pin up through the swivel plate and head plate, and fit the R-clip. Put the index pin in at the slit position.
 
-### Step 8: shafts, discs and guard
+### Step 8: shafts, discs, guard and drive case
 
 ![Step 8](05-build-plan/step-08.png)
 
-Fit the bearings, the eccentric bush and the shafts; clamp the discs on; set the 1.0 mm overlap with the eccentric and lock it. Fit the guard before the crank is ever turned.
+Fit the bearings, the eccentric bush and the shafts; clamp the discs on; set the 1.0 mm overlap with the eccentric and lock it. Fit the disc guard. Bolt the drive case's inner plate to the head with its four M8 screws, fit the jackshaft, the crank shaft, the sprockets and both chains, then close the case with its band and outer plate before the crank is ever turned.
 
 ### Step 9: end cutter on a drum
 
@@ -531,51 +618,57 @@ Fit the bearings, the eccentric bush and the shafts; clamp the discs on; set the
 
 Only after safety stop S4: roll a purged and checked drum onto the rollers. Hook the end cutter over the right-hand chime, set the clamp screw, and rest the torque arm against the post. Set the drum top under the head by the levelling feet so the discs nip the wall.
 
-### Step 10: roll stand base
+### Step 10: tool shelf, notching punch and ring head
 
 ![Step 10](05-build-plan/step-10.png)
 
-Set the base where panels can be fed in from the front and taken off at the back; level it.
+Bolt the shelf to the outer face of the left post with its two M10 through-bolts. Set the notching punch and its lever on it, and the ring head with its spacer plate and coupling bolted on. In use, the ring head is lowered through the slit and bolted to the main head once the main head is swivelled for the ring cuts (Figure 26); two people, one steadying it while the other fits the bolts.
 
-### Step 11: side frames on the lower roll
+### Step 11: roll stand base
 
 ![Step 11](05-build-plan/step-11.png)
 
-Fit the bushes on the lower roll's journals. Two people: offer both side frames onto the bushes, stand them on the base, and bolt each foot with two M12 bolts.
+Set the base where panels can be fed in from the front and taken off at the back; level it.
 
-### Step 12: upper and bending rolls into the slots
+### Step 12: side frames on the lower roll
 
 ![Step 12](05-build-plan/step-12.png)
 
-Fit the slide blocks and bushes on each roll's journals and lower the roll down its pair of slots. Fit the keeper plates on the inside faces.
+Fit the bushes on the lower roll's journals. Two people: offer both side frames onto the bushes, stand them on the base, and bolt each foot with two M12 bolts.
 
-### Step 13: top bridges and screws
+### Step 13: upper and bending rolls into the slots
 
 ![Step 13](05-build-plan/step-13.png)
 
-Bolt the bridges across the slot tops and run the screws down until their collars engage the blocks. Set the pinch with a strip of 1 mm sheet between the pinch rolls.
+Fit the slide blocks and bushes on each roll's journals and lower the roll down its pair of slots. Fit the keeper plates on the inside faces.
 
-### Step 14: pinch gears
+### Step 14: top bridges, screws and dials
 
 ![Step 14](05-build-plan/step-14.png)
 
-Key both gears on at the left-hand end and set their mesh with the 1 mm strip in the pinch.
+Bolt the bridges across the slot tops and run the screws down until their collars engage the blocks. Set the pinch with a strip of 1 mm sheet between the pinch rolls. On each bending screw, run the lock nut down to the bridge, clamp the dial above it, and screw the pointer to the bridge. Set both bending screws to the same dial reading at the nominal height, 13.4 mm above the lower roll, and lock them.
 
-### Step 15: crank, sprockets and chain
+### Step 15: pinch gears
 
 ![Step 15](05-build-plan/step-15.png)
 
-Bolt the crank bracket to the right-hand side frame, key the sprockets on, line them up, and fit the chain with about 5 mm of slack.
+Key both gears on at the left-hand end and set their mesh with the 1 mm strip in the pinch.
 
-### Step 16: guards
+### Step 16: crank, sprockets and chain
 
 ![Step 16](05-build-plan/step-16.png)
 
-Screw on the nip guards, lid, chain guard and gear guard. Check the 8 mm slots over the tables.
+Bolt the crank bracket to the right-hand side frame, key the sprockets on, line them up, and fit the chain with about 5 mm of slack.
 
-### Step 17: in-feed and out-feed tables
+### Step 17: guards
 
 ![Step 17](05-build-plan/step-17.png)
+
+Screw on the nip guards, lid, chain guard and gear guard. Check the 8 mm slots over the tables.
+
+### Step 18: in-feed and out-feed tables
+
+![Step 18](05-build-plan/step-18.png)
 
 Stand the tables at the front and back, tops level with the rolls, and fix the legs.
 
@@ -591,12 +684,13 @@ These are the checks a TRL 4 test report would record; this plan only lists them
 | Purge and check | R1, R2 | One accepted drum through fill, soak, drain and check | Reading below 5 % LEL at both bungs; no flame or heat used |
 | Drain stand | R11 | Fill a drum on the stand; look for movement | The stand does not move or rock with a full drum |
 | Heads off | R3, R6 | Time both heads off one drum; spring scale on the crank | Under 10 min; crank force 150 N or less |
-| Slit | R4, R6 | Slit a purged drum; measure the cut line against a straight line | Deviation 5 mm or less; crank force 150 N or less |
-| Ring and hoop cuts | R12 | Six ring cuts on the same drum | Three panels about 233 x 1,800 mm |
-| Trial setting | R5 | First panel of the batch through the slip roll, adjusting the bending roll | Flat within 10 mm over 1 m after the passes; the number of passes recorded |
+| Notches | R6 | Punch the two chime notches and the two hoop slots on the same drum; spring scale on the punch lever | Clean notches, the shear head passes them; lever force 150 N or less |
+| Slit | R4, R6 | Slit a purged drum; measure the cut line against a straight line | Deviation 5 mm or less; crank force 150 N or less; the crank turns without touching the drum |
+| Ring and hoop cuts | R6, R12 | Three passes with the ring head bolted on; spring scale on the crank | Three panels about 233 x 1,800 mm; crank force 150 N or less |
+| Trial setting | R5 | First panel of the batch through the slip roll, adjusting the bending roll by its dials | Flat within 10 mm over 1 m after the passes; the dial reading and the number of passes recorded; a second drum set to that reading comes out flat |
 | Slip roll effort | R6 | Spring scale on the crank with three panels | 150 N or less |
 | Guards | R10 | A competent person checks every guard opening against ISO 13857 as built | Every opening meets the standard |
-| Throughput | R7 | Half-day trial by two people | Drums per hour recorded against the estimate of 2.0 |
+| Throughput | R7 | Half-day trial by two people, each task timed | Drums per hour recorded against the estimate of 2.26 and the target of 2.5 |
 | Parts cost | R9 | Sum the receipts | Recorded against the value-engineering target |
 
 ## 6. Safety stops
@@ -607,17 +701,18 @@ Stop at each point. Carry on only when everything listed is true.
 - **S2. Before any lift over 25 kg** (cradle frame 34 kg). Two people, clear floor.
 - **S3. Before a drum is accepted.** Its label shows a non-volatile oil (flash point above 60 °C). Otherwise it is rejected and goes back to the supplier.
 - **S4. Before a drum goes onto the cradle.** It has been purged and has passed the vapour check below 5 % LEL at both bungs that day, with a bump-tested detector. No grinder, torch or welder is used on it at any time.
-- **S5. Before any crank is turned.** Every guard is fitted; one person on the crank; nobody else's hands near the discs, the end cutter or the rolls; cut-resistant gloves and safety glasses on.
-- **S6. Before the drum is slit.** The brake is on and the index pin is in at the slit position; the notches are cut.
-- **S7. Before the ring cuts.** The brake is off, the head is swivelled and the index pin is in at the ring position.
+- **S5. Before any crank is turned.** Every guard is fitted, the shear head's drive case closed; one person on the crank; nobody else's hands near the discs, the end cutter or the rolls; cut-resistant gloves and safety glasses on.
+- **S6. Before the drum is slit.** The brake is on and the index pin is in at the slit position; the four notches are punched and the notching punch is back on its shelf.
+- **S7. Before the ring cuts.** The brake is off, the head is swivelled and the index pin is in at the ring position; the ring head is bolted on with all four spacer plate bolts tight and the coupling in its guard sleeve.
 - **S8. Before panels are handled or stacked.** Every cut edge is deburred.
 - **S9. Purge water.** Settled and skimmed; oil kept in a closed container for a recycler; nothing poured on the ground.
+- **S10. While notching.** Hands only on the ratchet lever; nobody holds the drum or the punch near the jaws while the screw is turned.
 
 ## 7. Tools, skills and workspace
 
-**Tools.** Metal bandsaw or abrasive chop saw; angle grinder with cut-off and flap discs (never on a drum); pillar drill to 31 mm with drills 5 to 31 mm and a 57 mm hole saw or boring bar; stick welder of about 160 A for 3.2 mm E6013; welding table, clamps and magnetic squares; a lathe with at least 1.1 m between centres for the rolls and shafts (or a machine shop); taps M5 to M20; spanners and a torque wrench; tape, steel rule, callipers, engineer's square, spirit level, straightedge 1 m, feeler gauges.
+**Tools.** Metal bandsaw or abrasive chop saw; angle grinder with cut-off and flap discs (never on a drum); pillar drill to 31 mm with drills 5 to 31 mm and a 57 mm hole saw or boring bar; stick welder of about 160 A for 3.2 mm E6013; welding table, clamps and magnetic squares; a lathe with at least 1.1 m between centres for the rolls and shafts (or a machine shop); taps M5 to M20 and M20 x 1.5; spanners and a torque wrench; tape, steel rule, callipers, engineer's square, spirit level, straightedge 1 m, feeler gauges.
 
-**Skills.** A competent stick welder for the frames, posts and shear head; a lathe operator for the rolls, shafts and bushes; ordinary shop skill for the rest. A person trained to use and bump-test the gas detector.
+**Skills.** A competent stick welder for the frames, posts and shear heads; a lathe operator for the rolls, shafts, bushes and dials; a tool shop for the punches and dies and their hardening; ordinary shop skill for the rest. A person trained to use and bump-test the gas detector.
 
 **Workspace.** A covered, level concrete floor about 5 x 4 m for the three stations; a separate ventilated welding and grinding area with no drums in it; a drained spot for the drain stand with room for the settling drum.
 
@@ -626,10 +721,10 @@ Stop at each point. Carry on only when everything listed is true.
 ## 8. Where the numbers come from
 
 - Model and constructability checks: `cad/src/model.py` (`python cad/src/model.py --check`); STEP and STL exports in `cad/step/` and `cad/stl/`.
-- Pictures: `cad/src/build_plan_media.py`, using `.kit/build_views.py`; written to `docs/05-build-plan/` and `cad/drawings/DMP-DWG-101` to `DMP-DWG-119`.
-- General arrangement: `cad/drawings/DMP-DWG-001.pdf`, Rev P1.
-- Calculations: `docs/04-calcs/01-sizing.md` (DMP-CAL-001 v0.1) and `docs/04-calcs/sizing.py`.
+- Pictures: `cad/src/build_plan_media.py`, using `.kit/build_views.py`; written to `docs/05-build-plan/` and `cad/drawings/DMP-DWG-101` to `DMP-DWG-123`.
+- General arrangement: `cad/drawings/DMP-DWG-001.pdf`, Rev P2.
+- Calculations: `docs/04-calcs/01-sizing.md` (DMP-CAL-001 v0.2) and `docs/04-calcs/sizing.py`.
 - Bill of materials: `bom/bom.csv`.
-- Decisions: `docs/decisions/0001-trl2-review-decisions.md` (DMP-DDR-001) and `docs/decisions/0002-design-for-construction.md` (DMP-DDR-002).
-- Requirements: `docs/03-requirements.md` (DMP-REQ-001 v0.3).
-- Design decisions register: `docs/06-design-decisions.md` (DMP-DEC-001 v0.1).
+- Decisions: `docs/decisions/0001-trl2-review-decisions.md` (DMP-DDR-001), `docs/decisions/0002-design-for-construction.md` (DMP-DDR-002) and `docs/decisions/0003-requirement-decisions-2026-10-03.md` (DMP-DDR-003).
+- Requirements: `docs/03-requirements.md` (DMP-REQ-001 v0.4).
+- Design decisions register: `docs/06-design-decisions.md` (DMP-DEC-001 v0.2).

@@ -112,3 +112,40 @@ Run as the first half of `/to-trl3` under Amish's pre-approval of 2026-10-03: "s
 ## 2026-10-03: photoreal renders
 
 Rendered with Blender Cycles on Amish's Mac from `cad/src/product_model.py`; captioned with `.kit/photo_caption.py`; `media/card.png` and `media/social-preview.png` made with `.kit/cards.py`. Views: hero, exploded, detail. image_qc passes and `render.py --check` has no FAIL.
+
+## 2026-10-03: Amish's requirement decisions carried out
+
+Amish chose option A on every requirement decision put to him: "1A 2A 3A 4A 5A 6A 7A 8A 9A 10A 11A". For DrumPanel these are 5A (R7) and 8A (R5). Record: `docs/decisions/0003-requirement-decisions-2026-10-03.md` (DMP-DDR-003).
+
+### Changes and new results
+
+- **Lever notching punch (5A).** A two-station C-frame punch replaces the four hacksaw notches (`cad/src/model.py`, BOM line 21, sketch DMP-DWG-121, joint 14). The chime notch is widened from 40 to 60 mm so the punch's lower jaw passes through it to reach the hoop. Chime notch 24.3 kN, lever 131 N; hoop slot 6.6 kN, lever 36 N [K1 to K4]; four notches in 4.0 minutes, down from 8.
+- **Ring head (5A).** A second shear head bolted to the main head with a spacer plate and a coupling in a guard sleeve makes two ring cuts a pass (BOM line 25, sketch DMP-DWG-122, joint 13). Six ring cuts in three passes, 9.5 minutes, down from about 12.4; 20.4 kg.
+- **R7 restated to 2.5 drums an hour (5A).** DMP-REQ-001 v0.4. New result: about 2.26 drums an hour (53.1 hands-on minutes a drum against 48.0 needed). **R7 not met**, up from 2.0.
+- **Fine-pitch dial adjuster (8A).** M20 x 1.5 bending screws, 60-division dials (0.025 mm) and lock nuts (BOM line 15, sketch DMP-DWG-116 Rev P2). The 0.29 mm allowance is 11.8 divisions [E14d]. **R5 met on paper** with a trial pass for each batch (was at risk).
+- **Raised shear head drive (design for construction, found while carrying out 5A).** The former 200 mm crank on the upper shaft swept through the drum wall (about 13,700 mm³ in the new sweep check), so it could not turn. The crank now sits on a raised crank shaft in a closed 2.33 to 1 #35 chain drive case, 155 mm (BOM line 10, sketch DMP-DWG-120). Slit crank 68 N, two ring cuts 136 N at 1.5 mm wall. **R6 met on paper** (worst 136 N). Slit time 2.7 minutes, up from 2.3.
+- **Tool shelf** on the left rail post for the punch and ring head (BOM line 26, sketch DMP-DWG-123).
+- **R11:** shear head with drive 23.7 kg, ring head 20.4 kg, punch 18.7 kg; met with the two-person rule for the 33.7 kg cradle frame.
+- **Cost (R9):** Value-engineering target: USD 3,000. Estimated cost of the constructable design: USD 3,489 (USD 489 over the target). The decisions added USD 695; every new BOM line carries its price basis.
+- **Masses:** cradle station with its tools 196 kg, slip roll stand 191 kg, drain stand 15 kg.
+
+### Files
+
+- Model and checks: `cad/src/model.py`, 52 components; `--check` passes (no overlaps, all contacts, three ring passes with both heads, crank sweeps in both modes, four punch positions). New STEP: `cad/step/notching-punch.step`, `cad/step/shear-head-with-ring-head.step`; STL `cad/stl/notching-punch.stl`; all others regenerated.
+- Calculations: `docs/04-calcs/01-sizing.md` (DMP-CAL-001 v0.2, new section 9) and `sizing.py`, `results.csv`.
+- Drawings: DMP-DWG-001 Rev P2; DMP-DWG-105, 109, 110, 116 Rev P2; new DMP-DWG-120 to 123.
+- Build plan DMP-BLD-001 v0.2: overview, joints 6, 9, 13 and 14, steps 8 to 18 (new step 10; former steps 10 to 17 renumbered 11 to 18), new sections 3.13 to 3.15.
+- Concept media: hero, exploded, cutaway, model.glb, concept blueprint (Rev P2). Precis DMP-PRC-001 v0.4; register DMP-DEC-001 v0.2; README cost and build lines.
+- Appearance model `cad/src/product_model.py` (drive case, tool shelf, punch, ring head, dials; new group "tools" in the hero and exploded views); scenes exported to `/home/claude/renders/drumpanel`. Photoreal renders not redone: `media/render-hero.png` and the other renders now predate these changes.
+
+### Decisions proposed and awaiting Amish
+
+- **R7 gap (register, open decision 1).** About 2.26 against 2.5 drums an hour. Options: A keep 2.5 and let the TRL 4 timed trial decide; B restate R7 to 2.25; C add more speed-ups now (rail stops for the ring passes, a second deburring station). Recommendation: A, because the gap is about 10 % of hands-on time, inside the uncertainty of the task-time estimates.
+
+### Safety
+
+- New hazards covered in the build plan: the coupling shaft turns in a guard sleeve; both shear head chains are inside the closed drive case; the punch moves only by its screw, hands on the lever (safety stop S10). The chime punch force is the least certain number and is to be confirmed on a scrap chime (register, item 8).
+
+## 2026-10-03: photoreal renders redone after Amish's requirement decisions
+
+Rendered with Blender Cycles on Amish's Mac from `cad/src/product_model.py`; captioned with `.kit/photo_caption.py`; `media/card.png` and `media/social-preview.png` made with `.kit/cards.py`. Views: hero, exploded, detail. image_qc passes and `render.py --check` has no FAIL.

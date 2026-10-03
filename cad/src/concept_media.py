@@ -7,7 +7,8 @@ made with the pieces of .kit/concept.py render_all, one at a time, and the web m
 coarse tessellation (linear deflection 1.0 mm, angular 0.35 rad) so model.glb stays a few MB.
 
 Layout: the drain and purge stand at the front (-Y) with a drum on it, the cutting cradle in the middle with a
-drum, the end cutter on its right-hand chime and the shear head parked at its left end, and the slip roll
+drum, the end cutter on its right-hand chime, the shear head parked at its left end and the tool shelf (notching
+punch, ring head) on the left rail post, and the slip roll
 stand at the back (+Y) with three panels being fed. The cutaway is cut across the stations at the middle of
 the drums (x = 0) and seen from the left.
 """
@@ -111,20 +112,22 @@ def blueprint():
     shown = with_figure(ps)
     views = project_views(comp([p.shape for p in ps]), MD / "_views")
     views["iso"] = project_views(comp([p.shape for p in shown]), MD / "_views_fig")["iso"]
-    s = Sheet(project=PROJECT, title=TITLE, dwg_no=DWG, rev="P1", author="Amish Chadha", date=DATE, theme="blueprint",
+    s = Sheet(project=PROJECT, title=TITLE, dwg_no=DWG, rev="P2", author="Amish Chadha", date=DATE, theme="blueprint",
               material="Massing model for concept communication",
-              revisions=[("P1", "Concept sheet from the constructable TRL 3 model", DATE, "AC")])
+              revisions=[("P1", "Concept sheet from the constructable TRL 3 model", DATE, "AC"),
+                         ("P2", "Amish's requirement decisions of 2026-10-03 (DMP-DDR-003)", DATE, "AC")])
     s.add_ortho(views)
     s.add_svg(views["iso"], 276, 37, 140, 113, label="Isometric view", sublabel="Not to scale; figure is a 1.75 m person")
     s.add_notes("Key figures", [
         "Three hand-powered stations: drain stand, cradle, slip roll",
         "No flame; cut only after a vapour check below 5 % LEL",
         f"Per drum: 3 flat panels {d['widths'][1]:.0f} x {d['circ']:.0f} mm, 2 heads {d['head_d']:.0f} mm",
-        "Crank force 20 to 111 N (shear head at 1.5 mm wall)",
-        "Bending roll set by a trial pass; nominal 13.4 mm",
-        "About 2 drums an hour for two people (est.)",
-        "Cradle about 130 kg; slip roll stand about 189 kg (est.)",
-        "Estimated cost USD 2,794; target USD 3,000",
+        "Crank and lever forces 20 to 136 N (limit 150 N)",
+        "Notches by lever punch; two ring cuts a pass",
+        "Bending roll set by a trial pass and a 0.025 mm dial",
+        "About 2.3 drums an hour for two people (est.)",
+        "Cradle about 196 kg; slip roll stand about 191 kg (est.)",
+        "Estimated cost USD 3,489; target USD 3,000",
     ], x=276, y=168, width=140)
     s.save(MD / "concept-blueprint")
     import shutil

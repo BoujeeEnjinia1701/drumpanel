@@ -9,7 +9,7 @@ Run from the repo root:
 Every picture is drawn from cad/src/model.py (components(), shear_head_local()), so the pictures and the model
 never disagree:
     docs/05-build-plan/overview.png        every component pulled apart, numbered in build order
-    cad/drawings/DMP-DWG-101 to 119        making sketches for the made components
+    cad/drawings/DMP-DWG-101 to 123        making sketches for the made components
     docs/05-build-plan/joint-NN.png        close-ups of the joints that need explaining
     docs/05-build-plan/step-NN.png         one picture per assembly step
 Uses .kit/build_views.py. BUILD PLAN ILLUSTRATION, PLAN NOT YET BUILT.
@@ -27,6 +27,8 @@ from model import PARAMS as P, levels, box, comp  # noqa: E402
 OUT = ROOT / "docs" / "05-build-plan"
 DWG = ROOT / "cad" / "drawings"
 DATE = "2026-10-03"
+REV2 = ("P2", DATE, [("P1", "Making sketch for the prototype build plan", DATE, "AC"),
+                     ("P2", "Amish's requirement decisions of 2026-10-03 (DMP-DDR-003)", DATE, "AC")])
 L = levels()
 ZAX, ZNIP, FT = L["z_ax"], L["z_nip"], L["frame_top"]
 RY = P["RS_Y"]
@@ -83,7 +85,8 @@ COL = {"ds": "#4B5563", "chock": "#A16207", "tray": "#15803D", "frame": "#374151
        "ec": "#7C3AED", "ecdrive": "#B45309", "ecguide": "#111827", "ecwheel": "#94A3B8", "drum": "#1E3A8A",
        "rsbase": "#374151", "sides": "#0F766E", "bush": "#B08D57", "blocks": "#6B7280", "screws": "#DC2626",
        "roll": "#9CA3AF", "gears": "#1D4ED8", "bracket": "#0D9488", "crank": "#B45309", "sprocket": "#111827",
-       "rsguard": "#EAB308", "tables": "#D6B98C", "tframes": "#374151", "sheet": "#1E40AF"}
+       "rsguard": "#EAB308", "tables": "#D6B98C", "tframes": "#374151", "sheet": "#1E40AF",
+       "hdrive": "#C2410C", "case": "#EAB308", "shelf": "#4B5563", "punch": "#7C2D12", "ring": "#0D9488", "dials": "#1F2937"}
 
 
 def side_parts():
@@ -108,12 +111,16 @@ def groups():
         ("trolley", "Trolley with wheels", ("trolley", "trolley_wheels"), COL["trolley"]),
         ("drop", "Drop bar, head plate and pivot pin", ("drop", "pivot"), COL["drop"]),
         ("head", "Shear head frame", ("head_frame",), COL["hframe"]),
-        ("hshaft", "Head shafts, crank, discs, guard", ("head_shafts", "discs", "head_guard"), COL["hshaft"]),
+        ("hshaft", "Head shafts, discs, guard", ("head_shafts", "discs", "head_guard"), COL["hshaft"]),
+        ("hdrive", "Drive case, crank and chains", ("head_case", "head_drive"), COL["hdrive"]),
         ("ec", "End cutter", ("ec_body", "ec_guide", "ec_drive", "ec_cutter"), COL["ec"]),
+        ("punch", "Lever notching punch and lever", ("punch_frame", "punch_parts", "punch_lever"), COL["punch"]),
+        ("ring", "Ring head, spacer and coupling", ("ring_frame", "ring_parts", "ring_link"), COL["ring"]),
+        ("shelf", "Tool shelf", ("shelf",), COL["shelf"]),
         ("rsbase", "Roll stand base", ("rs_base",), COL["rsbase"]),
         ("sides", "Side frames with bridges", ("rs_sides",), COL["sides"]),
         ("rolls", "Rolls (3), bushes and pinch gears", ("roll_lower", "roll_upper", "roll_bend", "rs_bushes", "gears"), COL["roll"]),
-        ("blocks", "Slide blocks and screws", ("rs_blocks", "rs_screws"), COL["blocks"]),
+        ("blocks", "Slide blocks, screws and dials", ("rs_blocks", "rs_screws", "rs_dials"), COL["blocks"]),
         ("drive", "Crank bracket, crank, sprockets", ("rs_bracket", "rs_crank", "sprockets"), COL["crank"]),
         ("guards", "Roll guards", ("rs_guards",), COL["rsguard"]),
         ("tin", "In-feed table", ("tables", "table_frames"), COL["tables"]),
@@ -138,7 +145,8 @@ def overview():
     off = {"ds": (0, -600, 0), "tray": (500, -900, 0),
            "frame": (0, 0, -500), "rollers": (0, 0, -150), "brake": (0, 550, 0), "posts": (0, 0, 250),
            "beam": (0, 0, 650), "trolley": (0, 0, 950), "drop": (0, 0, 1200), "head": (-700, -650, 900),
-           "hshaft": (-700, -1100, 1100), "ec": (650, -500, 600),
+           "hshaft": (-700, -1100, 1100), "hdrive": (-700, -1500, 1300), "ec": (650, -500, 600),
+           "punch": (-900, -900, 200), "ring": (-1200, -300, 500), "shelf": (-600, 0, -100),
            "rsbase": (0, 1000, -650), "sides": (0, 1000, -250), "rolls": (0, 1000, 200), "blocks": (0, 1000, 500),
            "drive": (800, 1000, 0), "guards": (0, 1000, 850),
            "tin": (1700, 1300, -500), "tout": (1700, 700, 300)}
@@ -150,7 +158,7 @@ def overview():
 
 
 # ----------------------------------------------------------------- making sketches
-SHEET_REVS = {}
+SHEET_REVS = {105: REV2, 109: REV2, 110: REV2, 116: REV2}
 
 
 def sheet(n, shape, name, color, neighbours, title, material, notes, view_shape=None, inset=(24, -58)):
@@ -234,6 +242,8 @@ def sheets(which=None):
          "  80 mm apart (40 mm each side of the post).",
          "Weld the post to the middle of both plates, square both ways;",
          "  check with a square before the welds cool.",
+         "Left post only: two 11 mm holes across it, 550 and 700 mm up from",
+         "  the frame top, for the tool shelf's two M10 through-bolts.",
          "Fit: the base bolts across the two end cross members of the frame",
          "  with 4 x M10 x 80; the rail beam sits on the cap and is held by",
          "  two M10 through-bolts. Post centre 712.5 mm from the middle.",
@@ -293,25 +303,28 @@ def sheets(which=None):
          "  on a line 49.5 mm below the nip for two 6005 bearings.",
          "Bore both housings in one setting so the shafts are parallel",
          "  within 0.05 mm over 60 mm; the disc faces must meet on one plane.",
-         "Fit: the drop bar is welded to the top plate over the nip line.",
+         "Fit: the drop bar is welded to the top plate over the nip line;",
+         "  four M8 tapped holes in the upper housing's outer face and the",
+         "  top plate's end take the drive case. Make two frames: the second",
+         "  is the ring head (DMP-DWG-122).",
          "Check: turning the eccentric moves the upper shaft 6 mm."],
         inset=(20, -40))
-    S[110] = lambda: sheet(110, comp([hl["shaft_u"], hl["shaft_l"]]), "Head shafts and crank", COL["hshaft"],
+    S[110] = lambda: sheet(110, comp([hl["shaft_u"], hl["shaft_l"]]), "Head shafts", COL["hshaft"],
         [part("Head frame", hl["frame"], "#CBD5E1"), part("Discs", comp([hl["disc_u"], hl["disc_l"]]), "#E5E7EB")],
-        "head shafts and crank", "25 mm bright bar; 20 x 12 mm flat; 16 mm pin; bought D2 discs",
-        ["Upper shaft: 25 mm, 78 mm long, with a 35 mm shoulder 10 mm from",
-         "  the disc end and a 6 mm keyway at the crank end.",
-         "Crank: 40 mm boss 12 mm thick, arm 20 x 12 mm, 200 mm between",
-         "  centres; 24 mm grip 100 mm long, free to spin on a 16 mm pin.",
-         "Lower shaft: 25 mm, 74 mm long, same shoulder; no crank.",
+        "head shafts and discs", "25 mm bright bar; bought D2 discs",
+        ["Upper shaft: 25 mm, 120 mm long: a 24 mm stub on the disc side",
+         "  for the ring head coupling (a 6 mm cross slot in its end), a 35 mm",
+         "  shoulder at the disc, and a keyway at the far end for the 15 tooth",
+         "  sprocket inside the drive case.",
+         "Lower shaft: 25 mm, 74 mm long, with the same shoulder.",
          "Discs (bought): 101 x 10 mm D2, hardened 58 to 60 HRC, 25 mm bore.",
          "  Each is clamped against its shoulder by a countersunk M8 end screw",
-         "  and washer that sit below the cutting face.",
+         "  and washer that sit below the cutting face (upper disc: a clamp",
+         "  collar on the stub instead).",
          "Fit: cutting faces meet on the cut plane with no gap and no rub;",
          "  shim behind a disc with 0.05 mm shims to get there.",
          "Set the overlap to 1.0 mm with the eccentric and lock it.",
-         "Check: turning the crank turns the upper disc; a strip of",
-         "  1 mm sheet cuts cleanly by hand."], inset=(20, -40))
+         "Make a second set for the ring head (DMP-DWG-122)."], inset=(20, -40))
     S[111] = lambda: sheet(111, hl["guard"], "Disc guard", COL["guard"],
         [part("Head frame and discs", comp([hl["frame"], hl["disc_u"], hl["disc_l"]]), "#CBD5E1")],
         "disc guard", "1.5 mm steel sheet, folded and welded",
@@ -385,21 +398,25 @@ def sheets(which=None):
          "Fit: pinch rolls one above the other at 61 mm centres (1 mm",
          "  sheet); bending roll 90 mm behind, set by its screws.",
          "Check: each roll turns freely in its bushes by hand."], inset=(22, -55))
-    S[116] = lambda: sheet(116, fuse("rs_blocks", "rs_screws", "rs_bushes"), "Slide blocks, bushes and screws", COL["blocks"],
+    S[116] = lambda: sheet(116, fuse("rs_blocks", "rs_screws", "rs_bushes", "rs_dials"), "Slide blocks, bushes, screws and dials", COL["blocks"],
         [part("Side frames", frames, "#E5E7EB"), part("Rolls", fuse("roll_lower", "roll_upper", "roll_bend"), "#CBD5E1")],
-        "slide blocks, bushes and screws", "20 mm steel plate; bronze bushes; M16 and M20 screws",
+        "slide blocks, bushes, screws and dials", "20 mm steel plate; bronze bushes; M16 and M20 x 1.5 screws; dials",
         ["Four slide blocks, 60 x 60 x 20 mm (20 mm thick = the side plate),",
          "  bored 40 mm in the middle for a flanged bronze bush.",
          "  Fit in the 60 mm slots with 0.2 mm clearance; break the edges.",
          "Six flanged bronze bushes 30 x 40 x 20 mm, 52 mm flange 6 mm",
          "  thick, pressed in from the outside; a grease hole in each.",
          "A 3 mm keeper plate on the inside face holds each block in.",
-         "Pinch screws M16 x 120 (two), bending screws M20 x 150 (two),",
-         "  each with a collar captured in the top of its block so it can",
-         "  push and pull; handwheels 90 mm (pinch) and 110 mm (bending)",
-         "  marked in 12 divisions.",
+         "Pinch screws M16 x 120 (two) with 90 mm handwheels. Bending",
+         "  screws M20 x 1.5 fine pitch, 150 mm (two), with 110 mm handwheels.",
+         "  Each screw has a collar captured in the top of its block.",
+         "Bending roll adjuster on each bending screw: an M20 x 1.5 lock nut",
+         "  on the bridge; an 80 mm dial of 60 divisions (0.025 mm each),",
+         "  clamped to the screw by a set screw; a pointer screwed to the",
+         "  bridge, its tip over the dial rim.",
          "Fit: the screws run in the threaded holes of the top bridges.",
-         "Check: each block slides its full travel by turning its screw."],
+         "Check: each block slides its full travel; one turn of a bending",
+         "  screw moves its roll 1.5 mm; the lock nut holds the setting."],
         inset=(22, -55))
     S[117] = lambda: sheet(117, fuse("rs_bracket", "rs_crank"), "Crank bracket and crank", COL["bracket"],
         [part("Side frame", frames, "#E5E7EB"), K("sprockets", color="#CBD5E1")],
@@ -444,6 +461,71 @@ def sheets(which=None):
          "  catch.",
          "Check: a straightedge from each table to its roll shows no step",
          "  over 1 mm."], inset=(22, -55))
+    S[120] = lambda: sheet(120, comp([hl["drive_case"], hl["crank"], hl["jack"], hl["sprockets"]]), "Drive case and crank",
+        COL["hdrive"], [part("Head frame, shafts, discs", comp([hl["frame"], hl["shaft_u"], hl["shaft_l"], hl["disc_u"],
+                                                               hl["disc_l"], hl["guard"]]), "#CBD5E1")],
+        "shear head drive case and crank", "8 mm plate; 1.5 mm sheet; 20 mm bar; #35 sprockets and chain; 6004-2RS bearings",
+        ["Two plates 140 x 182 x 8 mm, 22 mm apart, joined by a 1.5 mm",
+         "  sheet band all round: the band is the chain guard.",
+         "Bores (both plates, drilled together): upper shaft 26 mm clear",
+         "  on the disc line; jackshaft 42 mm for a 6004 bearing, 80 mm",
+         "  above it; crank shaft 42 mm for a 6004 bearing, 60 mm back and",
+         "  120 mm above the disc line.",
+         "Sprockets #35: 15 teeth on the upper shaft and on the jackshaft",
+         "  (first chain, 1 to 1); 28 teeth on the jackshaft and 12 teeth on",
+         "  the crank shaft (second chain, 2.33 to 1).",
+         "Crank: 20 x 12 mm arm, 155 mm between centres, 24 mm grip 100 mm",
+         "  long free to spin; it turns well clear of the drum.",
+         "Fit: inner plate bolted to the upper housing and the top plate",
+         "  with four M8 screws.",
+         "Check: 2.33 crank turns turn the discs once; nothing rubs."], inset=(20, -40))
+    pl_ = m.notch_punch_local()
+    S[121] = lambda: sheet(121, comp([pl_[k] for k in m.PUNCH_KEYS]), "Lever notching punch", COL["punch"],
+        [part("Drum end and hoop (cut open)", win(b.Pos(P["DRUM_L"] / 2 + 45, 0, -P["DRUM_R_IN"]) * m.drum(P, heads=False),
+                                                   -60, 400, -120, 120, -80, 60), "#CBD5E1")],
+        "lever notching punch", "S355 plate; D2 punches and dies; Tr24 x 5 screws in bronze nuts",
+        ["C-frame from S355 plate: back 50 x 76 x 150 mm; lower jaw 56 x",
+         "  50 mm and upper jaw 40 x 60 mm, 385 mm long; gap 40 mm.",
+         "Die faces ground to the drum's inside radius (286 mm; 280 mm at",
+         "  the chime station).",
+         "Station 1, at the back: open-ended chime notch 60 x 35 mm.",
+         "Station 2, 338 mm out: hoop slot 40 x 32 mm.",
+         "Punches D2, faces raked 10 degrees (roof shape); dies D2, punch",
+         "  to die clearance 0.1 to 0.2 mm a side; harden both.",
+         "Each punch is pushed by a Tr24 x 5 screw in a bronze nut block,",
+         "  through a needle thrust bearing; 500 mm ratchet lever.",
+         "Fit: chime: back face on the drum end. Hoop: drum end against",
+         "  the station 1 die block, jaw in through the chime notch.",
+         "Check: a punch enters its die by hand with even clearance."], inset=(22, -50))
+    rl = m.ring_head_local()
+    S[122] = lambda: sheet(122, comp([rl["spacer"], rl["coupling"], rl["sleeve"]]), "Spacer plate and coupling", COL["ring"],
+        [part("Main head", comp([hl[k] for k in ("frame", "guard", "disc_u", "disc_l", "shaft_u", "drive_case")]), "#CBD5E1"),
+         part("Ring head", comp([rl[k] for k in ("frame", "guard", "disc_u", "disc_l", "shaft_u")]), "#E5E7EB")],
+        "ring head spacer plate and coupling", "10 mm plate; 25 mm bright bar; plastic tube",
+        ["The ring head is a second shear head made to DMP-DWG-109 to 111",
+         "  with no drive; this sheet adds the parts that join it on.",
+         "Spacer plate 115 x 270 x 10 mm: four 13 mm holes over each top",
+         "  plate; the ring head end slotted so the nips sit 233 or 234 mm",
+         "  apart (the middle pass is 234 mm).",
+         "Coupling shaft: 25 mm bar 135 mm long, a 6 mm dog across each end",
+         "  to engage the cross slots in the two upper shaft stubs.",
+         "Guard sleeve: loose plastic tube 31 mm outside over the coupling.",
+         "Fit: with the main head swivelled for ring cuts, lower the ring",
+         "  head through the slit, engage the coupling, bolt the plate.",
+         "Check: both upper discs turn together with the crank."], inset=(22, -50))
+    S[123] = lambda: sheet(123, c["shelf"].shape, "Tool shelf", COL["shelf"],
+        grey("posts", "punch", "ring"), "tool shelf on the left rail post", "6 mm and 10 mm plate, S275; M10 bolts",
+        ["Back plate 200 x 310 x 10 mm with two 11 mm holes on its centre",
+         "  line, 150 mm apart, matching the holes in the left post.",
+         "Shelf 380 x 600 x 6 mm, welded square to the back plate 150 mm",
+         "  above its bottom edge.",
+         "Two brackets 250 x 80 x 6 mm under the shelf, 200 mm apart,",
+         "  welded to the shelf and the back plate.",
+         "Fit: bolted to the outer face of the left post with two M10",
+         "  through-bolts; the shelf top 608 mm from the floor.",
+         "It holds the notching punch, its lever and the ring head with its",
+         "  spacer plate and coupling (about 40 kg).",
+         "Check: level both ways; no movement when loaded by hand."], inset=(22, -45))
     keys = sorted(S) if not which else [int(w) for w in which]
     out = []
     for k in keys:
@@ -492,10 +574,12 @@ def joints(which=None):
     pl = b.Pos(0, 0, ZNIP)
     J[6] = lambda bx=bx: bv.joint([part("Head frame: web in the cut", pl * hl["frame"], COL["hframe"]),
                              part("Discs: upper driven, lower idle", comp([pl * hl["disc_u"], pl * hl["disc_l"]]), COL["discs"]),
-                             part("Shafts and crank", comp([pl * hl["shaft_u"], pl * hl["shaft_l"]]), COL["hshaft"]),
+                             part("Shafts", comp([pl * hl["shaft_u"], pl * hl["shaft_l"]]), COL["hshaft"]),
+                             part("Drive case (chain guard) and crank", comp([pl * hl["drive_case"], pl * hl["crank"]]), COL["hdrive"]),
                              part("Drum wall, cut behind the nip", wall, "#93C5FD")],
                             OUT / "joint-06.png", "Joint 6: shear head on the drum wall, slitting",
-                            "Guard left off; the cut edges spread round the 10 mm web", elev=20, azim=-35)
+                            "Disc guard left off; the cut edges spread round the 10 mm web; the crank turns high, clear of the drum",
+                            elev=20, azim=-35)
     bx = (390, 560, -120, 120, ZAX + 200, ZAX + 470)
     J[7] = lambda bx=bx: bv.joint([W("drum", "Drum chime and head", "#93C5FD", bx), W("ec_body", "Body, cutter arm, cover, torque arm", COL["ec"], bx),
                              W("ec_guide", "Guide roller", COL["ecguide"], bx), W("ec_drive", "Drive wheel, shaft, crank", COL["ecdrive"], bx),
@@ -509,15 +593,16 @@ def joints(which=None):
                             OUT / "joint-08.png", "Joint 8: drum hoop on a cradle roller",
                             "Cut through the hoop; contact 33 degrees from vertical on each side",
                             elev=10, azim=-20)
-    bx = (420, 520, RY - 160, RY + 230, 750, 1040)
+    bx = (420, 520, RY - 160, RY + 230, 750, 1080)
     J[9] = lambda bx=bx: bv.joint([part("Side frame plate and leg", win(frames, *bx), COL["sides"]),
                              part("Top bridge (bolted)", win(bridges, *bx), "#0D9488"),
                              W("rs_bushes", "Bronze bushes", COL["bush"], bx), W("rs_blocks", "Slide blocks", COL["blocks"], bx),
                              W("rs_screws", "Pinch and bending screws", COL["screws"], bx),
+                             W("rs_dials", "Lock nut, dial and pointer", COL["dials"], bx),
                              W("roll_lower", "Lower roll", COL["roll"], bx), W("roll_upper", "Upper roll", "#A3A3A3", bx),
                              W("roll_bend", "Bending roll", COL["roll"], bx)],
                             OUT / "joint-09.png", "Joint 9: rolls in a side frame",
-                            "Right-hand frame from outside: fixed lower bush, upper and bending blocks in their slots", elev=8, azim=-8)
+                            "Right-hand frame from outside: fixed lower bush, blocks in their slots, dial and lock nut on the bending screw", elev=8, azim=-8)
     bx = (-560, -440, RY - 60, RY + 130, 820, 990)
     J[10] = lambda bx=bx: bv.joint([W("gears", "Pinch gears m3 x 20 teeth", COL["gears"], bx), W("roll_lower", "Lower roll", COL["roll"], bx),
                               W("roll_upper", "Upper roll", "#A3A3A3", bx), W("roll_bend", "Bending roll (no gear)", COL["roll"], bx),
@@ -537,6 +622,36 @@ def joints(which=None):
                               W("sheet", "Panel being fed", COL["sheet"], bx)],
                              OUT / "joint-12.png", "Joint 12: nip guards over the rolls",
                              "Cut at the middle of the rolls, seen from the right; 8 mm slots over the tables", elev=4, azim=0)
+    # joint 13: main head and ring head in ring mode on the opened drum, first pass
+    x1, x2 = m.ring_passes(P)[0]
+    rl = m.ring_head_local()
+    plr = b.Pos(x1, 0, ZNIP) * b.Rot(0, 0, 90)
+    dw2 = b.Pos(0, 0, ZAX) * m.drum(P, heads=False) - box(-1000, 1000, -6, 6, ZAX, ZAX + 400)
+    wall2 = win(dw2, x1 - 120, x2 + 60, -160, 160, ZNIP - 40, ZNIP + 20)
+    J[13] = lambda: bv.joint([part("Main head (swivelled 90 degrees)", comp([plr * hl[k] for k in ("frame", "guard", "disc_u", "disc_l", "shaft_u", "shaft_l")]), COL["hframe"]),
+                              part("Drive case and crank", comp([plr * hl["drive_case"], plr * hl["crank"]]), COL["hdrive"]),
+                              part("Ring head", comp([plr * rl[k] for k in ("frame", "guard", "disc_u", "disc_l", "shaft_u", "shaft_l")]), COL["ring"]),
+                              part("Spacer plate", plr * rl["spacer"], COL["drop"]),
+                              part("Coupling shaft in its guard sleeve", comp([plr * rl["coupling"], plr * rl["sleeve"]]), COL["hshaft"]),
+                              part("Drum wall (heads off, slit at the top)", wall2, "#93C5FD")],
+                             OUT / "joint-13.png", "Joint 13: ring head bolted to the main head",
+                             "First ring pass: the left chime ring cut and the left hoop's outer cut, 233 mm apart; one crank drives both upper discs",
+                             elev=24, azim=-60)
+    # joint 14: notching punch at the left hoop, cut open on the slit line
+    pl_ = m.notch_punch_local()
+    half = P["DRUM_L"] / 2
+    plp = b.Pos(-(half + 45), 0, ZAX + P["DRUM_R_IN"])
+    dw3 = b.Pos(0, 0, ZAX) * m.drum(P, heads=False)
+    for nb in m.notch_boxes(P, z_top=ZAX + 200, hoops=False):
+        dw3 = dw3 - nb
+    bx3 = (-half - 120, -P["HOOP_X"] + 90, 0, 140, ZAX + 180, ZAX + 470)
+    J[14] = lambda: bv.joint([part("C-frame (cut open)", win(plp * pl_["frame"], *bx3), COL["punch"]),
+                              part("Punches", win(plp * pl_["punches"], *bx3), "#94A3B8"),
+                              part("Screws and nut blocks", win(comp([plp * pl_["nuts"], plp * pl_["screws"]]), *bx3), COL["hshaft"]),
+                              part("Drum end, chime notched, and hoop", win(dw3, *bx3), "#93C5FD")],
+                             OUT / "joint-14.png", "Joint 14: notching punch at a hoop",
+                             "Cut open on the slit line; drum end against the station 1 die block, lower jaw in through the chime notch",
+                             elev=12, azim=-80)
     keys = sorted(J) if not which else [int(w) for w in which]
     out = []
     for k in keys:
@@ -593,21 +708,29 @@ def steps(which=None):
                       "shear head onto the trolley", "Two people: lift the head, pivot pin up through the swivel plate, R-clip; index pin in",
                       elev=20, azim=-40, label_done=False)
     hs = G("hshaft")
-    E[8] = lambda: st(8, cradle0 + [beam, trol, drop, head], [mv(hs, (0, -300, 0))], "shafts, discs and guard",
-                      "Fit the shafts in their bearings, discs on, set 1.0 mm overlap with the eccentric; guard on",
+    hd = G("hdrive")
+    E[8] = lambda: st(8, cradle0 + [beam, trol, drop, head], [mv(hs, (0, -300, 0)), mv(hd, (0, 350, 150))],
+                      "shafts, discs, guard and drive case",
+                      "Shafts in their bearings, discs on, 1.0 mm overlap set; guard on; drive case bolted on, chains fitted",
                       elev=20, azim=-40, label_done=False)
     drum = K("drum", "Drum (heads on)", "#CBD5E1")
     ec = G("ec")
-    E[9] = lambda: st(9, cradle0 + [beam, trol, drop, head, hs, drum], [mv(ec, (300, 0, 200))], "drum on, end cutter on the chime",
+    E[9] = lambda: st(9, cradle0 + [beam, trol, drop, head, hs, hd, drum], [mv(ec, (300, 0, 200))], "drum on, end cutter on the chime",
                       "Roll a purged drum onto the rollers; hook the cutter over the right chime, torque arm against the post",
                       elev=20, azim=-40, label_done=False)
+    shelf = G("shelf")
+    E[10] = lambda: st(10, cradle0 + [beam, trol, drop, head, hs, hd], [mv(shelf, (-300, 0, 0)), mv(G("punch"), (-300, 0, 300)),
+                                                                       mv(G("ring"), (-600, 0, 350))],
+                       "tool shelf, notching punch and ring head",
+                       "Bolt the shelf to the outer face of the left post; set the punch, its lever and the ring head on it",
+                       elev=22, azim=-60, label_done=False)
     base = K("rs_base", "Roll stand base", COL["rsbase"])
-    E[10] = lambda: st(10, [], [mv(base, (0, 0, -200))], "roll stand base", "Set it where the panels can be fed and taken off; level it",
+    E[11] = lambda: st(11, [], [mv(base, (0, 0, -200))], "roll stand base", "Set it where the panels can be fed and taken off; level it",
                        elev=24, azim=-50)
     lower = part("Lower roll with its bushes", comp([comps()["roll_lower"].shape,
                                                      win(comps()["rs_bushes"].shape, -2000, 2000, RY - 20, RY + 20, 840, 900)]), COL["roll"])
     side = part("Side frames (2)", frames, COL["sides"])
-    E[11] = lambda: st(11, [base], [mv(lower, (0, 0, 500)), mv(side, (0, 0, 250))], "side frames on the lower roll",
+    E[12] = lambda: st(12, [base], [mv(lower, (0, 0, 500)), mv(side, (0, 0, 250))], "side frames on the lower roll",
                        "Bushes on the journals, offer both frames onto them, then bolt the feet to the base (2 x M12 each)",
                        elev=22, azim=-50, label_done=False)
     upper = part("Upper roll, blocks, bushes", comp([comps()["roll_upper"].shape,
@@ -616,26 +739,26 @@ def steps(which=None):
     bend = part("Bending roll, blocks, bushes", comp([comps()["roll_bend"].shape,
                                                       win(comps()["rs_blocks"].shape, -2000, 2000, RY + 50, RY + 130, 840, 930),
                                                       win(comps()["rs_bushes"].shape, -2000, 2000, RY + 50, RY + 130, 840, 930)]), COL["roll"])
-    E[12] = lambda: st(12, [base, side, lower], [mv(upper, (0, 0, 350)), mv(bend, (0, 250, 350))], "upper and bending rolls into the slots",
+    E[13] = lambda: st(13, [base, side, lower], [mv(upper, (0, 0, 350)), mv(bend, (0, 250, 350))], "upper and bending rolls into the slots",
                        "Lower each roll with its blocks down its pair of slots; keeper plates on the inside faces",
                        elev=22, azim=-50, label_done=False)
-    br = part("Top bridges with screws", comp([bridges, comps()["rs_screws"].shape]), COL["screws"])
-    E[13] = lambda: st(13, [base, side, lower, upper, bend], [mv(br, (0, 0, 250))], "top bridges and screws",
-                       "Bolt the bridges across the slot tops; engage the screw collars in the blocks", elev=22, azim=-50,
+    br = part("Top bridges, screws, lock nuts and dials", comp([bridges, comps()["rs_screws"].shape, comps()["rs_dials"].shape]), COL["screws"])
+    E[14] = lambda: st(14, [base, side, lower, upper, bend], [mv(br, (0, 0, 250))], "top bridges, screws and dials",
+                       "Bolt the bridges on; engage the screw collars; lock nuts, dials and pointers on the bending screws", elev=22, azim=-50,
                        label_done=False)
     rolls = [base, side, lower, upper, bend, br]
     gears = K("gears", "Pinch gears", COL["gears"])
-    E[14] = lambda: st(14, rolls, [mv(gears, (-250, 0, 0))], "pinch gears", "Key both gears on at the left-hand end; set the mesh with 1 mm sheet in the pinch",
+    E[15] = lambda: st(15, rolls, [mv(gears, (-250, 0, 0))], "pinch gears", "Key both gears on at the left-hand end; set the mesh with 1 mm sheet in the pinch",
                        elev=18, azim=-130, label_done=False)
     drv = G("drive")
-    E[15] = lambda: st(15, rolls + [gears], [mv(drv, (300, -150, 0))], "crank, sprockets and chain",
+    E[16] = lambda: st(16, rolls + [gears], [mv(drv, (300, -150, 0))], "crank, sprockets and chain",
                        "Bolt the bracket to the right-hand frame; sprockets in line; chain on with 5 mm slack", elev=18, azim=-30,
                        label_done=False)
     grd = K("rs_guards", "Guards: nip guards, lid, chain and gear guards", COL["rsguard"])
-    E[16] = lambda: st(16, rolls + [gears, drv], [mv(grd, (0, 0, 300))], "guards", "Screw all guards on; check the 8 mm slots over the tables",
+    E[17] = lambda: st(17, rolls + [gears, drv], [mv(grd, (0, 0, 300))], "guards", "Screw all guards on; check the 8 mm slots over the tables",
                        elev=22, azim=-50, label_done=False)
     tab = part("In-feed and out-feed tables", fuse("tables", "table_frames"), COL["tables"])
-    E[17] = lambda: st(17, rolls + [gears, drv, grd], [mv(tab, (0, 0, 300))], "in-feed and out-feed tables",
+    E[18] = lambda: st(18, rolls + [gears, drv, grd], [mv(tab, (0, 0, 300))], "in-feed and out-feed tables",
                        "Stand the tables at each side, tops level with the rolls; screw the legs to the floor or the base",
                        elev=24, azim=-50, label_done=False)
     keys = sorted(E) if not which else [int(w) for w in which]

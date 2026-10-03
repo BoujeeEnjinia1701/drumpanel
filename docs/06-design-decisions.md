@@ -3,7 +3,7 @@ doc_id: DMP-DEC-001
 title: DrumPanel design decisions register
 project: DrumPanel
 doc_type: Design decisions register
-version: "0.1"
+version: "0.2"
 status: Draft
 date: '2026-10-03'
 author: Amish Chadha
@@ -13,6 +13,10 @@ revisions:
   date: '2026-10-03'
   author: Amish Chadha
   change: Register opened at TRL 3; every decision made under Amish's pre-approval of 2026-10-03
+- version: "0.2"
+  date: '2026-10-03'
+  author: Amish Chadha
+  change: Amish's requirement decisions 5A (R7) and 8A (R5) of 2026-10-03 moved to Decisions made (DMP-DDR-003); new open decision on the remaining R7 gap; value engineering updated
 ---
 
 # DrumPanel design decisions register
@@ -21,9 +25,15 @@ Every design decision still to be made, and every decision made, in one place. E
 
 ## Open decisions
 
-None. All decisions were made under Amish's 2026-10-03 pre-approval.
+*Table 1. Open decisions.*
+
+| # | To be decided | Options | Recommendation | What it affects in the build | Source |
+| --- | --- | --- | --- | --- | --- |
+| 1 | R7 is still not met after 5A. State: two people turn about 2.26 drums an hour, 53.1 hands-on minutes a drum against the 48.0 that the restated 2.5 drums an hour needs. Most of the times behind the estimate are first estimates, not measurements | A. Keep R7 at 2.5 drums an hour and let the TRL 4 timed half-day trial decide; no more hardware at TRL 3. B. Restate R7 to 2.25 drums an hour, what the design gives on paper. C. Keep 2.5 and add more speed-ups now, for example set stops on the rail for the three ring passes and a second deburring station, with no estimate yet of what they save | A: the gap is about 10 % of the hands-on time, inside the uncertainty of the task-time estimates, and the trial measures exactly those times | Nothing for A or B; C adds rail stops and a deburring station | DMP-CAL-001 v0.2, section 8; DMP-DDR-003 |
 
 ## To confirm when parts are bought
+
+*Table 2. Items to confirm when parts are bought.*
 
 | # | What to confirm | Why it matters | Source |
 | --- | --- | --- | --- |
@@ -34,18 +44,23 @@ None. All decisions were made under Amish's 2026-10-03 pre-approval.
 | 5 | Pinch gear mesh at 61 to 61.5 mm centres with the module 3 gears bought | The pinch opens as the sheet thickens | DMP-CAL-001, section 5.5 |
 | 6 | The bending roll setting for the first batch of drums, found by a trial pass | R5 depends on it; the calculation gives only a range (9.3 to 19.3 mm) | DMP-CAL-001, section 5.3 |
 | 7 | The driven disc's grip on a 1.5 mm wall | Traction margin is only 1.17 at 1.5 mm | DMP-CAL-001, section 4 |
+| 8 | The notching punch on a scrap chime and a scrap hoop: force and a clean cut | The chime notch force (24.3 kN) is the least certain number and sets the lever force (131 N against 150 N) | DMP-CAL-001, section 9 |
+| 9 | The #35 sprockets bought (12, 28 and two of 15 teeth) bored to 20 and 25 mm, and their chains' centre distances in the drive case | The drive case bores are drawn to these sprockets | DMP-DDR-003, Q3 |
 
 ## Value engineering
 
-Value-engineering target: USD 3,000 (a hypothetical control target, not a limit). Estimated cost of the constructable design: USD 2,794 (USD 206 under the target). Main cost drivers and savings worth trying:
+Value-engineering target: USD 3,000 (a hypothetical control target, not a limit). Estimated cost of the constructable design: USD 3,489 (USD 489 over the target). Amish's decisions of 2026-10-03 added USD 695 (DMP-DDR-003). Main cost drivers and savings worth trying:
 
 - The vapour check kit (USD 600) is the largest line. It is a safety item; a shared detector across a cooperative's workshops spreads its cost, but the bench set never runs without one.
+- The shear head (USD 340) and the ring head (USD 255), mostly their four D2 discs: standard slitter knives from a cutting tool supplier are cheaper than custom-ground discs, and four bought together cost less each.
+- The notching punch (USD 330), mostly its two ground punch and die sets: punch and die blanks from a press tooling supplier, finished locally, could save about USD 60.
 - The three rolls (USD 285) and their turning: buying ground shafting of the right length and turning only the journals could save about USD 60.
-- The shear head (USD 265), mostly the two D2 discs: standard slitter knives from a cutting tool supplier are cheaper than custom-ground discs.
 - The side frames (USD 150): plasma-cut plate from a local shop is cheaper than sawn and drilled plate.
-- Throughput rather than cost limits the design (R7 not met). Ideas worth trying at TRL 4: notch a batch of drums ahead of time, a second shear head so slit and ring cuts can overlap, and pre-set hoop cut stops on the rail.
+- Throughput still limits the design more than cost (R7 not met; open decision 1). Ideas worth trying at TRL 4: set stops on the rail for the three ring passes, and notching a batch of drums ahead of time while another is cut.
 
 ## Decisions made
+
+*Table 3. Decisions made.*
 
 | Date | Decision | Decided by | Record |
 | --- | --- | --- | --- |
@@ -65,3 +80,6 @@ Value-engineering target: USD 3,000 (a hypothetical control target, not a limit)
 | 2026-10-03 | Guards: every nip slot 8 mm or less and at least 20 mm from its nip; guards need a tool to remove (conservative) | Amish, pre-approval: "start with the first 14 repos from the list of 29 projects. I pre-approve the batch runs along with any recommendations you come up with. I also accept any cost overruns or variations from the assumed scope cost." | DMP-DDR-002, P9 |
 | 2026-10-03 | Two-person rule for any lift over 25 kg; a drum full of water is never lifted (conservative) | Amish, pre-approval: "start with the first 14 repos from the list of 29 projects. I pre-approve the batch runs along with any recommendations you come up with. I also accept any cost overruns or variations from the assumed scope cost." | DMP-DDR-002, P1 |
 | 2026-10-03 | Requirements R10 (guarding), R11 (handling) and R12 (yield) added; R7 reported as not met and R5 as at risk, with no redesign beyond TRL 3 | Amish, pre-approval: "start with the first 14 repos from the list of 29 projects. I pre-approve the batch runs along with any recommendations you come up with. I also accept any cost overruns or variations from the assumed scope cost." | DMP-REQ-001 v0.3 |
+| 2026-10-03 | R7 throughput (5A): a lever notching punch replaces the four hacksaw notches (chime notch widened to 60 mm), and a ring head bolted to the shear head makes two ring cuts a pass; R7 restated from 4 to 2.5 drums an hour. Result: about 2.26 drums an hour, not met (open decision 1) | Amish: "1A 2A 3A 4A 5A 6A 7A 8A 9A 10A 11A" | DMP-DDR-003, Q1 and Q2; DMP-REQ-001 v0.4 |
+| 2026-10-03 | R5 flatness (8A): fine-pitch M20 x 1.5 bending screws with 60-division dials (0.025 mm) and lock nuts. Result: the 0.29 mm allowance is 11.8 divisions; R5 met on paper with a trial pass for each batch | Amish: "1A 2A 3A 4A 5A 6A 7A 8A 9A 10A 11A" | DMP-DDR-003, Q4 |
+| 2026-10-03 | Design for construction while carrying out 5A: the shear head crank moved onto a raised crank shaft in a closed 2.33 to 1 chain drive case (the former crank swept through the drum wall), and a tool shelf on the left rail post | Made under STANDARDS section 18 (Amish, 2026-09-30: "fix the design assumptions to match and be physically feasible") to carry out Amish's 5A: "1A 2A 3A 4A 5A 6A 7A 8A 9A 10A 11A" | DMP-DDR-003, Q3 and Q5 |

@@ -4,7 +4,7 @@
 
 ![TRL 3](https://img.shields.io/badge/TRL-3%20of%209-0F766E) ![Hardware: CERN-OHL-S-2.0](https://img.shields.io/badge/hardware-CERN--OHL--S--2.0-111827) ![Software: MIT](https://img.shields.io/badge/software-MIT-111827) [![REUSE compliant](https://github.com/BoujeeEnjinia1701/drumpanel/actions/workflows/reuse.yml/badge.svg)](https://github.com/BoujeeEnjinia1701/drumpanel/actions/workflows/reuse.yml)
 
-**Area:** Circular materials · **TRL:** 3 of 9 (proof of concept on paper) · **Value-engineering target:** USD 3,000 (estimated cost USD 2,794) · **Difficulty:** 3 of 5
+**Area:** Circular materials · **TRL:** 3 of 9 (proof of concept on paper) · **Value-engineering target:** USD 3,000 (estimated cost USD 3,489) · **Difficulty:** 3 of 5
 
 Turns empty oil drums into flat sheet by purging and cold-opening them instead of burning them.
 
@@ -12,7 +12,7 @@ Turns empty oil drums into flat sheet by purging and cold-opening them instead o
 
 Used 55 gallon (about 208 L) steel drums are a cheap source of sheet metal for artisans; accounts from Haiti speak of three sheets of about 18 by 72 in (460 by 1,830 mm) per drum. DrumPanel gets three flat panels about 233 x 1,800 mm and two head discs about 552 mm across from each drum. Today the common method is to fill the drum with dried leaves and set it on fire to clear paint and residue, then chisel off the ends, split the side and flatten it. DrumPanel keeps the craft and changes the first steps: purge the drum, check it for vapour, cut it cold and roll it flat with hand-cranked tools on a bench.
 
-The design is manual on purpose. The preliminary IP screen found powered drum cutter-flatteners on the market; DrumPanel assumes workshops with little money and no dependable power. A bench set built from commodity steel and bearings, published openly with a written purge and vapour check, can be made by a local fabricator for an estimated USD 2,794 (value-engineering target USD 3,000) and shared across a workshop cluster.
+The design is manual on purpose. The preliminary IP screen found powered drum cutter-flatteners on the market; DrumPanel assumes workshops with little money and no dependable power. A bench set built from commodity steel and bearings, published openly with a written purge and vapour check, can be made by a local fabricator for an estimated USD 3,489 (value-engineering target USD 3,000, so USD 489 over it) and shared across a workshop cluster.
 
 ## Burning platform
 
@@ -71,7 +71,7 @@ Full design precis: [docs/02-concept.md](docs/02-concept.md) · Requirements: [d
 
 ## Building the prototype
 
-The prototype build plan ([docs/05-build-plan.md](docs/05-build-plan.md)) shows how to make each of the 20 groups of parts and put them together, with a making sketch for every made part, close-ups of the joints and a picture for every assembly step. Almost everything is sawn, drilled and stick-welded from square tube and plate; the rolls are turned on a lathe; the slitting discs, cutter wheel, bearings, gears and gas detector are bought. It is a plan, not yet built: building and testing it is TRL 4 work.
+The prototype build plan ([docs/05-build-plan.md](docs/05-build-plan.md)) shows how to make each of the 24 groups of parts and put them together, with a making sketch for every made part, close-ups of the joints and a picture for every assembly step. Almost everything is sawn, drilled and stick-welded from square tube and plate; the rolls are turned on a lathe; the slitting discs, cutter wheel, notching punches and dies, bearings, gears and gas detector are bought or made by a tool shop. It is a plan, not yet built: building and testing it is TRL 4 work.
 
 ![Every component, pulled apart and numbered in build order](docs/05-build-plan/overview.png)
 

@@ -157,6 +157,10 @@ def end_cutter():
 
 
 # ------------------------------------------------------------------ D. rotary shear head
+DRIVE_RATIO = (28 / 12) * (15 / 15)       # shear head drive case: 12 T to 28 T, then 15 T to 15 T (#35)
+DRIVE_EFF = 0.95 ** 2                       # two chains
+
+
 def shear_head():
     R, ov = P["DISC_R"], P["DISC_OVERLAP"]
     rows = []
@@ -166,11 +170,15 @@ def shear_head():
         trolley = 10.0
         feed = f * math.tan(th / 2) + spread + trolley
         torque = feed * R / 1000 * 1.2                      # 20 % for the bearings and the idle disc
-        crank = torque / (P["CRANK_R"] / 1000)
+        crank = torque / DRIVE_RATIO / DRIVE_EFF / (P["CRANK_R"] / 1000)
+        crank2 = 2 * crank                                  # ring head coupled on: two cuts on one crank
         traction = 0.3 * f                                  # the driven disc's edge bites; effective friction 0.3
-        rows.append((t, f, th, feed, torque, crank, traction))
+        rows.append((t, f, th, feed, torque, crank, traction, crank2))
         say(f"D{int(t * 10)}", f"Shear head, wall {t:.1f} mm: separating force {f:.0f} N, nip angle "
-            f"{math.degrees(th):.1f} deg, feed resistance {feed:.0f} N, crank force", round(crank), "N")
+            f"{math.degrees(th):.1f} deg, feed resistance {feed:.0f} N, disc torque {torque:.1f} N m, crank force "
+            f"(one cut: the slit)", round(crank), "N")
+        say(f"D{int(t * 10)}r", f"Shear head with the ring head coupled on, wall {t:.1f} mm: crank force (two ring cuts at once)",
+            round(crank2), "N")
         say(f"D{int(t * 10)}t", f"Shear head, wall {t:.1f} mm: traction of the driven disc over resistance",
             round(traction / feed, 2))
     f15 = rows[-1][1]
@@ -181,8 +189,8 @@ def shear_head():
     m_sh = f15 * (14 + P["DISC_T"] / 2)
     s_sh = 32 * m_sh / (math.pi * (2 * P["SHAFT_R"]) ** 3)
     say("D21", "Bending stress in a 25 mm head shaft at 1.5 mm wall", round(s_sh, 1), "MPa")
-    lin = math.pi * 2 * R / 1000 * 30
-    say("D22", "Cutting speed at 30 crank turns a minute", round(lin, 1), "m/min")
+    lin = math.pi * 2 * R / 1000 * 30 / DRIVE_RATIO
+    say("D22", f"Cutting speed at 30 crank turns a minute through the {DRIVE_RATIO:.2f} to 1 drive", round(lin, 2), "m/min")
     # beam carrying the trolley, drop bar and head
     head_m = 0.0
     for c in m.components():
@@ -193,7 +201,15 @@ def shear_head():
     I = (40 * 80 ** 3 - 34 * 74 ** 3) / 12
     say("D23", "Mass of the trolley, drop bar and shear head", round(head_m, 1), "kg")
     say("D24", "Rail beam deflection with the head at mid-span", round(w * span ** 3 / (48 * E * I), 2), "mm")
-    return dict(crank=max(r_[5] for r_ in rows), speed=lin, head_m=head_m)
+    ring_m = sum(c.shape.volume for c in m.components() if c.bom == 25) * 1e-9 * m.STEEL
+    w2 = (head_m + ring_m) * G
+    say("D25", "Mass of the ring head with its spacer plate and coupling", round(ring_m, 1), "kg")
+    say("D26", "Rail beam deflection with both heads at mid-span", round(w2 * span ** 3 / (48 * E * I), 2), "mm")
+    mom = ring_m * G * P["RING_PITCH"] / 1000
+    z_sp = 115 * 10 ** 2 / 6
+    say("D27", "Bending stress in the 10 mm spacer plate from the ring head's weight (233 mm out)",
+        round(mom * 1000 / z_sp, 1), "MPa")
+    return dict(crank=max(r_[5] for r_ in rows), crank2=max(r_[7] for r_ in rows), speed=lin, head_m=head_m, ring_m=ring_m)
 
 
 # ------------------------------------------------------------------ E. slip roll: reverse bending to flat
@@ -290,8 +306,13 @@ def slip_roll(d):
     rho2 = 1 / (dk_nom + dk_allow - k0)
     dz = abs(bend_height(rho2, T_NOM) - bend_height(rho1, T_NOM))
     say("E13", "Allowed error in the bending roll height to stay within 10 mm over 1 m", round(dz, 2), "mm")
-    turn = dz / 2.5 * 360
-    say("E14", "That is this much of a turn of the M20 x 2.5 bending screw", round(turn), "deg")
+    pitch, div = P["BEND_PITCH"], P["DIAL_DIV"]
+    turn = dz / pitch * 360
+    say("E14", f"That is this much of a turn of the fine-pitch M20 x {pitch} bending screw", round(turn), "deg")
+    say("E14d", f"Dial: {div} divisions a turn, {pitch / div:.3f} mm each; the allowed error in divisions",
+        round(dz / (pitch / div), 1))
+    say("E14c", "The same allowed error on the former M20 x 2.5 screw with a 12-division handwheel, in divisions",
+        round(dz / (2.5 / 12), 1))
     res["dz"] = dz
     crown = (P["HOOP_R"] - r_mid) * dk_nom
     say("E29", "Strain at a rolling hoop's crown if the hoop were rolled flat with the panel (why the hoops are cut out)",
@@ -376,14 +397,63 @@ def guards():
             "meets" if ok else "DOES NOT MEET")
 
 
+# ------------------------------------------------------------------ K. lever notching punch
+def notching_punch():
+    """Punch force by the inclined-edge shear estimate (each edge cuts progressively under a raked punch face):
+    per edge 0.5 x shear strength x t^2 / tan(rake), summed over the layers it cuts; 20 % for stripping and friction.
+    Chime notch: two side edges through the five-layer chime (two body and three head layers) and one cross edge
+    through the body wall. Hoop slot: three edges through the single wall at once (worst). Walls at 1.5 mm."""
+    rake = math.radians(10.0)
+    edge = lambda t: 0.5 * TAU * t * t / math.tan(rake)  # noqa: E731
+    t = 1.5
+    f_chime = 1.2 * (2 * 5 * edge(t) + edge(t))
+    f_hoop = 1.2 * 3 * edge(t)
+    say("K1", "Notching punch force, chime notch (60 x 35 mm, open-ended, punch face raked 10 deg), 1.5 mm steel",
+        round(f_chime / 1000, 1), "kN")
+    say("K2", "Notching punch force, hoop slot (40 x 32 mm), 1.5 mm wall", round(f_hoop / 1000, 1), "kN")
+    # Tr24 x 5 screw in a bronze nut, steel on bronze greased; a needle thrust bearing between screw and punch
+    dm, lead, mu = 21.5, 5.0, 0.15
+    mu_f = mu / math.cos(math.radians(15))
+    lam = lead / (math.pi * dm)
+
+    def torque(f):
+        return f * dm / 2 * (lam + mu_f) / (1 - mu_f * lam) / 1000 + f * 0.01 * 10.0 / 1000
+
+    lever = 0.48                                            # grip centre on the 500 mm ratchet lever
+    t1, t2 = torque(f_chime), torque(f_hoop)
+    say("K3", "Screw torque (Tr24 x 5) and lever force at 480 mm, chime notch", f"{t1:.0f} N m; {t1 / lever:.0f}", "N")
+    say("K4", "Screw torque and lever force, hoop slot", f"{t2:.0f} N m; {t2 / lever:.0f}", "N")
+    # C-frame jaws: the hoop station is 338 mm out from the back; each jaw is a cantilever carrying the punch force
+    hx = P["PUNCH_HOOP_X"]
+    m2, m1 = f_hoop * hx, f_chime * (P["CHIME_NOTCH_L"] / 2)
+    z_lo, z_up = 56 * 50 ** 2 / 6, 40 * 60 ** 2 / 6
+    i_lo, i_up = 56 * 50 ** 3 / 12, 40 * 60 ** 3 / 12
+    say("K5", "Jaw root bending stress, hoop station (lower jaw 56 x 50; upper jaw 40 x 60)",
+        f"{m2 / z_lo:.0f}; {m2 / z_up:.0f}", "MPa")
+    say("K6", "Jaw root bending stress, chime station", f"{m1 / z_lo:.0f}; {m1 / z_up:.0f}", "MPa")
+    gap = f_hoop * hx ** 3 / (3 * E) * (1 / i_lo + 1 / i_up)
+    say("K7", "Opening of the jaws at the hoop station under the hoop slot force (taken up in the screw stroke)",
+        round(gap, 2), "mm")
+    swings_c = (2 * 1.5 * 5 / 2 + 30 * math.tan(rake) + 2) / lead * 6   # loaded stroke / lead x 6 swings a turn (60 deg)
+    swings_h = (1.5 + 20 * math.tan(rake) + 2) / lead * 6
+    say("K8", "Lever swings under load (60 deg each), chime notch; hoop slot", f"{swings_c:.0f}; {swings_h:.0f}")
+    t_chime, t_hoop = 1.2, 0.8
+    say("K9", "Time per notch, chime; hoop (place, run the punch down by hand, lever, back off, take out)",
+        f"{t_chime}; {t_hoop}", "min")
+    return dict(lever=max(t1, t2) / lever, f_chime=f_chime, t_notches=2 * t_chime + 2 * t_hoop)
+
+
 # ------------------------------------------------------------------ H. throughput and labour
-def throughput(c, d, sr, sh, pg):
+def throughput(c, d, sr, sh, pg, kp):
     # minutes of work per drum, by station; elapsed waits (filling, draining) overlap other work
     purge_lab = 2 + 3 + 2 + 3 + 1          # load on stand, open bungs and start fill, rock, drain and tip, close
     check = 3
-    cut = dict(load=2, heads=2 * (1.5 + c["turns"] / 30), notches=8, slit=2 + 0.9 / (sh["speed"] / 3),
-               rings=6 * (1.5 + d["circ"] / 1000 / (sh["speed"] / 3)), unload=1.5)
-    roll = dict(set_trial=3, passes=3 * d["circ"] / 1000 / sr["speed"], handling=3, ends=6 * 0.5,
+    # DMP-DDR-003: notches by the lever punch; ring cuts two at a time with the ring head (three passes, 1.5 min to set
+    # each, 1.0 min a drum to bolt the ring head on and take it off); the bending roll set from its dial (a 10 min trial
+    # pass on the first drum of a batch of about ten, then 0.5 min a drum to check the dial reading)
+    cut = dict(load=2, heads=2 * (1.5 + c["turns"] / 30), notches=kp["t_notches"], slit=2 + 0.9 / (sh["speed"] / 3),
+               rings=3 * (1.5 + d["circ"] / 1000 / (sh["speed"] / 3)) + 1.0, unload=1.5)
+    roll = dict(set_trial=10 / 10 + 0.5, passes=3 * d["circ"] / 1000 / sr["speed"], handling=3, ends=6 * 0.5,
                 deburr=(2 * 3 * (d["circ"] + 235) / 1000 + 2 * math.pi * d["head_d"] / 1000) / 3)
     cut_t, roll_t = sum(cut.values()), sum(roll.values())
     total = purge_lab + check + cut_t + roll_t
@@ -392,7 +462,10 @@ def throughput(c, d, sr, sh, pg):
     say("H3", "Slip roll and finishing minutes per drum", round(roll_t, 1))
     say("H4", "Total hands-on minutes per drum", round(total, 1))
     rate = 2 * 60 / total
-    say("H5", "Drums per hour for two people, work shared evenly", round(rate, 1))
+    say("H5", "Drums per hour for two people, work shared evenly", round(rate, 2))
+    say("H8", "Notches, slit and ring cuts at the cradle, minutes per drum",
+        f"{cut['notches']:.1f}; {cut['slit']:.1f}; {cut['rings']:.1f}")
+    say("H9", "Hands-on minutes per drum for 2.5 drums an hour (R7)", round(2 * 60 / 2.5, 1))
     say("H6", "Elapsed purge time per drum (fill, soak 10 min, drain), done while the cradle works",
         round(L["sheet_l"] * 0 + 10.4 + 10 + 2.5, 1), "min")
     say("H7", "Heads off a drum, both ends, one person (R3)", round(cut["heads"], 1), "min")
@@ -410,16 +483,18 @@ def masses():
         kg[c.key] = c.shape.volume * 1e-9 * dens.get(c.key, m.STEEL)
         st[c.group] += kg[c.key]
     say("I1", "Drain and purge stand with tray", round(st["purge"]), "kg")
-    say("I2", "Cutting cradle with posts, beam, shear head and end cutter", round(st["cut"]), "kg")
+    say("I2", "Cutting cradle with posts, beam, shear head, ring head, end cutter, notching punch and tool shelf", round(st["cut"]), "kg")
     say("I3", "Slip roll stand with tables", round(st["roll"]), "kg")
     lifts = [
         ("Side frame with its legs and bridge, each", kg["rs_sides"] / 2),
         ("Cradle frame, one welded piece", kg["frame"]),
-        ("Shear head with its shafts, discs, guard and drop bar", sum(kg[k] for k in ("head_frame", "discs", "head_shafts",
-                                                                                     "head_guard", "drop"))),
+        ("Shear head with its shafts, discs, guard, drive and drop bar",
+         sum(kg[k] for k in ("head_frame", "discs", "head_shafts", "head_guard", "head_case", "head_drive", "drop"))),
         ("Lower pinch roll", kg["roll_lower"]),
         ("Table frame, each", kg["table_frames"] / 2),
         ("Roller shaft with its two rollers, each", (kg["shafts"] + kg["rollers"]) / 2),
+        ("Notching punch, carried to the drum", kg["punch_frame"] + kg["punch_parts"]),
+        ("Ring head with its spacer plate and coupling", kg["ring_frame"] + kg["ring_parts"] + kg["ring_link"]),
     ]
     lifts.sort(key=lambda x: -x[1])
     for i, (name, w) in enumerate(lifts, 1):
@@ -448,7 +523,8 @@ if __name__ == "__main__":
     sr = slip_roll(d)
     cradle(d)
     guards()
-    th = throughput(c, d, sr, sh, pg)
+    kp = notching_punch()
+    th = throughput(c, d, sr, sh, pg, kp)
     masses()
     cost()
     with (ROOT / "docs" / "04-calcs" / "results.csv").open("w", newline="") as f:

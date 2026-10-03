@@ -64,7 +64,19 @@ PARAMS = {
     "DISC_T": 10.0,
     "DISC_OVERLAP": 1.0,     # discs overlap 1.0 mm at the nip (adjustable by the eccentric)
     "HEAD_PARK_X": -520.0,   # nip position when parked at the -X end
-    "CRANK_R": 200.0,        # shear head crank radius
+    "CRANK_R": 155.0,        # shear head crank radius, on the raised crank shaft of the drive case (DMP-DDR-003, Q3)
+    # Shear head drive case (DMP-DDR-003, Q3): crank shaft -> 12 T to 28 T (#35) -> jackshaft -> 15 T to 15 T -> upper shaft
+    "JACK_Z": 130.0,         # jackshaft above the nip (head local)
+    "KCRANK_X": -60.0, "KCRANK_Z": 170.0,   # crank shaft position (head local)
+    "SPR_A_R": 22.9,         # 15 T #35 on the upper shaft and on the jackshaft (pitch radius)
+    "SPR_C_R": 42.5,         # 28 T #35 on the jackshaft
+    "SPR_D_R": 18.4,         # 12 T #35 on the crank shaft
+    # Ring head (DMP-DDR-003, Q2): a second shear head bolted 233 mm along the drum for two ring cuts a pass
+    "RING_PITCH": 233.0,
+    # Notches on the slit line, made with the lever notching punch (DMP-DDR-003, Q1)
+    "CHIME_NOTCH_W": 60.0, "CHIME_NOTCH_L": 35.0,   # open-ended notch at each drum end
+    "HOOP_NOTCH_W": 40.0, "HOOP_NOTCH_L": 32.0,     # slot through each hoop
+    "PUNCH_HOOP_X": 338.0,   # hoop station of the punch from its back face (45 mm stand-off + 293 mm)
     # End cutter (DMP-DDR-002, P3)
     "CUTTER_R": 25.0, "CUTTER_T": 6.0, "CUT_LINE_R": 276.0, "CUTTER_PHI": -12.0,
     "DRIVE_R": 20.0, "GUIDE_R": 15.0, "EC_CRANK_R": 150.0,
@@ -79,6 +91,8 @@ PARAMS = {
     "SHEET_T": 1.0,
     "BEND_Y": 90.0,          # bending roll behind the pinch line
     "BEND_SET": 13.4,        # bending roll above the lower roll, nominal setting (DMP-CAL-001, section 6)
+    "BEND_PITCH": 1.5,       # fine-pitch bending screws M20 x 1.5 (DMP-DDR-003, Q4)
+    "DIAL_DIV": 60,          # dial divisions per turn: 0.025 mm each
     "SIDE_X": 460.0, "SIDE_T": 20.0, "SIDE_Y0": -150.0, "SIDE_Y1": 220.0, "SIDE_Z0": 760.0, "SIDE_Z1": 1010.0,
     "CRANK_Y": -230.0, "CRANK_Z": 820.0, "RS_CRANK_R": 300.0,
     "SPROCKET_BIG_R": 79.0,  # 39 tooth #40 chain sprocket, pitch radius
@@ -260,15 +274,17 @@ class C:
 
 def shear_head_local(P=PARAMS):
     """Rotary shear head in its own frame: nip at the origin, cut plane y = 0, cutting direction +X,
-    disc axes along Y, outer (driven) disc above. Returns {key: shape}."""
+    disc axes along Y, outer (driven) disc above. Returns {key: shape}.
+    The crank is on a raised crank shaft in a drive case on the +Y side (DMP-DDR-003, Q3): crank shaft, 12 T to
+    28 T #35 chain to a jackshaft, 15 T to 15 T chain down to the upper shaft (2.33 to 1), so the crank sweeps
+    clear of the drum in both slit and ring modes. The upper shaft has a stub on the -Y side for the coupling
+    shaft to the ring head."""
     R, T, ov = P["DISC_R"], P["DISC_T"], P["DISC_OVERLAP"]
     zc = R - ov / 2                                   # disc centres at +/- this
     s = {}
     s["disc_u"] = ringy(P["SHAFT_R"], R, 0, T, 0, zc)
     s["disc_l"] = ringy(P["SHAFT_R"], R, -T, 0, 0, -zc)
-    crank = box(-10, 10, 78, 90, zc - 10, zc + P["CRANK_R"]) + cyly(20, 78, 90, 0, zc) \
-        + cyly(12, 90, 190, 0, zc + P["CRANK_R"] - 10)
-    s["shaft_u"] = cyly(P["SHAFT_R"], 0, 78, 0, zc) + crank
+    s["shaft_u"] = cyly(P["SHAFT_R"], -24, 96, 0, zc)
     s["shaft_l"] = cyly(P["SHAFT_R"], -74, 0, 0, -zc)
     hole_u = cyly(P["SHAFT_R"], -200, 200, 0, zc)
     hole_l = cyly(P["SHAFT_R"], -200, 200, 0, -zc)
@@ -281,7 +297,101 @@ def shear_head_local(P=PARAMS):
     g = box(-56, 62, -4, 14, zc, zc + 64) - cyly(54, -2, 11.5, 0, zc) - cyly(P["SHAFT_R"] + 0.5, -10, 20, 0, zc)
     g += box(52, 62, -4, 14, P["GUARD_GAP"], zc)          # front skirt: 8 mm slot over the sheet, 52 mm ahead of the nip
     s["guard"] = g
+    # drive case: inner plate bolted to the upper housing and top plate, outer plate, 1.5 mm sheet band between
+    jz, kx, kz = P["JACK_Z"], P["KCRANK_X"], P["KCRANK_Z"]
+    holes = cyly(P["SHAFT_R"] + 0.5, 60, 120, 0, zc) + cyly(10, 60, 120, 0, jz) + cyly(10, 60, 120, kx, kz)
+    inner = box(-90, 50, 74, 82, 18, 200) - holes
+    outer = box(-90, 50, 104, 112, 18, 200) - holes
+    band = box(-90, 50, 82, 104, 18, 200) - box(-88.5, 48.5, 81, 105, 19.5, 198.5)
+    s["drive_case"] = inner + outer + band
+    s["jack"] = cyly(10, 74, 112, 0, jz)
+    s["sprockets"] = comp([ringy(P["SHAFT_R"], P["SPR_A_R"], 86, 92, 0, zc), ringy(10, P["SPR_A_R"], 86, 92, 0, jz),
+                           ringy(10, P["SPR_C_R"], 94, 100, 0, jz), ringy(10, P["SPR_D_R"], 94, 100, kx, kz)])
+    cr = P["CRANK_R"]
+    s["crank"] = cyly(10, 74, 118, kx, kz) + box(kx - 10, kx + 10, 118, 130, kz - 10, kz + cr) \
+        + cyly(12, 130, 230, kx, kz + cr - 10)
     return s
+
+
+HEAD_KEYS = ("frame", "guard", "shaft_u", "shaft_l", "disc_u", "disc_l", "drive_case", "jack", "sprockets", "crank")
+
+
+def ring_head_local(P=PARAMS):
+    """The ring head in the main head's local frame when bolted on for ring cuts (DMP-DDR-003, Q2): a second
+    shear head (same frame, discs, shafts and guard, no drive) 233 mm along the -Y side, a spacer plate on the
+    two top plates and a coupling shaft from the main head's upper shaft stub to the ring head's upper shaft.
+    Returns {key: shape}."""
+    hl = shear_head_local(P)
+    zc = P["DISC_R"] - P["DISC_OVERLAP"] / 2
+    d = P["RING_PITCH"]
+    o = _b().Pos(0, -d, 0)
+    s = {k: o * hl[k] for k in ("frame", "guard", "disc_u", "disc_l", "shaft_l")}
+    s["shaft_u"] = o * cyly(P["SHAFT_R"], -24, 74, 0, zc)
+    s["coupling"] = cyly(P["SHAFT_R"], -d + 74, -24, 0, zc)
+    s["sleeve"] = ringy(P["SHAFT_R"], P["SHAFT_R"] + 3, -d + 76, -26, 0, zc)      # loose guard sleeve over the coupling
+    s["spacer"] = box(-145, -30, -d - 17, 20, 136, 146)
+    return s
+
+
+RING_KEYS = ("frame", "guard", "disc_u", "disc_l", "shaft_l", "shaft_u", "coupling", "sleeve", "spacer")
+
+
+def notch_boxes(P=PARAMS, z_top=None, ends=True, hoops=True):
+    """The four notches on the slit line (top of the drum, y = 0): open-ended chime notches at the two ends and a
+    slot through each hoop. Boxes in drum coordinates (axis along X at z = 0 unless z_top is given)."""
+    half = P["DRUM_L"] / 2
+    zt = (P["DRUM_R_IN"] - 20) if z_top is None else z_top
+    out = []
+    cw, cl = P["CHIME_NOTCH_W"] / 2, P["CHIME_NOTCH_L"]
+    hw, hl_ = P["HOOP_NOTCH_W"] / 2, P["HOOP_NOTCH_L"] / 2
+    if ends:
+        out += [box(-half - 1, -half + cl, -cw, cw, zt, zt + 200), box(half - cl, half + 1, -cw, cw, zt, zt + 200)]
+    if hoops:
+        out += [box(-P["HOOP_X"] - hl_, -P["HOOP_X"] + hl_, -hw, hw, zt, zt + 200),
+                box(P["HOOP_X"] - hl_, P["HOOP_X"] + hl_, -hw, hw, zt, zt + 200)]
+    return out
+
+
+def notch_punch_local(P=PARAMS):
+    """Lever notching punch (DMP-DDR-003, Q1) in its own frame: back face at x = 0 (the drum end rests against
+    it for a chime notch), jaws along +X into the drum, die faces at z = 0, punches moving down (-Z) into the
+    drum wall at the slit line (y = 0). Station 1 (x 0 to 35) cuts the open-ended chime notch; station 2 (at
+    PUNCH_HOOP_X) cuts the hoop slot with the drum end against the station 1 die block (45 mm stand-off).
+    Each punch is pushed by a Tr24 x 5 screw in a nut block, turned by a 500 mm ratchet lever.
+    Returns {key: shape}."""
+    hx = P["PUNCH_HOOP_X"]
+    cl, cw = P["CHIME_NOTCH_L"], P["CHIME_NOTCH_W"] / 2
+    hl_, hw = P["HOOP_NOTCH_L"] / 2, P["HOOP_NOTCH_W"] / 2
+    s = {}
+    die1 = box(0, cl + 0.2, -cw - 0.2, cw + 0.2, -51, 7)
+    die2 = box(hx - hl_ - 0.2, hx + hl_ + 0.2, -hw - 0.2, hw + 0.2, -51, 1)
+    bore1 = box(0, cl + 0.2, -cw - 0.2, cw + 0.2, 39, 101)
+    bore2 = box(hx - hl_ - 0.2, hx + hl_ + 0.2, -hw - 0.2, hw + 0.2, 39, 101)
+    ri, rc = P["DRUM_R_IN"], P["CHIME_R_IN"]
+    frame = box(-50, 0, -38, 38, -50, 100)                                  # back
+    # lower jaw (die arm), its top ground to the inside radius of the drum wall
+    frame += box(0, 385, -28, 28, -50, 0) & cylx(ri, -1, 386, 0, -ri)
+    # station 1 die block, ground to the inside of the chime (x 0 to 15) and of the wall beyond it (x 15 to 45)
+    frame += (box(0, 45, -38, 38, -50, 0) & cylx(rc, -1, 46, 0, -rc)) + (box(15, 45, -38, 38, -50, 6) & cylx(ri, 14, 46, 0, -rc))
+    frame += box(0, 385, -20, 20, 40, 100)                                   # upper jaw
+    frame += box(0, 45, -38, 38, 40, 100) + box(hx - 28, hx + 28, -28, 28, 40, 100)   # punch guide bosses
+    s["frame"] = frame - die1 - die2 - bore1 - bore2
+    s["punches"] = comp([box(0.1, cl, -cw, cw, 25, 100), box(hx - hl_, hx + hl_, -hw, hw, 20, 100)])
+    nuts, screws = [], []
+    for cx in (cl / 2, hx):
+        nuts.append(box(cx - 30, cx + 30, -25, 25, 100, 130) - cylz(12, 99, 131, cx, 0))
+        screws.append(cylz(12, 100, 135, cx, 0) + cylz(17, 135, 150, cx, 0))
+    s["nuts"] = comp(nuts)
+    s["screws"] = comp(screws)
+    return s
+
+
+PUNCH_KEYS = ("frame", "punches", "nuts", "screws")
+
+
+def punch_lever(P=PARAMS):
+    """The 500 mm ratchet lever of the notching punch, lying along +Y from its ratchet ring at the origin, on z = 0."""
+    return (cylz(22, 0, 16, 0, 0) - cylz(17, -1, 17, 0, 0)) + box(-10, 10, 21.5, 500, 3, 13)
 
 
 def components(P=PARAMS):
@@ -425,8 +535,33 @@ def components(P=PARAMS):
     add("pivot", "Pivot pin 30 mm with index pin", pin, "#111827", 9, "make", "cut")
     add("head_frame", "Shear head frame", place * hl["frame"], "#0F766E", 10, "make", "cut")
     add("discs", "Slitting discs 101 mm (2)", comp([place * hl["disc_u"], place * hl["disc_l"]]), "#E5E7EB", 10, "buy", "cut")
-    add("head_shafts", "Head shafts with crank", comp([place * hl["shaft_u"], place * hl["shaft_l"]]), "#B45309", 10, "make", "cut")
+    add("head_shafts", "Head shafts", comp([place * hl["shaft_u"], place * hl["shaft_l"]]), "#B45309", 10, "make", "cut")
     add("head_guard", "Disc guard", place * hl["guard"], "#EAB308", 10, "make", "cut")
+    add("head_case", "Drive case with chain guard", place * hl["drive_case"], "#EAB308", 10, "make", "cut")
+    add("head_drive", "Crank, crank shaft, jackshaft and #35 sprockets",
+        comp([place * hl["crank"], place * hl["jack"], place * hl["sprockets"]]), "#B45309", 10, "make", "cut")
+
+    # tool shelf on the outer face of the left rail post, holding the notching punch, its lever and the ring head
+    pxo = -(px + pr / 2)                                       # outer face of the left post
+    back = box(pxo - 10, pxo, -100, 100, 450, 760)
+    shelf = box(pxo - 380, pxo - 10, -300, 300, 600, 608)
+    brk = [box(pxo - 260, pxo - 10, sy - 5, sy + 5, 520, 600) for sy in (-100, 100)]
+    add("shelf", "Tool shelf on the left rail post", fuse([back, shelf] + brk), "#4B5563", 26, "make", "cut")
+    st_top = 608.0
+    pl_ = notch_punch_local(P)
+    ppl = bd.Pos(pxo - 48, -95, st_top + 50) * bd.Rot(0, 0, 90)
+    add("punch_frame", "Notching punch C-frame", ppl * pl_["frame"], "#7C2D12", 21, "make", "cut")
+    add("punch_parts", "Notching punch: punches, screws and nut blocks",
+        comp([ppl * pl_[k] for k in ("punches", "nuts", "screws")]), "#B45309", 21, "make", "cut")
+    add("punch_lever", "Ratchet lever 500 mm", bd.Pos(pxo - 357, -250, st_top) * punch_lever(P), "#111827", 21, "buy", "cut")
+    rl = ring_head_local(P)
+    rpl = bd.Pos(pxo - 180, -20 + P["RING_PITCH"], st_top + 136)
+    add("ring_frame", "Ring head frame (stored)", rpl * rl["frame"], "#0F766E", 25, "make", "cut")
+    add("ring_parts", "Ring head discs, shafts and guard (stored)",
+        comp([rpl * rl[k] for k in ("disc_u", "disc_l", "shaft_l", "shaft_u", "guard")]), "#E5E7EB", 25, "make", "cut")
+    add("ring_link", "Ring head spacer plate, coupling shaft and guard sleeve (stored)",
+        comp([rpl * rl["spacer"], rpl * rl["coupling"], rpl * rl["sleeve"]]),
+        "#D97706", 25, "make", "cut")
 
     # end cutter on the +X chime (polar positions about the drum axis)
     half = P["DRUM_L"] / 2
@@ -488,7 +623,7 @@ def components(P=PARAMS):
     add("rs_sides", "Side frames with top bridges (2)", comp(sides + slegs), "#0F766E", 13, "make", "roll")
 
     # bushes and slide blocks
-    bushes, blocks, screws = [], [], []
+    bushes, blocks, screws, dials = [], [], [], []
     for s in (-1, 1):
         xo0, xo1 = sorted((s * sx_, s * (sx_ + st_)))
         xc = s * (sx_ + st_ / 2)
@@ -501,9 +636,15 @@ def components(P=PARAMS):
         bushes.append(ringx(jr, 20, xo0, xo1, by_, bz) + ringx(jr, 26, fl0, fl1, by_, bz))
         screws.append(cylz(8, uz + 30, P["SIDE_Z1"] + 60, xc, ry) + cylz(45, P["SIDE_Z1"] + 60, P["SIDE_Z1"] + 72, xc, ry))
         screws.append(cylz(10, bz + 30, P["SIDE_Z1"] + 90, xc, by_) + cylz(55, P["SIDE_Z1"] + 90, P["SIDE_Z1"] + 102, xc, by_))
+        # fine-pitch adjuster (DMP-DDR-003, Q4): lock nut on the bridge, dial clamped to the screw, pointer on the bridge
+        zb = P["SIDE_Z1"] + 25
+        dials.append(cylz(16, zb, zb + 12, xc, by_) - cylz(10, zb - 1, zb + 13, xc, by_))
+        dials.append(cylz(40, zb + 20, zb + 28, xc, by_) - cylz(10, zb + 19, zb + 29, xc, by_))
+        dials.append(box(xc - 5, xc + 5, by_ + 45, by_ + 50, zb, zb + 31) + box(xc - 5, xc + 5, by_ + 36, by_ + 45, zb + 28, zb + 31))
     add("rs_bushes", "Bronze bushes 30 mm, flanged (6)", comp(bushes), "#B08D57", 15, "buy", "roll")
     add("rs_blocks", "Slide blocks (4)", comp(blocks), "#6B7280", 15, "make", "roll")
-    add("rs_screws", "Pinch screws M16 and bending screws M20 with handwheels", comp(screws), "#DC2626", 15, "make", "roll")
+    add("rs_screws", "Pinch screws M16 and fine-pitch bending screws M20 x 1.5 with handwheels", comp(screws), "#DC2626", 15, "make", "roll")
+    add("rs_dials", "Bending roll adjusters: lock nuts, dials and pointers (2)", comp(dials), "#1F2937", 15, "make", "roll")
 
     # rolls
     face = P["ROLL_FACE"] / 2
@@ -579,6 +720,9 @@ BOM_NAMES = {
     17: ("Crank and chain drive", "#B45309", (350, -250, 0)),
     18: ("Roll guards", "#EAB308", (0, 0, 600)),
     19: ("In-feed and out-feed tables", "#D6B98C", (0, 0, 0)),
+    21: ("Lever notching punch", "#7C2D12", (-500, -500, 200)),
+    25: ("Ring head with spacer and coupling", "#0F766E", (-500, 300, 250)),
+    26: ("Tool shelf", "#4B5563", (-450, 0, 0)),
 }
 
 
@@ -614,12 +758,15 @@ CONTACTS = [
     ("brake", "frame"), ("brake", "drum"), ("posts", "frame"), ("beam", "posts"), ("bolts", "posts"), ("bolts", "beam"),
     ("trolley_wheels", "beam"), ("trolley_wheels", "trolley"), ("drop", "trolley"), ("pivot", "trolley"), ("pivot", "drop"),
     ("head_frame", "drop"), ("head_shafts", "head_frame"), ("discs", "head_shafts"), ("head_guard", "head_frame"),
+    ("head_case", "head_frame"), ("head_drive", "head_case"), ("head_drive", "head_shafts"),
+    ("shelf", "posts"), ("punch_frame", "shelf"), ("punch_parts", "punch_frame"), ("punch_lever", "shelf"),
+    ("ring_frame", "shelf"), ("ring_parts", "ring_frame"), ("ring_link", "ring_frame"), ("ring_link", "ring_parts"),
     ("ec_guide", "drum"), ("ec_drive", "drum"), ("ec_cutter", "drum"), ("ec_body", "ec_guide"), ("ec_body", "ec_drive"),
     ("ec_body", "ec_cutter"), ("ec_body", "posts"),
     ("ds_chocks", "ds_frame"), ("drum_ds", "ds_chocks"),
     ("rs_sides", "rs_base"), ("rs_bushes", "rs_sides"), ("rs_blocks", "rs_sides"), ("rs_bushes", "rs_blocks"),
     ("roll_lower", "rs_bushes"), ("roll_upper", "rs_bushes"), ("roll_bend", "rs_bushes"), ("rs_screws", "rs_blocks"),
-    ("rs_screws", "rs_sides"), ("gears", "roll_lower"), ("gears", "roll_upper"), ("rs_bracket", "rs_sides"),
+    ("rs_screws", "rs_sides"), ("rs_dials", "rs_screws"), ("rs_dials", "rs_sides"), ("gears", "roll_lower"), ("gears", "roll_upper"), ("rs_bracket", "rs_sides"),
     ("rs_crank", "rs_bracket"), ("sprockets", "roll_lower"), ("sprockets", "rs_crank"), ("rs_guards", "rs_bracket"),
     ("rs_guards", "rs_sides"), ("tables", "table_frames"), ("sheet", "tables"), ("sheet", "roll_lower"),
 ]
@@ -673,55 +820,117 @@ def check_fits(comps=None, tol=1.0, verbose=True):
     return overlaps, gaps
 
 
+def crank_sweep_local(P=PARAMS):
+    """The space the shear head's crank and grip sweep through in one turn (head local)."""
+    return cyly(P["CRANK_R"] + 2, 118, 230, P["KCRANK_X"], P["KCRANK_Z"])
+
+
+def ring_passes(P=PARAMS):
+    """The three ring passes: (main head nip x, ring head nip x). Each pass makes two of the six ring cuts."""
+    c = ring_cut_lines(P)
+    return [(c[0], c[1]), (c[2], c[3]), (c[4], c[5])]
+
+
 def ring_mode_check(P=PARAMS, verbose=True):
-    """The shear head swivelled 90 degrees and set at each of the six ring cut lines (chime rings and both sides
-    of each hoop) on the opened drum (heads off, slit at the top, hoops still on): the frame, guard, shafts and
-    discs must clear the drum wall everywhere except in the kerf being cut, and the rail posts."""
+    """The main head swivelled 90 degrees with the ring head bolted on (DMP-DDR-003, Q2), set at each of the three
+    ring passes on the opened drum (heads off, slit at the top, hoops still on): the frames, guards, shafts, discs,
+    drive case, coupling and spacer must clear the drum wall everywhere except in the two kerfs being cut, and the
+    rail posts; the crank's sweep must clear the drum, the posts, the rail beam and the trolley. The ring head sits
+    233 or 234 mm from the main head (two holes in the spacer plate)."""
     bd = _b()
     L = levels(P)
     hl = shear_head_local(P)
     half = P["DRUM_L"] / 2
     body = bd.Pos(0, 0, L["z_ax"]) * drum(P, heads=False)
     body = body - box(-half - 5, half + 5, -6, 6, L["z_ax"], L["z_ax"] + 400)      # the slit, edges spread
-    posts = [c.shape for c in components(P) if c.key == "posts"][0]
+    cs = {c.key: c.shape for c in components(P)}
+    fixed = comp([cs["posts"], cs["beam"]])
     worst = 0.0
-    for xn in ring_cut_lines(P):
-        pl = bd.Pos(xn, 0, L["z_nip"]) * bd.Rot(0, 0, 90)
-        head = comp([pl * hl[k] for k in ("frame", "guard", "shaft_u", "shaft_l", "disc_u", "disc_l")])
+    for x1, x2 in ring_passes(P):
+        Q = dict(P)
+        Q["RING_PITCH"] = x2 - x1
+        rl = ring_head_local(Q)
+        pl = bd.Pos(x1, 0, L["z_nip"]) * bd.Rot(0, 0, 90)
+        head = comp([pl * hl[k] for k in HEAD_KEYS] + [pl * rl[k] for k in RING_KEYS])
         k = P["DISC_T"] + 1.0     # the sheared zone: the cut edges are pushed apart by the discs and the 10 mm web
-        kerf = box(xn - k, xn + k, -400, 400, L["z_ax"], L["z_ax"] + 400)
-        v = (head & (body - kerf)).volume + (head & posts).volume
-        worst = max(worst, v)
+        kerf = box(x1 - k, x1 + k, -400, 400, L["z_ax"], L["z_ax"] + 400) + box(x2 - k, x2 + k, -400, 400, L["z_ax"], L["z_ax"] + 400)
+        v = (head & (body - kerf)).volume + (head & fixed).volume
+        dx = x1 - P["HEAD_PARK_X"]
+        trol = comp([bd.Pos(dx, 0, 0) * cs[c_] for c_ in ("trolley", "trolley_wheels", "drop", "pivot")])
+        sweep = pl * crank_sweep_local(P)
+        vs = (sweep & body).volume + (sweep & fixed).volume + (sweep & trol).volume
+        worst = max(worst, v, vs)
         if verbose:
-            print(f"ring mode at x = {xn:6.0f}: head inside the drum wall outside the kerf or in a post: {v:.1f} mm3 "
-                  f"({'clear' if v < 1 else 'CLASH'})")
+            print(f"ring pass at x = {x1:5.0f} and {x2:5.0f}: heads inside the drum wall outside the kerfs or in a post "
+                  f"{v:.1f} mm3; crank sweep in the drum, posts, beam or trolley {vs:.1f} mm3 "
+                  f"({'clear' if max(v, vs) < 1 else 'CLASH'})")
     return worst
 
 
 def slit_mode_check(P=PARAMS, verbose=True):
-    """The shear head in slit mode at stations along the drum (heads off, chime rings and hoop ridges notched
-    40 mm wide on the slit line, DMP-DDR-002 P5): the frame, guard, shafts and discs must clear the drum wall
-    except in the cut behind the nip and the sheared zone under the discs."""
+    """The shear head in slit mode at stations along the drum (heads off, chime rings and hoop ridges notched on
+    the slit line by the notching punch, DMP-DDR-003 Q1): the frame, guard, shafts, discs and drive case must clear
+    the drum wall except in the cut behind the nip and the sheared zone under the discs, and the crank's sweep must
+    clear the drum and the rail beam."""
     bd = _b()
     L = levels(P)
     hl = shear_head_local(P)
     half = P["DRUM_L"] / 2
     body = bd.Pos(0, 0, L["z_ax"]) * drum(P, heads=False)
     zt = L["z_ax"] + 200
-    for x0, x1 in ((-half - 1, -half + 35), (half - 35, half + 1),
-                   (-P["HOOP_X"] - 16, -P["HOOP_X"] + 16), (P["HOOP_X"] - 16, P["HOOP_X"] + 16)):
-        body = body - box(x0, x1, -20, 20, zt, zt + 200)
+    for nb in notch_boxes(P, z_top=zt):
+        body = body - nb
+    beam = [c.shape for c in components(P) if c.key == "beam"][0]
     worst = 0.0
     for xn in (-450.0, -300.0, -147.0, 0.0, 147.0, 300.0, 450.0):
-        head = bd.Pos(xn, 0, L["z_nip"]) * comp([hl[k] for k in ("frame", "guard", "shaft_u", "shaft_l", "disc_u", "disc_l")])
+        pl = bd.Pos(xn, 0, L["z_nip"])
+        head = pl * comp([hl[k] for k in HEAD_KEYS])
         k = P["DISC_T"] + 1.0
         cut = box(-half - 200, xn + P["DISC_R"] + 1, -k, k, zt, zt + 200)
-        v = (head & (body - cut)).volume
+        sweep = pl * crank_sweep_local(P)
+        v = (head & (body - cut)).volume + (sweep & body).volume + (sweep & beam).volume
         worst = max(worst, v)
     if verbose:
-        print(f"slit mode, 7 stations from x = -450 to 450: worst head volume inside the drum wall outside the cut: "
-              f"{worst:.1f} mm3 ({'clear' if worst < 1 else 'CLASH'})")
+        print(f"slit mode, 7 stations from x = -450 to 450: worst head or crank sweep volume inside the drum wall outside "
+              f"the cut or in the beam: {worst:.1f} mm3 ({'clear' if worst < 1 else 'CLASH'})")
     return worst
+
+
+def punch_check(P=PARAMS, verbose=True):
+    """The notching punch at each of the four notches (DMP-DDR-003, Q1), in the order they are cut: both chime
+    notches first (back face on the drum end, station 1 die on the inside of the chime), then both hoop slots
+    (drum end against the station 1 die block, station 2 die on the inside of the wall), each hoop reached through
+    the chime notch at its own end. The C-frame, punches, nut blocks and screws must clear the drum except for
+    the slug being cut, and the die faces must touch the steel they support."""
+    bd = _b()
+    L = levels(P)
+    pl_ = notch_punch_local(P)
+    tool = comp([pl_[k] for k in PUNCH_KEYS])
+    half = P["DRUM_L"] / 2
+    zax = L["z_ax"]
+    body0 = bd.Pos(0, 0, zax) * drum(P, heads=False)
+    zt = zax + 200
+    chime, hoop = notch_boxes(P, z_top=zt, hoops=False), notch_boxes(P, z_top=zt, ends=False)
+    worst, worst_gap = 0.0, 0.0
+    cases = []
+    for i, sx in enumerate((-1, 1)):
+        rot = bd.Rot(0, 0, 0 if sx < 0 else 180)
+        cases.append((f"chime notch, {'left' if sx < 0 else 'right'} end", bd.Pos(sx * half, 0, zax + P["CHIME_R_IN"]) * rot,
+                      body0, chime[i]))
+    body1 = body0 - chime[0] - chime[1]
+    for i, sx in enumerate((-1, 1)):
+        rot = bd.Rot(0, 0, 0 if sx < 0 else 180)
+        cases.append((f"hoop slot, {'left' if sx < 0 else 'right'} hoop", bd.Pos(sx * (half + 45), 0, zax + P["DRUM_R_IN"]) * rot,
+                      body1, hoop[i]))
+    for name, pl, body, slug in cases:
+        t = pl * tool
+        v = (t & (body - slug)).volume
+        gap = (pl * pl_["frame"]).distance_to(body - slug)
+        worst, worst_gap = max(worst, v), max(worst_gap, gap)
+        if verbose:
+            print(f"punch, {name}: tool inside the drum outside the slug {v:.1f} mm3; die to steel {gap:.2f} mm "
+                  f"({'clear' if v < 1 and gap < 0.5 else 'CLASH' if v >= 1 else 'NO CONTACT'})")
+    return worst, worst_gap
 
 
 if __name__ == "__main__":
@@ -732,7 +941,8 @@ if __name__ == "__main__":
         ov, gp = check_fits(comps)
         v = ring_mode_check()
         v2 = slit_mode_check()
-        ok = not (ov or gp) and v < 1 and v2 < 1
+        v3, g3 = punch_check()
+        ok = not (ov or gp) and v < 1 and v2 < 1 and v3 < 1 and g3 < 0.5
         print("constructability checks:", "PASS" if ok else "FAIL")
         sys.exit(0 if ok else 1)
     root = Path(__file__).resolve().parents[1]
@@ -744,10 +954,16 @@ if __name__ == "__main__":
     for grp, stem in (("purge", "drain-stand"), ("cut", "cutting-cradle"), ("roll", "slip-roll-stand")):
         export_step(station(comps, grp), str(root / "step" / f"{stem}.step"))
     hl = shear_head_local()
-    head = comp([hl[k] for k in ("frame", "disc_u", "disc_l", "shaft_u", "shaft_l", "guard")])
+    head = comp([hl[k] for k in HEAD_KEYS])
     export_step(head, str(root / "step" / "rotary-shear-head.step"))
     export_step(comp([by[k] for k in ("ec_body", "ec_guide", "ec_drive", "ec_cutter")]), str(root / "step" / "end-cutter.step"))
     export_step(by["roll_upper"], str(root / "step" / "upper-pinch-roll.step"))
+    pl_ = notch_punch_local()
+    punch = comp([pl_[k] for k in PUNCH_KEYS])
+    export_step(punch, str(root / "step" / "notching-punch.step"))
+    rl = ring_head_local()
+    export_step(comp([hl[k] for k in HEAD_KEYS] + [rl[k] for k in RING_KEYS]), str(root / "step" / "shear-head-with-ring-head.step"))
+    export_stl(punch, str(root / "stl" / "notching-punch.stl"), tolerance=0.2, angular_tolerance=0.3)
     export_stl(head, str(root / "stl" / "rotary-shear-head.stl"), tolerance=0.2, angular_tolerance=0.3)
     export_stl(comp([by[k] for k in ("ec_body", "ec_guide", "ec_drive", "ec_cutter")]), str(root / "stl" / "end-cutter.stl"),
                tolerance=0.2, angular_tolerance=0.3)
