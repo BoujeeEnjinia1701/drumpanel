@@ -20,7 +20,7 @@ revisions:
 - version: "0.3"
   date: '2026-10-03'
   author: Amish Chadha
-  change: Throughput check in section 5 now decides R7 (decision 47 A, DMP-DDR-004); no step or part changed
+  change: "Throughput check names the TRL 4 timed trial as the test that decides R7 (DMP-DDR-004, Amish's round-2 decision 5A)"
 ---
 
 # DrumPanel prototype build plan
@@ -694,7 +694,7 @@ These are the checks a TRL 4 test report would record; this plan only lists them
 | Trial setting | R5 | First panel of the batch through the slip roll, adjusting the bending roll by its dials | Flat within 10 mm over 1 m after the passes; the dial reading and the number of passes recorded; a second drum set to that reading comes out flat |
 | Slip roll effort | R6 | Spring scale on the crank with three panels | 150 N or less |
 | Guards | R10 | A competent person checks every guard opening against ISO 13857 as built | Every opening meets the standard |
-| Throughput | R7 | Half-day trial by two people, each task timed and written down by station | Drums per hour recorded against the estimate of 2.26 and the target of 2.5; this result decides R7 (DMP-DDR-004); no step is hurried or skipped to meet it |
+| Throughput | R7 | Half-day trial by two people, each task timed | Drums per hour recorded against the estimate of 2.26 and the target of 2.5; this trial decides R7 (DMP-DDR-004) |
 | Parts cost | R9 | Sum the receipts | Recorded against the value-engineering target |
 
 ## 6. Safety stops

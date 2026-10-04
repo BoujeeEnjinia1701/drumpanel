@@ -20,7 +20,7 @@ revisions:
 - version: "0.3"
   date: '2026-10-03'
   author: Amish Chadha
-  change: "Open decision 1 (R7 gap) decided by Amish as option A (DMP-DDR-004, portfolio decision 47); no open decisions remain"
+  change: "Open decision 1 (R7 gap) decided, round 2, 5A (DMP-DDR-004); no open decisions"
 ---
 
 # DrumPanel design decisions register
@@ -29,7 +29,7 @@ Every design decision still to be made, and every decision made, in one place. E
 
 ## Open decisions
 
-None. Amish decided open decision 1 (the R7 gap) on 2026-10-03: option A, keep R7 at 2.5 drums an hour and let the TRL 4 timed trial decide (DMP-DDR-004; see Decisions made). Carrying it out raised no new question.
+None. Open decision 1 (the remaining R7 gap) was decided by Amish on 2026-10-03: R7 stays at 2.5 drums an hour and the TRL 4 timed trial decides; see Decisions made and DMP-DDR-004.
 
 ## To confirm when parts are bought
 
@@ -56,7 +56,7 @@ Value-engineering target: USD 3,000 (a hypothetical control target, not a limit)
 - The notching punch (USD 330), mostly its two ground punch and die sets: punch and die blanks from a press tooling supplier, finished locally, could save about USD 60.
 - The three rolls (USD 285) and their turning: buying ground shafting of the right length and turning only the journals could save about USD 60.
 - The side frames (USD 150): plasma-cut plate from a local shop is cheaper than sawn and drilled plate.
-- Throughput still limits the design more than cost (R7 not met on paper; Amish has left it to the TRL 4 timed trial, DMP-DDR-004). Ideas worth trying at TRL 4 if the trial misses 2.5 drums an hour: set stops on the rail for the three ring passes, a second deburring station, and notching a batch of drums ahead of time while another is cut.
+- Throughput still limits the design more than cost (R7 not met; open decision 1). Ideas worth trying at TRL 4: set stops on the rail for the three ring passes, and notching a batch of drums ahead of time while another is cut.
 
 ## Decisions made
 
@@ -83,8 +83,4 @@ Value-engineering target: USD 3,000 (a hypothetical control target, not a limit)
 | 2026-10-03 | R7 throughput (5A): a lever notching punch replaces the four hacksaw notches (chime notch widened to 60 mm), and a ring head bolted to the shear head makes two ring cuts a pass; R7 restated from 4 to 2.5 drums an hour. Result: about 2.26 drums an hour, not met (open decision 1) | Amish: "1A 2A 3A 4A 5A 6A 7A 8A 9A 10A 11A" | DMP-DDR-003, Q1 and Q2; DMP-REQ-001 v0.4 |
 | 2026-10-03 | R5 flatness (8A): fine-pitch M20 x 1.5 bending screws with 60-division dials (0.025 mm) and lock nuts. Result: the 0.29 mm allowance is 11.8 divisions; R5 met on paper with a trial pass for each batch | Amish: "1A 2A 3A 4A 5A 6A 7A 8A 9A 10A 11A" | DMP-DDR-003, Q4 |
 | 2026-10-03 | Design for construction while carrying out 5A: the shear head crank moved onto a raised crank shaft in a closed 2.33 to 1 chain drive case (the former crank swept through the drum wall), and a tool shelf on the left rail post | Made under STANDARDS section 18 (Amish, 2026-09-30: "fix the design assumptions to match and be physically feasible") to carry out Amish's 5A: "1A 2A 3A 4A 5A 6A 7A 8A 9A 10A 11A" | DMP-DDR-003, Q3 and Q5 |
-| 2026-10-03 | R7 gap (open decision 1, portfolio decision 47): **A**, keep R7 at 2.5 drums an hour and let the TRL 4 timed trial decide; no more hardware at TRL 3. R7 stays not met on paper (about 2.26 drums an hour) | Amish, 2026-10-03: "i approve all of the 47 recommendations provided by you. Execute them." | DMP-DDR-004 |
-
-## Change log
-
-- 2026-10-03, v0.3: open decision 1 (R7 gap) moved from "Proposed, awaiting Amish" to Decisions made as option A (DMP-DDR-004); no open decisions remain; value engineering note on throughput updated.
+| 2026-10-03 | 5A (round 2): R7 kept at 2.5 drums an hour (paper estimate 2.26, not met on paper); the TRL 4 timed half-day trial decides; no design change | Amish: "i agree with all the 46 recommendations you provided. please proceed." | DMP-DDR-004 |

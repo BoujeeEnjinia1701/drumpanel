@@ -1,44 +1,5 @@
 # Review note: DrumPanel
 
-## Session 2026-10-03: round 2 requirement decisions applied
-
-Amish, 2026-10-03: "i approve all of the 47 recommendations provided by you. Execute them." For DrumPanel this is portfolio decision 47, the recommendation on register open decision 1 (the R7 gap), decided as option A exactly as worded: keep R7 at 2.5 drums an hour and let the TRL 4 timed trial decide.
-
-### What changed
-
-- `docs/decisions/0004-r7-gap-trl4-trial.md` (DMP-DDR-004, new): the decision, options and consequences.
-- `docs/06-design-decisions.md` (DMP-DEC-001 v0.3): open decision 1 moved from "Proposed, awaiting Amish" to Decisions made; no open decisions remain; value engineering note and change log updated.
-- `docs/03-requirements.md` (DMP-REQ-001 v0.5): R7 status notes the decision; target unchanged at 2.5 drums an hour.
-- `docs/04-calcs/01-sizing.md` (DMP-CAL-001 v0.3): section 8 and the R7 row note the decision; no figure changed.
-- `docs/05-build-plan.md` (DMP-BLD-001 v0.3): the throughput check in section 5 now decides R7, with each task timed by station; no step or part changed.
-- `project.yaml`: DMP-DDR-004 added to `trl_evidence`; `budget_usd` unchanged.
-- No change to `cad/src/model.py`, the BOM, the drawings or the media. No re-render is needed.
-
-### Requirement status
-
-- R7: about 2.26 drums an hour against 2.5, **not met on paper**, before and after; now decided by the TRL 4 timed half-day trial.
-- All other requirements unchanged: ten of twelve met on paper; R9 USD 489 over the value-engineering target.
-
-### Cost
-
-Value-engineering target: USD 3,000. Estimated cost of the constructable design: USD 3,489 (USD 489 over the target), unchanged.
-
-### Found while checking
-
-- Re-running `docs/04-calcs/sizing.py` in this environment gives a ring head of 20.7 kg (and 24.7 MPa in its spacer plate) against the 20.4 kg (24.4 MPa) in `results.csv`, DMP-CAL-001 and DMP-DDR-003. The committed `results.csv` was kept, because this decision changes no figure. The difference is small and R11 is still met (under 25 kg), but the source of the mismatch (model edit after the last run, or a different build123d version) should be found at the next calculation update.
-
-### Decisions proposed and awaiting Amish
-
-None new.
-
-### Safety
-
-- No hardware change. The timed trial runs under the full build plan safety stops: guards fitted, vapour check below 5 % LEL, two-person rule for lifts over 25 kg. No step is hurried or skipped to meet 2.5 drums an hour; a skipped step voids the trial.
-
-### Recommended next step
-
-None at TRL 3 for this decision. At TRL 4, the half-day timed trial with each task timed by station decides R7.
-
 ## Session 2026-09-30: scaffolded
 
 ### What was done
@@ -188,3 +149,32 @@ Amish chose option A on every requirement decision put to him: "1A 2A 3A 4A 5A 6
 ## 2026-10-03: photoreal renders redone after Amish's requirement decisions
 
 Rendered with Blender Cycles on Amish's Mac from `cad/src/product_model.py`; captioned with `.kit/photo_caption.py`; `media/card.png` and `media/social-preview.png` made with `.kit/cards.py`. Views: hero, exploded, detail. image_qc passes and `render.py --check` has no FAIL.
+
+## 2026-10-03: Amish's round-2 requirement decisions carried out
+
+Amish, 2026-10-03: "i agree with all the 46 recommendations you provided. please proceed." For DrumPanel this is decision 5A on R7, recorded in `docs/decisions/0004-r7-kept-at-2-5-drums-an-hour.md` (DMP-DDR-004) and in the register `docs/06-design-decisions.md` (DMP-DEC-001 v0.3). A records and wording change only: no geometry, bill of materials, drawing or picture changed.
+
+| Change | Files | New result |
+| --- | --- | --- |
+| R7 kept at 2.5 drums an hour; the TRL 4 timed trial decides | `docs/03-requirements.md` v0.5, `docs/05-build-plan.md` (Throughput check wording), `docs/06-design-decisions.md` v0.3, DMP-DDR-004 | **R7 not met on paper: about 2.26 drums an hour, 53.1 hands-on minutes a drum against 48.0**; the gap is about 10 % of hands-on time, inside the estimate's uncertainty; the trial decides |
+| Open decision 1 closed | register v0.3 | Open decisions: none |
+| Cost | unchanged | Value-engineering target: USD 3,000. Estimated cost of the constructable design: USD 3,489 (USD 489 over the target). `budget_usd` unchanged |
+
+Mass unchanged. Pictures changed: none; the appearance model is unchanged and no views were re-exported.
+
+### Decisions proposed, awaiting Amish
+
+None.
+
+### Cross-repo actions
+
+None.
+
+### Safety
+
+The throughput target never justifies skipping a vapour stop: S4 and S5 apply to every drum.
+
+### Recommended next step
+
+TRL 4 (the timed half-day trial, with each task timed, is the test that decides R7) needs a new instruction from Amish.
+
