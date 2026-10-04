@@ -1,5 +1,44 @@
 # Review note: DrumPanel
 
+## Session 2026-10-03: round 2 requirement decisions applied
+
+Amish, 2026-10-03: "i approve all of the 47 recommendations provided by you. Execute them." For DrumPanel this is portfolio decision 47, the recommendation on register open decision 1 (the R7 gap), decided as option A exactly as worded: keep R7 at 2.5 drums an hour and let the TRL 4 timed trial decide.
+
+### What changed
+
+- `docs/decisions/0004-r7-gap-trl4-trial.md` (DMP-DDR-004, new): the decision, options and consequences.
+- `docs/06-design-decisions.md` (DMP-DEC-001 v0.3): open decision 1 moved from "Proposed, awaiting Amish" to Decisions made; no open decisions remain; value engineering note and change log updated.
+- `docs/03-requirements.md` (DMP-REQ-001 v0.5): R7 status notes the decision; target unchanged at 2.5 drums an hour.
+- `docs/04-calcs/01-sizing.md` (DMP-CAL-001 v0.3): section 8 and the R7 row note the decision; no figure changed.
+- `docs/05-build-plan.md` (DMP-BLD-001 v0.3): the throughput check in section 5 now decides R7, with each task timed by station; no step or part changed.
+- `project.yaml`: DMP-DDR-004 added to `trl_evidence`; `budget_usd` unchanged.
+- No change to `cad/src/model.py`, the BOM, the drawings or the media. No re-render is needed.
+
+### Requirement status
+
+- R7: about 2.26 drums an hour against 2.5, **not met on paper**, before and after; now decided by the TRL 4 timed half-day trial.
+- All other requirements unchanged: ten of twelve met on paper; R9 USD 489 over the value-engineering target.
+
+### Cost
+
+Value-engineering target: USD 3,000. Estimated cost of the constructable design: USD 3,489 (USD 489 over the target), unchanged.
+
+### Found while checking
+
+- Re-running `docs/04-calcs/sizing.py` in this environment gives a ring head of 20.7 kg (and 24.7 MPa in its spacer plate) against the 20.4 kg (24.4 MPa) in `results.csv`, DMP-CAL-001 and DMP-DDR-003. The committed `results.csv` was kept, because this decision changes no figure. The difference is small and R11 is still met (under 25 kg), but the source of the mismatch (model edit after the last run, or a different build123d version) should be found at the next calculation update.
+
+### Decisions proposed and awaiting Amish
+
+None new.
+
+### Safety
+
+- No hardware change. The timed trial runs under the full build plan safety stops: guards fitted, vapour check below 5 % LEL, two-person rule for lifts over 25 kg. No step is hurried or skipped to meet 2.5 drums an hour; a skipped step voids the trial.
+
+### Recommended next step
+
+None at TRL 3 for this decision. At TRL 4, the half-day timed trial with each task timed by station decides R7.
+
 ## Session 2026-09-30: scaffolded
 
 ### What was done

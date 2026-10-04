@@ -3,7 +3,7 @@ doc_id: DMP-REQ-001
 title: DrumPanel requirements
 project: DrumPanel
 doc_type: Requirements
-version: "0.4"
+version: "0.5"
 status: Draft
 date: '2026-10-03'
 author: Amish Chadha
@@ -25,11 +25,15 @@ revisions:
   date: '2026-10-03'
   author: Amish Chadha
   change: 'R7 restated to 2.5 drums an hour by Amish on 2026-10-03 (decision 5A, DMP-DDR-003); status of R5, R6, R7, R9 and R11 from DMP-CAL-001 v0.2 after the notching punch, ring head and dial adjuster'
+- version: "0.5"
+  date: '2026-10-03'
+  author: Amish Chadha
+  change: R7 kept at 2.5 drums an hour by Amish, the TRL 4 timed trial to decide (decision 47 A, DMP-DDR-004); status unchanged
 ---
 
 # DrumPanel requirements
 
-On paper, the constructable design meets ten of the twelve requirements, misses one, and is over the value-engineering target of R9. On 2026-10-03 Amish chose option A on every requirement decision put to him ("1A 2A 3A 4A 5A 6A 7A 8A 9A 10A 11A"); for DrumPanel that added a lever notching punch and a ring head and restated R7 from 4 to 2.5 drums an hour (5A), and added a fine-pitch dial adjuster to the bending roll (8A) (DMP-DDR-003). R7 is still not met: the estimate is about 2.26 drums an hour, up from 2.0. R5 is now met on paper with a trial pass for each batch of drum steel: the dial sets the bending roll to 0.025 mm against a 0.29 mm allowance. Every figure is from DMP-CAL-001 v0.2 (`docs/04-calcs/sizing.py`); the tag in brackets is the line of its output.
+On paper, the constructable design meets ten of the twelve requirements, misses one, and is over the value-engineering target of R9. On 2026-10-03 Amish chose option A on every requirement decision put to him ("1A 2A 3A 4A 5A 6A 7A 8A 9A 10A 11A"); for DrumPanel that added a lever notching punch and a ring head and restated R7 from 4 to 2.5 drums an hour (5A), and added a fine-pitch dial adjuster to the bending roll (8A) (DMP-DDR-003). R7 is still not met: the estimate is about 2.26 drums an hour, up from 2.0. Amish has kept R7 at 2.5 and left it to the TRL 4 timed trial (decision 47 A, DMP-DDR-004). R5 is now met on paper with a trial pass for each batch of drum steel: the dial sets the bending roll to 0.025 mm against a 0.29 mm allowance. Every figure is from DMP-CAL-001 v0.2 (`docs/04-calcs/sizing.py`); the tag in brackets is the line of its output.
 
 *Table 1. Requirements and their status at TRL 3.*
 
@@ -41,7 +45,7 @@ On paper, the constructable design meets ten of the twelve requirements, misses 
 | R4 | Open the side | Straight slit along the full body length, edge deviation at or below 5 mm | Measure the cut line on trial drums | Met by design: the shear head runs on a rail straight within 1 mm |
 | R5 | Flat sheet | Panels flat within 10 mm over 1 m after rolling | Straightedge and feeler check | Met on paper, with a trial pass for each batch: needs the bending roll within 0.29 mm of the right height [E13], which is 11.8 divisions of the new 0.025 mm dial [E14d], held by a lock nut; a fixed setting can leave 188 mm of sag on other steel [E12], so the reading is found by a trial pass on the first drum of each batch; the last 90 mm of each panel end is set by hand [E15, E16] |
 | R6 | Manageable effort | Crank force at or below 150 N at the handle | Spring scale on the handle during trials | Met on paper: end cutter 27 N, shear head 68 N for the slit and 136 N for two ring cuts at 1.5 mm wall, notching punch lever 131 N, slip roll 20 N [C15, D15, D15r, K3, E23] |
-| R7 | Throughput | At least 2.5 drums to flat sheet per hour for a two-person team (restated 2026-10-03, was 4) | Timed half-day workshop trial | Not met: about 2.26 drums an hour [H5], 53.1 hands-on minutes a drum against 48.0 [H4, H9] |
+| R7 | Throughput | At least 2.5 drums to flat sheet per hour for a two-person team (restated 2026-10-03, was 4) | Timed half-day workshop trial | Not met on paper: about 2.26 drums an hour [H5], 53.1 hands-on minutes a drum against 48.0 [H4, H9]. Kept at 2.5 by Amish; the TRL 4 timed half-day trial decides (DMP-DDR-004) |
 | R8 | Local build | All parts made or bought in a town with a welder and a lathe | Build by a partner fabricator from the drawings | Met by design: welding, drilling and turning only; the rolls need a lathe with 1.1 m between centres; discs, cutter wheel, bearings, gears and chain are bought |
 | R9 | Value engineering | Bench set parts cost at or below the USD 3,000 value-engineering target | Costed bill of materials | Over the target: estimated USD 3,489, USD 489 over the value-engineering target [J1 to J3] |
 | R10 | Guarding | No finger reaches a roll nip, disc nip, gear or chain in normal use; guards need a tool to remove | ISO 13857 check of the guards as built | Met on paper: every slot 8 mm or less and 45 mm or more from its nip [G1 to G3]; the shear head's chains run inside its closed drive case and the ring head coupling turns inside a guard sleeve |

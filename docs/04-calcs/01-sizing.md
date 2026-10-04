@@ -3,7 +3,7 @@ doc_id: DMP-CAL-001
 title: DrumPanel sizing calculations
 project: DrumPanel
 doc_type: Calculation
-version: "0.2"
+version: "0.3"
 status: Draft
 date: '2026-10-03'
 author: Amish Chadha
@@ -17,6 +17,10 @@ revisions:
   date: '2026-10-03'
   author: Amish Chadha
   change: Amish's requirement decisions of 2026-10-03 (DMP-DDR-003); lever notching punch (new section 9), ring head and raised shear head drive, fine-pitch dial adjuster, throughput against R7 restated to 2.5 drums an hour, masses and cost
+- version: "0.3"
+  date: '2026-10-03'
+  author: Amish Chadha
+  change: R7 status note after Amish's decision 47 A (DMP-DDR-004); no figure changed
 ---
 
 # DrumPanel sizing calculations
@@ -208,7 +212,7 @@ Two people turn about 2.26 drums an hour into flat panels [H5], against the 2.5 
 
 What changed at the cradle [H8]: the four notches take 4.0 minutes with the lever notching punch, down from 8 with a hacksaw (1.2 minutes for each chime notch, 0.8 for each hoop slot [K9]). The six ring cuts take 9.5 minutes in three passes with the ring head, down from about 12.4 in six, including a minute a drum to bolt the ring head on and take it off. The slit takes 2.7 minutes, up from 2.3, because the new drive turns the discs 2.33 times slower. At the slip roll, the dial lets every drum after the first of a batch be set to a written reading: the trial pass is taken as 10 minutes for a batch of about ten drums plus half a minute a drum to check the dials, 1.5 minutes a drum in all, down from 3.
 
-The purge takes about 22.9 minutes elapsed but runs while the cradle works [H6]. Taking both heads off is about 3.9 minutes [H7]. The remaining gap of about 5 minutes a drum is spread over handling, setting up the ring passes and deburring; ways to close it are listed in the design decisions register (DMP-DEC-001, Open decisions and Value engineering). Even at 2.26 drums an hour, a two-person team turns a drum into panels in under 30 minutes, against the hours of fire and chisel work the method replaces.
+The purge takes about 22.9 minutes elapsed but runs while the cradle works [H6]. Taking both heads off is about 3.9 minutes [H7]. The remaining gap of about 5 minutes a drum is spread over handling, setting up the ring passes and deburring; Amish has kept R7 at 2.5 drums an hour and left the gap to the TRL 4 timed half-day trial, which measures exactly these task times (decision 47 A, DMP-DDR-004); ideas to close it, if the trial confirms it, are in the design decisions register (DMP-DEC-001, Value engineering). Even at 2.26 drums an hour, a two-person team turns a drum into panels in under 30 minutes, against the hours of fire and chisel work the method replaces.
 
 ## 9. Lever notching punch
 
@@ -260,7 +264,7 @@ Value-engineering target: USD 3,000. Estimated cost of the constructable design:
 | R4 | Straight slit, 5 mm | Rail-guided head | Met by design |
 | R5 | Flat within 10 mm over 1 m | Needs 0.29 mm setting accuracy [E13]; dial reads 0.025 mm, the allowance is 11.8 divisions [E14d]; set by a trial pass for each batch; ends hand-set [E16] | Met on paper, with a trial pass for each batch |
 | R6 | Crank force at or below 150 N | 136 N worst, two ring cuts at 1.5 mm [D15r]; punch lever 131 N [K3] | Met on paper |
-| R7 | 2.5 drums an hour, two people (restated 2026-10-03) | 2.26 drums an hour [H5] | **Not met** |
+| R7 | 2.5 drums an hour, two people (restated 2026-10-03) | 2.26 drums an hour [H5] | **Not met** on paper; kept at 2.5, the TRL 4 timed trial decides (DMP-DDR-004) |
 | R8 | Local build | Welding, drilling, turning; bought discs and bearings | Met by design |
 | R9 | Value-engineering target USD 3,000 | USD 3,489 [J1] | Over the target by USD 489 |
 | R10 | Guarding | All slots meet ISO 13857 on paper [G1 to G3] | Met on paper |
