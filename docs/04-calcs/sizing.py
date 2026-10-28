@@ -2,7 +2,7 @@
 
 Run from the repo root:  python docs/04-calcs/sizing.py
 Prints every figure used in docs/04-calcs/01-sizing.md, tagged [A1], [B2] and so on, and writes
-docs/04-calcs/results.csv. Geometry comes from cad/src/model.py (PARAMS, levels(), components()), costs from
+docs/04-calcs/results.csv. Geometry comes from cad/src/model.py (PARAMS, levels() and the station model station_components(), on which the kit 1.9 detailed model is built), costs from
 bom/bom.csv and the value-engineering target from project.yaml. First-principles estimates for a paper proof
 of concept; CONCEPT, NOT FOR FABRICATION.
 """
@@ -193,7 +193,7 @@ def shear_head():
     say("D22", f"Cutting speed at 30 crank turns a minute through the {DRIVE_RATIO:.2f} to 1 drive", round(lin, 2), "m/min")
     # beam carrying the trolley, drop bar and head
     head_m = 0.0
-    for c in m.components():
+    for c in m.station_components():
         if c.bom in (9, 10):
             head_m += c.shape.volume * 1e-9 * m.STEEL
     w = head_m * G
@@ -201,7 +201,7 @@ def shear_head():
     I = (40 * 80 ** 3 - 34 * 74 ** 3) / 12
     say("D23", "Mass of the trolley, drop bar and shear head", round(head_m, 1), "kg")
     say("D24", "Rail beam deflection with the head at mid-span", round(w * span ** 3 / (48 * E * I), 2), "mm")
-    ring_m = sum(c.shape.volume for c in m.components() if c.bom == 25) * 1e-9 * m.STEEL
+    ring_m = sum(c.shape.volume for c in m.station_components() if c.bom == 25) * 1e-9 * m.STEEL
     w2 = (head_m + ring_m) * G
     say("D25", "Mass of the ring head with its spacer plate and coupling", round(ring_m, 1), "kg")
     say("D26", "Rail beam deflection with both heads at mid-span", round(w2 * span ** 3 / (48 * E * I), 2), "mm")
@@ -444,16 +444,24 @@ def notching_punch():
 
 
 # ------------------------------------------------------------------ H. throughput and labour
+STANDS = 2          # drain and purge stands (DMP-DEC-001, STEM fix F2 of 2026-10-24: one stand cannot purge drums fast enough)
+
+
 def throughput(c, d, sr, sh, pg, kp):
     # minutes of work per drum, by station; elapsed waits (filling, draining) overlap other work
     purge_lab = 2 + 3 + 2 + 3 + 1          # load on stand, open bungs and start fill, rock, drain and tip, close
     check = 3
     # DMP-DDR-003: notches by the lever punch; ring cuts two at a time with the ring head (three passes, 1.5 min to set
-    # each, 1.0 min a drum to bolt the ring head on and take it off); the bending roll set from its dial (a 10 min trial
-    # pass on the first drum of a batch of about ten, then 0.5 min a drum to check the dial reading)
+    # each, 1.0 min a drum to bolt the ring head on and take it off).
+    # The cutting times use an effective speed of one third of the disc speed at 30 crank turns a minute (estimate):
+    # hand changes on the crank, stops to ease the cut edges round the web and the start of each pass.
+    # Bending roll (STEM fix F1 of 2026-10-24): a 10 min trial pass on the first drum of a batch of about ten (1.0 min a
+    # drum), then on every drum the first panel is checked with the straightedge and the dial trimmed (1.5 min), and
+    # about one panel in three is passed again, turned over if it is over-bent (0.5 min a drum).
     cut = dict(load=2, heads=2 * (1.5 + c["turns"] / 30), notches=kp["t_notches"], slit=2 + 0.9 / (sh["speed"] / 3),
                rings=3 * (1.5 + d["circ"] / 1000 / (sh["speed"] / 3)) + 1.0, unload=1.5)
-    roll = dict(set_trial=10 / 10 + 0.5, passes=3 * d["circ"] / 1000 / sr["speed"], handling=3, ends=6 * 0.5,
+    repass = (d["circ"] / 1000 / sr["speed"] + 0.5) / 3
+    roll = dict(set_trial=10 / 10 + 1.5 + repass, passes=3 * d["circ"] / 1000 / sr["speed"], handling=3, ends=6 * 0.5,
                 deburr=(2 * 3 * (d["circ"] + 235) / 1000 + 2 * math.pi * d["head_d"] / 1000) / 3)
     cut_t, roll_t = sum(cut.values()), sum(roll.values())
     total = purge_lab + check + cut_t + roll_t
@@ -466,10 +474,15 @@ def throughput(c, d, sr, sh, pg, kp):
     say("H8", "Notches, slit and ring cuts at the cradle, minutes per drum",
         f"{cut['notches']:.1f}; {cut['slit']:.1f}; {cut['rings']:.1f}")
     say("H9", "Hands-on minutes per drum for 2.5 drums an hour (R7)", round(2 * 60 / 2.5, 1))
-    say("H6", "Elapsed purge time per drum (fill, soak 10 min, drain), done while the cradle works",
-        round(L["sheet_l"] * 0 + 10.4 + 10 + 2.5, 1), "min")
+    elapsed = pg["fill"] + 10 + pg["drain"]
+    say("H6", "Elapsed purge time per drum (fill, soak 10 min, drain), done while the cradle works", round(elapsed, 1), "min")
     say("H7", "Heads off a drum, both ends, one person (R3)", round(cut["heads"], 1), "min")
-    return dict(rate=rate, heads=cut["heads"], total=total)
+    cycle = elapsed + purge_lab + check - 2          # the rocking (2 min) happens during the soak
+    say("H10", "Drain stand cycle per drum: load, fill, soak, drain, tip, close and check", round(cycle, 1), "min")
+    say("H11", "Drums an hour one drain stand can purge", round(60 / cycle, 2))
+    say("H12", f"Drums an hour {STANDS} drain stands can purge (the set has {STANDS})", round(STANDS * 60 / cycle, 2))
+    say("H13", "Drums an hour for two people with the purge stands as a limit", round(min(rate, STANDS * 60 / cycle), 2))
+    return dict(rate=min(rate, STANDS * 60 / cycle), heads=cut["heads"], total=total, cycle=cycle)
 
 
 # ------------------------------------------------------------------ I. masses and J. cost
@@ -477,7 +490,7 @@ def masses():
     dens = {"tables": m.PLY, "ds_chocks": 700.0, "tray": 950.0, "rs_bushes": m.BRONZE}
     st = {"purge": 0.0, "cut": 0.0, "roll": 0.0}
     kg = {}
-    for c in m.components():
+    for c in m.station_components():
         if c.group == "context":
             continue
         kg[c.key] = c.shape.volume * 1e-9 * dens.get(c.key, m.STEEL)

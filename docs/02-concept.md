@@ -3,9 +3,9 @@ doc_id: DMP-PRC-001
 title: DrumPanel design precis
 project: DrumPanel
 doc_type: Precis
-version: "0.4"
+version: "0.5"
 status: Draft
-date: '2026-10-03'
+date: '2026-10-24'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -25,6 +25,10 @@ revisions:
   date: '2026-10-03'
   author: Amish Chadha
   change: 'Amish''s requirement decisions of 2026-10-03 (DMP-DDR-003): lever notching punch, ring head for two ring cuts a pass, raised shear head drive, fine-pitch dial adjuster on the bending roll; figures from DMP-CAL-001 v0.2'
+- version: "0.5"
+  date: '2026-10-24'
+  author: Amish Chadha
+  change: 'Kit 1.9.1 upgrade: the design is option A of DMP-OPT-001 (proposed, awaiting Amish); STEM fixes F1 to F5 (DMP-DEC-001): first panel of every drum checked for flatness, two drain stands, LEL channel calibrated for heavy vapour, slots 7 to 8 mm, fire-resistant hydraulic fluids refused; throughput 2.20 drums an hour; cost USD 3,566'
 ---
 
 # DrumPanel design precis
@@ -36,12 +40,12 @@ Turns empty oil drums into flat sheet by purging and cold-opening them instead o
 DrumPanel is a hand-powered bench set in three stations that takes an empty 208 L oil drum to flat steel without fire. Two people run it; nothing needs electricity.
 
 1. **Accept or reject.** Only a drum whose label shows it held a non-volatile oil is taken in. Anything else goes back.
-2. **Drain and purge** (drain and purge stand). The drum lies on a low stand that slopes 2.9 degrees toward its bungs, over a tray. Residue drains out of the bottom bung; the drum is then filled with water and a little detergent through the top bung, left 10 minutes, and drained. The water settles in a spare drum and is reused.
+2. **Drain and purge** (two drain and purge stands, so one drum soaks while the next is filled). The drum lies on a low stand that slopes 2.9 degrees toward its bungs, over a tray. Residue drains out of the bottom bung; the drum is then filled with water and a little detergent through the top bung, left 10 minutes, and drained. The water settles in a spare drum and is reused.
 3. **Vapour check.** A pumped gas detector samples through both bungs. The drum passes only below 5 % of the lower explosive limit; otherwise it is purged again.
 4. **Heads off** (cutting cradle). The drum rolls onto four rollers that carry it on its rolling hoops. A hand-cranked end cutter clamps over the chime: a knurled wheel drives it round while a hardened wheel cuts the head out just inside the chime. A torque arm against a rail post stops it turning with the drum. Both heads come out as flat discs about 552 mm across.
 5. **Notch and slit.** A lever notching punch, slid into the open drum end, punches a notch through each chime and a slot through each hoop on the slit line, beside the drum's own welded seam, with up to about 18 swings of its ratchet lever for each. The drum brake is screwed on. A hand-cranked rotary shear head, hanging from a trolley on an overhead rail, is wound along the top of the drum: its upper disc is driven through a small chain drive whose crank turns high, clear of the drum, its lower disc runs inside, and its thin web runs in the cut behind them, so the drum is slit from end to end.
 6. **Ring cuts.** The head is swung 90 degrees on its pivot and a second head, the ring head, is lowered through the slit and bolted to it 233 mm along the drum, its upper disc coupled to the first. With the brake off, the crank turns the drum on its rollers past both pairs of discs three times, making two cuts each time: 30 mm in from each end to take off the chime rings, and each side of each hoop to take out the hoop strips. What is left is three curled panels.
-7. **Roll flat** (slip roll stand). The three panels are fed side by side, paint side up, through a hand-cranked slip roll: a pinch pair geared together drives them, and a bending roll behind bends them the other way just enough that they spring back flat. The bending roll is set on fine-pitch screws with dials and lock nuts: a trial pass on the first drum of each batch finds the dial reading, and every later drum is set to it. The last 90 mm of each panel end is set flat by hand on a steel plate.
+7. **Roll flat** (slip roll stand). The three panels are fed side by side, paint side up, through a hand-cranked slip roll: a pinch pair geared together drives them, and a bending roll behind bends them the other way just enough that they spring back flat. The bending roll is set on fine-pitch screws with dials and lock nuts: a trial pass on the first drum of each batch finds the dial reading; on every later drum the first panel is checked with a straightedge, the dial trimmed, and a panel out of tolerance passed again. The last 90 mm of each panel end is set flat by hand on a steel plate.
 8. **Deburr.** Every cut edge is filed or scraped before the panels are stacked.
 
 ![Figure 1. Concept overview](../media/hero.png)
@@ -54,8 +58,8 @@ DrumPanel is a hand-powered bench set in three stations that takes an empty 208 
 
 | BOM | Component | Role |
 | --- | --- | --- |
-| 1 | Drain and purge stand | Welded frame with hardwood chocks that holds a drum, full of water if need be, bung end low over the tray |
-| 2 | Drain tray | Catches residue and purge water |
+| 1 | Drain and purge stands (2) | Welded frames with hardwood chocks that each hold a drum, full of water if need be, bung end low over a tray; two, so that one drum purges while another soaks |
+| 2 | Drain trays (2) | Catch residue and purge water |
 | 3 | Purge kit | Hose, bung adaptors, non-sparking bung wrench, settling drum fittings, detergent |
 | 4 | Vapour check kit | Pumped LEL gas detector with its alarm at 5 % LEL, and bump-test gas |
 | 5 | Cradle frame with levelling feet | Low welded frame; the feet also set the drum height under the rail |
@@ -91,9 +95,9 @@ Choices 1 to 8 were decided on 2026-10-03 under Amish's pre-approval (DMP-DDR-00
 4. **Three panels, hoops cut out.** Straightening a rolling hoop would stretch its crown about 8 %; cutting the hoop strips out leaves three flat panels about 233 x 1,800 mm instead of one buckled sheet.
 5. **One shear head for the slit, two for the ring cuts.** It swivels 90 degrees on its pivot; the slit is made with the drum still, the ring cuts with the drum turning and the ring head bolted on.
 6. **Slip roll, not a three-roll pyramid.** A pyramid of three plain rolls cannot drive the panels by friction alone; the geared pinch pair grips them with a set force and the bending roll does the bending.
-7. **Trial-pass setting.** The setting that leaves a panel flat changes with each batch of drum steel, so the first panel of each batch is used to find it.
+7. **Trial-pass setting.** The setting that leaves a panel flat changes with each batch of drum steel, and even from drum to drum, so the first panel of each batch is used to find it and the first panel of every drum is checked with a straightedge and the dial trimmed (STEM fix F1).
 8. **Shared bench set.** One set serves a cooperative or a cluster of workshops.
-9. **Throughput (R7).** A lever notching punch replaces the hacksaw notches and a ring head makes two ring cuts a pass, so two people turn about 2.26 drums an hour, against Amish's restated target of 2.5.
+9. **Throughput (R7).** A lever notching punch replaces the hacksaw notches and a ring head makes two ring cuts a pass, so two people turn about 2.20 drums an hour, against Amish's restated target of 2.5.
 10. **Flatness (R5).** Fine-pitch bending screws with dials (0.025 mm a division) and lock nuts set the bending roll well inside the 0.29 mm allowance and hold it.
 
 ## First-order numbers
@@ -111,9 +115,9 @@ Choices 1 to 8 were decided on 2026-10-03 under Amish's pre-approval (DMP-DDR-00
 | Notching punch | 24.3 kN for a chime notch; lever force up to 131 N | [K1, K3] |
 | Slip roll | Bending roll about 13.4 mm above the lower roll for 250 MPa, 1.0 mm steel; 9.3 to 19.3 mm over the range; set to 0.29 mm, 11.8 dial divisions | [E10, E11, E13, E14d] |
 | Slip roll crank | 20 N at 300 mm through a 3:1 chain; feed 1.9 m/min | [E23, E24] |
-| Throughput | About 2.26 drums an hour for two people (estimate; R7 asks 2.5) | [H5] |
-| Masses | Cradle with its tools about 196 kg, slip roll stand about 191 kg, drain stand about 15 kg | [I1 to I3] |
-| Cost | Value-engineering target: USD 3,000. Estimated cost of the constructable design: USD 3,489 (USD 489 over the target) | [J1 to J3] |
+| Throughput | About 2.20 drums an hour for two people, with two drain stands (estimate; R7 asks 2.5) | [H5, H13] |
+| Masses | Cradle with its tools about 196 kg, slip roll stand about 191 kg, each drain stand about 15 kg | [I1 to I3] |
+| Cost | Value-engineering target: USD 3,000. Estimated cost of the constructable design: USD 3,566 (USD 566 over the target) | [J1 to J3] |
 
 ## Patent design-arounds
 

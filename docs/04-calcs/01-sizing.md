@@ -3,9 +3,9 @@ doc_id: DMP-CAL-001
 title: DrumPanel sizing calculations
 project: DrumPanel
 doc_type: Calculation
-version: "0.2"
+version: "0.3"
 status: Draft
-date: '2026-10-03'
+date: '2026-10-24'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -17,17 +17,21 @@ revisions:
   date: '2026-10-03'
   author: Amish Chadha
   change: Amish's requirement decisions of 2026-10-03 (DMP-DDR-003); lever notching punch (new section 9), ring head and raised shear head drive, fine-pitch dial adjuster, throughput against R7 restated to 2.5 drums an hour, masses and cost
+- version: "0.3"
+  date: '2026-10-24'
+  author: Amish Chadha
+  change: "Kit 1.9.1 upgrade and STEM fixes F1 to F4 (DMP-DEC-001): per-drum flatness check (section 5.3) and two drain stands (section 8), throughput 2.20 drums an hour; slot tolerance; cost USD 3,566; the script reads the station model (station_components()) on which the D3 model is built, so the geometry numbers are unchanged; section 5.1 reworded (a rolled hoop would buckle the panel; the steel would not tear), found by the STEM check (DMP-STM-001); requirement IDs now PR-001 to PR-012 (DMP-PRS-001), R numbers kept in brackets"
 ---
 
 # DrumPanel sizing calculations
 
-On paper the DrumPanel bench set meets ten of its twelve requirements and misses one, and its estimated cost is over the value-engineering target. Every crank and lever force is at or below 136 N against the 150 N limit of R6, and the guards meet ISO 13857 on paper. R7, restated by Amish on 2026-10-03 to 2.5 drums an hour, is not met: with the lever notching punch, the ring head and the dial-set bending roll, two people would turn about 2.26 drums an hour into flat panels, up from 2.0. R5 is met on paper with a trial pass for each batch: the slip roll leaves a panel flat only when its bending roll is within about 0.29 mm of the right height for that batch of drum steel, and the new fine-pitch dial sets and holds that height to 0.025 mm, about a twelfth of the allowance; the last 90 mm at each panel end is still set by hand. Value-engineering target: USD 3,000. Estimated cost of the constructable design: USD 3,489 (USD 489 over the target). Rolling the hoops flat would stretch their crowns about 8.5 %, which is why the hoops are cut out and the body becomes three panels about 233 x 1,800 mm. Every number in this note is printed by `docs/04-calcs/sizing.py`; the tag in brackets, for example [D15], is the line of that script's output that carries it.
+On paper the DrumPanel bench set meets ten of its twelve requirements and misses one, and its estimated cost is over the value-engineering target. Every crank and lever force is at or below 136 N against the 150 N limit of R6, and the guards meet ISO 13857 on paper. R7, restated by Amish on 2026-10-03 to 2.5 drums an hour, is not met: with the lever notching punch, the ring head and the dial-set bending roll, two people would turn about 2.20 drums an hour into flat panels, up from 2.0, with two drain stands so the purge keeps up. R5 is met on paper with a trial pass for each batch and a straightedge check of the first panel of every drum: the slip roll leaves a panel flat only when its bending roll is within about 0.29 mm of the right height, a change of 0.02 mm of wall or 5 MPa of yield uses that up, and the fine-pitch dial sets and holds the height to 0.025 mm, about a twelfth of the allowance; the last 90 mm at each panel end is still set by hand. Value-engineering target: USD 3,000. Estimated cost of the constructable design: USD 3,566 (USD 566 over the target). Rolling the hoops flat would stretch their crowns about 8.5 %, more than three rolls can put in evenly, which is why the hoops are cut out and the body becomes three panels about 233 x 1,800 mm. Every number in this note is printed by `docs/04-calcs/sizing.py`; the tag in brackets, for example [D15], is the line of that script's output that carries it.
 
 > **Safety:** These are first-principles estimates for a paper proof of concept. They do not show that a purged drum is free of vapour, that the guards are safe as built, or that the frames carry their loads in service. The vapour check, the guard openings and the drain stand must be checked on hardware before any drum is cut. See DMP-PRC-001, Safety.
 
 ## Scope and method
 
-The note checks every requirement in DMP-REQ-001 v0.4 against the design in DMP-PRC-001 v0.4 and the parametric model `cad/src/model.py`. The script imports the model's `PARAMS`, `levels()` and `components()`, so the drum, rollers, shear head, slip roll and guards used here are the ones in the STEP files and in drawing DMP-DWG-001. It reads `bom/bom.csv` for the cost and `budget_usd` in `project.yaml` for the target. Run it from the repo root with `python docs/04-calcs/sizing.py`; it also writes `docs/04-calcs/results.csv`. The model's own checks (`python cad/src/model.py --check`) show that no two of its 52 parts overlap, that every joint face touches, that the shear head with the ring head bolted on clears the drum in all three ring passes and alone at seven stations along the slit, that its crank sweeps clear of the drum, the posts, the rail beam and the trolley in both modes, and that the notching punch fits each of the four notches with its die faces on the steel.
+The note checks every requirement of DMP-PRS-001 v0.6 (PR-001 to PR-012, which were R1 to R12 of DMP-REQ-001; the R numbers are kept below) against the design in DMP-PRC-001 v0.4 and the parametric model `cad/src/model.py`. The script imports the model's `PARAMS`, `levels()` and its station model `station_components()`, one solid per component as designed; the kit 1.9 detailed model of option A (`components("A")`, 818 parts with every bolt, weld and bearing, in the STEP files and drawing DMP-DWG-001) is built on the same parameters and positions, so the drum, rollers, shear head, slip roll and guards used here are the ones drawn. The detailed model, with both drain stands, weighs 403 kg against 417 kg for the station model here with two stands (hollow sections with real corner radii, holes and edge breaks; the drain trays in HDPE); the masses below stay on the station model. It reads `bom/bom.csv` for the cost and `budget_usd` in `project.yaml` for the target. Run it from the repo root with `python docs/04-calcs/sizing.py`; it also writes `docs/04-calcs/results.csv`. The model's own checks (`python cad/src/model.py --check`) show that no two of the station model's 52 components overlap, that every joint face touches, that the shear head with the ring head bolted on clears the drum in all three ring passes and alone at seven stations along the slit, that its crank sweeps clear of the drum, the posts, the rail beam and the trolley in both modes, and that the notching punch fits each of the four notches with its die faces on the steel.
 
 ## Assumptions
 
@@ -121,7 +125,7 @@ The ring head is a second shear head, made to the same drawings without a drive,
 
 ### 5.1 Why the hoops are cut out
 
-A rolling hoop stands about 12 mm out from the body wall. Bent to the reverse curvature the slip roll needs, its crown would be stretched about 8.5 % [E29], far past what the sheet can take without tearing or buckling. So the hoop strips are cut out with the shear head (DMP-DDR-002, P7) and only flat panels go through the rolls.
+A rolling hoop stands about 12 mm out from the body wall. Bent to the reverse curvature the slip roll needs, its crown would be stretched about 8.5 % [E29], more than ten times the 0.35 % surface strain of a plain panel in the rolls. Low-carbon drum steel would not tear at that strain, but three rolls cannot put it in evenly, so a rolled hoop would leave the panel buckled. So the hoop strips are cut out with the shear head (DMP-DDR-002, P7) and only flat panels go through the rolls.
 
 ### 5.2 The setting that leaves a panel flat
 
@@ -141,13 +145,13 @@ A panel leaves the drum curled to a 286.5 mm radius [E1]. To come out flat, it m
 | 300 MPa | 1.0 mm | 234 mm | 15.8 mm | 49.9 N·m | 554 N | 164 N | [E300-10] |
 | 300 MPa | 1.2 mm | 278 mm | 13.4 mm | 72.5 N·m | 805 N | 239 N | [E300-12] |
 
-The nominal setting is 13.4 mm [E10]; the range over likely drum steel is 9.3 to 19.3 mm [E11], well inside the 60 mm of slot travel.
+The nominal setting is 13.4 mm [E10]; the range over likely drum steel is 9.3 to 19.3 mm [E11], well inside the 60 mm of slot travel. The heights assume the panel follows a circular arc between the pinch line and the bending roll; with the moment falling to zero at the bending roll, as the force balance here has it, the independent review of DMP-STM-001 estimated about 9.7 mm nominal and 6 to 13 mm over the range. Either way the setting lies well inside the slot travel, and the trial pass, not the formula, finds it; the forces and moments are unchanged.
 
 ### 5.3 The trial pass and the dial adjuster (R5)
 
 The setting is sensitive. If the nominal setting were used on steel at the edges of the range, a panel could sag up to 188 mm over 1 m [E12]. To stay within the 10 mm over 1 m of R5, the bending roll must be within 0.29 mm of the right height [E13]. With the former M20 x 2.5 screws and 12-division handwheels that allowance was only about 1.4 divisions [E14c], so the setting was at risk.
 
-Each bending screw is now a fine-pitch M20 x 1.5 screw with an 80 mm dial of 60 divisions, 0.025 mm each, read against a pointer on the bridge, and a lock nut that holds the setting (DMP-DDR-003, Q4). The 0.29 mm allowance is 71 degrees of a turn, or 11.8 divisions [E14, E14d], so both ends can be set to the same reading well inside it and returned to after a change. The right height still depends on the batch of drum steel, so the first panel of each batch is passed, checked with a straightedge, and the dials adjusted until it comes out flat; the reading is then written on the batch and every later drum is set to it. R5 is met on paper with this trial pass; a TRL 4 trial will show how many passes the first panel of a batch takes.
+Each bending screw is now a fine-pitch M20 x 1.5 screw with an 80 mm dial of 60 divisions, 0.025 mm each, read against a pointer on the bridge, and a lock nut that holds the setting (DMP-DDR-003, Q4). The 0.29 mm allowance is 71 degrees of a turn, or 11.8 divisions [E14, E14d], so both ends can be set to the same reading well inside it and returned to after a change. The right height depends on the steel of each drum, not only of each batch: with the setting found for a 250 MPa, 1.0 mm drum, a wall 0.02 mm thicker or a yield 5 MPa higher already leaves about 8 mm of sag over 1 m, and 0.05 mm of wall or 10 MPa of yield about 16 to 20 mm (the independent review of DMP-STM-001, rechecked with this script's residual curvature). A reading found once for a batch of about ten drums, as v0.2 of this note had it, does not hold from drum to drum. So the first panel of each batch is passed, checked with a straightedge and the dials adjusted until it comes out flat; then on every drum the first panel is checked with the straightedge and the dials trimmed, and a panel that comes out of tolerance is passed again, turned over if it is over-bent (DMP-DEC-001, STEM fix F1). R5 is met on paper with these checks; a TRL 4 trial will show how many second passes they take. The bending roll itself bends about 0.07 mm under its worst load, a quarter of the allowance (DMP-STM-001 S26).
 
 ### 5.4 Panel ends
 
@@ -180,7 +184,7 @@ The drum sits on its hoops at 33 degrees from vertical each side [F2], with its 
 
 ## 7. Guards (ISO 13857, slot openings)
 
-ISO 13857 Table 4 allows a slot opening of up to 8 mm when the danger point is at least 20 mm behind it.
+ISO 13857 Table 4 allows a slot opening of up to 8 mm when the danger point is at least 20 mm behind it; a slot over 8 mm needs 80 mm, so the slots are drawn at 8 mm and made 7 to 8 mm (PR-010, STEM fix F4).
 
 *Table 8. Guard openings.*
 
@@ -194,7 +198,7 @@ The slip roll chain, sprockets and pinch gears are fully enclosed, and so are th
 
 ## 8. Throughput
 
-Two people turn about 2.26 drums an hour into flat panels [H5], against the 2.5 of R7 as restated by Amish on 2026-10-03. R7 is not met: 2.5 drums an hour needs 48.0 hands-on minutes per drum [H9], and the estimate is 53.1 [H4].
+Two people turn about 2.20 drums an hour into flat panels [H5], against the 2.5 of R7 as restated by Amish on 2026-10-03. R7 is not met: 2.5 drums an hour needs 48.0 hands-on minutes per drum [H9], and the estimate is 54.6 [H4].
 
 *Table 9. Hands-on minutes per drum.*
 
@@ -202,13 +206,13 @@ Two people turn about 2.26 drums an hour into flat panels [H5], against the 2.5 
 | --- | --- | --- | --- |
 | Purge and vapour check | 14 | 14 | [H1] |
 | Cutting cradle: load, two heads, four notches, slit, six ring cuts, unload | 30.1 | 23.6 | [H2] |
-| Slip roll and finishing: setting, three passes, handling, panel ends, deburring | 17.1 | 15.6 | [H3] |
-| Total | 61.2 | 53.1 | [H4] |
-| Drums per hour for two people | 2.0 | 2.26 | [H5] |
+| Slip roll and finishing: setting and per-drum check, three passes, handling, panel ends, deburring | 17.1 | 17.1 | [H3] |
+| Total | 61.2 | 54.6 | [H4] |
+| Drums per hour for two people | 2.0 | 2.20 | [H5] |
 
-What changed at the cradle [H8]: the four notches take 4.0 minutes with the lever notching punch, down from 8 with a hacksaw (1.2 minutes for each chime notch, 0.8 for each hoop slot [K9]). The six ring cuts take 9.5 minutes in three passes with the ring head, down from about 12.4 in six, including a minute a drum to bolt the ring head on and take it off. The slit takes 2.7 minutes, up from 2.3, because the new drive turns the discs 2.33 times slower. At the slip roll, the dial lets every drum after the first of a batch be set to a written reading: the trial pass is taken as 10 minutes for a batch of about ten drums plus half a minute a drum to check the dials, 1.5 minutes a drum in all, down from 3.
+What changed at the cradle [H8]: the four notches take 4.0 minutes with the lever notching punch, down from 8 with a hacksaw (1.2 minutes for each chime notch, 0.8 for each hoop slot [K9]). The six ring cuts take 9.5 minutes in three passes with the ring head, down from about 12.4 in six, including a minute a drum to bolt the ring head on and take it off. The slit takes 2.7 minutes, up from 2.3, because the new drive turns the discs 2.33 times slower. At the slip roll the trial pass is taken as 10 minutes for a batch of about ten drums (1.0 minute a drum), then 1.5 minutes a drum to check the first panel with the straightedge and trim the dials, and 0.5 minutes a drum for second passes (about one panel in three), 3.0 minutes a drum in all (STEM fix F1; 1.5 minutes in v0.2). The cutting times use an effective speed of one third of the disc speed at 30 crank turns a minute, an estimate that allows for hand changes on the crank, stops to ease the cut edges round the web and the start of each pass.
 
-The purge takes about 22.9 minutes elapsed but runs while the cradle works [H6]. Taking both heads off is about 3.9 minutes [H7]. The remaining gap of about 5 minutes a drum is spread over handling, setting up the ring passes and deburring; ways to close it are listed in the design decisions register (DMP-DEC-001, Open decisions and Value engineering). Even at 2.26 drums an hour, a two-person team turns a drum into panels in under 30 minutes, against the hours of fire and chisel work the method replaces.
+The purge takes about 23.3 minutes elapsed and runs while the cradle works [H6], but it holds its stand for the whole cycle: loading, fill, soak, drain, tipping and the check take about 35.3 minutes a drum [H10], so one stand could purge only about 1.7 drums an hour [H11], less than the cradle and slip roll use. The independent review of DMP-STM-001 found this; the set now has two drain stands and trays (DMP-DEC-001, STEM fix F2), which purge about 3.4 drums an hour [H12], so the hands-on rate of 2.20 holds [H13]. A drum that fails the vapour check takes another cycle. Taking both heads off is about 3.9 minutes [H7]. The remaining gap of about 6.6 minutes a drum is spread over handling, setting up the ring passes and deburring; ways to close it are listed in the design decisions register (DMP-DEC-001, Open decisions and Value engineering). Even at 2.20 drums an hour, a two-person team turns a drum into panels in under 30 minutes, against the hours of fire and chisel work the method replaces.
 
 ## 9. Lever notching punch
 
@@ -232,7 +236,7 @@ The chime notch is the hard one: the punch shears five layers of the folded seam
 
 | Item | Mass | Tag |
 | --- | --- | --- |
-| Drain and purge stand with tray | 15 kg | [I1] |
+| Drain and purge stand with tray, each of two | 15 kg | [I1] |
 | Cutting cradle with posts, beam, shear head, ring head, end cutter, notching punch and tool shelf | 196 kg | [I2] |
 | Slip roll stand with tables | 191 kg | [I3] |
 | Heaviest lift: cradle frame, one welded piece | 33.7 kg | [I4] |
@@ -246,7 +250,7 @@ Only the cradle frame is over the 25 kg one-person limit of R11; it is lifted by
 
 ## 11. Cost
 
-Value-engineering target: USD 3,000. Estimated cost of the constructable design: USD 3,489 (USD 489 over the target) [J1 to J3]. The decisions of 2026-10-03 added USD 695: the notching punch (USD 330, replacing the USD 45 hacksaw line), the ring head (USD 255), the shear head drive (USD 75), the dial adjusters (USD 40) and the tool shelf (USD 40). The largest lines are now the vapour check kit (USD 600), the shear head (USD 340), the notching punch (USD 330) and the three rolls (USD 285) [J4 to J7].
+Value-engineering target: USD 3,000. Estimated cost of the constructable design: USD 3,566 (USD 566 over the target) [J1 to J3]. The second drain stand and tray of STEM fix F2 add USD 77. The decisions of 2026-10-03 added USD 695: the notching punch (USD 330, replacing the USD 45 hacksaw line), the ring head (USD 255), the shear head drive (USD 75), the dial adjusters (USD 40) and the tool shelf (USD 40). The largest lines are now the vapour check kit (USD 600), the shear head (USD 340), the notching punch (USD 330) and the three rolls (USD 285) [J4 to J7].
 
 ## 12. Results against the requirements
 
@@ -258,13 +262,13 @@ Value-engineering target: USD 3,000. Estimated cost of the constructable design:
 | R2 | Vapour check flags 10 % LEL | Detector alarm at 5 % LEL | Met by design |
 | R3 | Both heads off in under 10 min | 3.9 min [H7] | Met on paper |
 | R4 | Straight slit, 5 mm | Rail-guided head | Met by design |
-| R5 | Flat within 10 mm over 1 m | Needs 0.29 mm setting accuracy [E13]; dial reads 0.025 mm, the allowance is 11.8 divisions [E14d]; set by a trial pass for each batch; ends hand-set [E16] | Met on paper, with a trial pass for each batch |
+| R5 | Flat within 10 mm over 1 m | Needs 0.29 mm setting accuracy [E13]; dial reads 0.025 mm, the allowance is 11.8 divisions [E14d]; trial pass for each batch, first panel of every drum checked and the dial trimmed; ends hand-set [E16] | Met on paper, with the per-drum check |
 | R6 | Crank force at or below 150 N | 136 N worst, two ring cuts at 1.5 mm [D15r]; punch lever 131 N [K3] | Met on paper |
-| R7 | 2.5 drums an hour, two people (restated 2026-10-03) | 2.26 drums an hour [H5] | **Not met** |
+| R7 | 2.5 drums an hour, two people (restated 2026-10-03) | 2.20 drums an hour [H5, H13], two drain stands | **Not met** |
 | R8 | Local build | Welding, drilling, turning; bought discs and bearings | Met by design |
-| R9 | Value-engineering target USD 3,000 | USD 3,489 [J1] | Over the target by USD 489 |
+| R9 | Value-engineering target USD 3,000 | USD 3,566 [J1] | Over the target by USD 566 |
 | R10 | Guarding | All slots meet ISO 13857 on paper [G1 to G3] | Met on paper |
-| R11 | Handling | 33.7 kg frame by two people [I4]; every other piece 23.7 kg or less [I5 to I9]; full drum never lifted | Met with a two-person rule |
+| R11 | Handling | 33.7 kg frame by two people [I4]; every other piece 23.7 kg or less [I5 to I9], the shear head and ring head lifted to the rail by two people; full drum never lifted | Met with a two-person rule |
 | R12 | Yield | Three panels 233 to 234 x 1,800 mm, two 552 mm heads [A1 to A3] | Met by design |
 
 ## Where the numbers come from

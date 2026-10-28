@@ -3,9 +3,9 @@ doc_id: DMP-PRB-001
 title: DrumPanel problem statement
 project: DrumPanel
 doc_type: Problem statement
-version: "0.3"
+version: "0.4"
 status: Draft
-date: '2026-10-03'
+date: '2026-10-24'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -21,6 +21,10 @@ revisions:
   date: '2026-10-03'
   author: Amish Chadha
   change: TRL 3 update; budget worded as a value-engineering target; open questions answered by the decisions of 2026-10-03 (DMP-DDR-001, DMP-DDR-002)
+- version: "0.4"
+  date: '2026-10-24'
+  author: Amish Chadha
+  change: Kit 1.8 upgrade; users-and-needs and stakeholders tables added (Tables 1 and 2), drawn from the users, context and co-design notes; the user requirements DMP-URS-001 are drawn from them
 ---
 
 # DrumPanel problem statement
@@ -41,6 +45,30 @@ In the preliminary IP screen the closest alternatives were powered drum cutter-f
 | Local fabricators | Drawings for a bench set they can build from commodity steel | Towns with a welder and a lathe but no sheet metal machinery |
 | Artisan cooperatives and fair trade buyers | A safer, repeatable preparation step they can fund and document | Export supply chains |
 | Drum collectors and recyclers | A way to open drums that cannot be reused whole without burning them | Port and industrial areas |
+
+### Users and needs
+
+Table 1. Users and needs.
+
+| User type | Goals and needs | Typical use scenario | Pain points and challenges |
+| --- | --- | --- | --- |
+| Apprentices in drum art workshops | Open drums safely and quickly; flat sheet without climbing inside drums | Two apprentices prepare a morning's drums for the artists of a workshop cluster | Smoke from burning residue and paint; loud chisel work; tiring body-weight flattening; cut hands |
+| Metal artists | Clean, flat sheet of a known size, and the head discs, ready to mark out | An artist collects three panels and two discs per drum for a sculpture or wall piece | Uneven, buckled sheet that needs hours of hammering; burnt paint and soot on the steel |
+| Local fabricators | Drawings, a build plan and a bill of commodity parts they can build from | A town welding shop with a lathe builds one set for a cooperative and maintains it | No sheet metal machinery; imported tools cannot be repaired locally |
+| Drum collectors and recyclers | A way to turn drums that cannot be reused whole into sheet, without burning | Drums from the port are sorted by their labels and the oil drums go to the bench set | Unknown contents; drums with fuel or chemical residue must be kept out |
+
+### Stakeholders
+
+Table 2. Stakeholders.
+
+| Stakeholder group | Role or interest | Engagement needed |
+| --- | --- | --- |
+| Artisan cooperatives and community arts organisations | Host and own a shared bench set; shape the procedure around how apprentices work | Co-design partner: trials, procedure review in the apprentices' language, panel sizes |
+| Fair trade buyers and export partners (for example Singing Rooster) | A safer, documented preparation step in their supply chain; may fund a set | First contact to reach a cooperative; nothing agreed (DMP-DDR-001, D11) |
+| Vocational welding schools | Build the first set as a training project; teach the vapour check | Second co-design candidate, for the build |
+| Neighbours of the workshops | Less smoke and noise in the street | Informed through the cooperative |
+| Local authorities (environment, labour) | Disposal of purge water and oil; workplace safety | To assess where the first set is placed (DMP-REG-001) |
+| Gas detector suppliers | Supply, calibration gas and service of the LEL detector | Local supplier to confirm before purchase (TRL 4) |
 
 ## Operating environment
 

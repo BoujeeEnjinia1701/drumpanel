@@ -38,9 +38,9 @@ D21,Bending stress in a 25 mm head shaft at 1.5 mm wall,17.7,MPa
 D22,Cutting speed at 30 crank turns a minute through the 2.33 to 1 drive,4.08,m/min
 D23,"Mass of the trolley, drop bar and shear head",28.2,kg
 D24,Rail beam deflection with the head at mid-span,0.15,mm
-D25,Mass of the ring head with its spacer plate and coupling,20.4,kg
+D25,Mass of the ring head with its spacer plate and coupling,20.7,kg
 D26,Rail beam deflection with both heads at mid-span,0.26,mm
-D27,Bending stress in the 10 mm spacer plate from the ring head's weight (233 mm out),24.4,MPa
+D27,Bending stress in the 10 mm spacer plate from the ring head's weight (233 mm out),24.7,MPa
 E1,Drum curvature to take out (radius),286.5,mm
 E2,Width fed at once (three panels side by side),700,mm
 E200-8,"Yield 200 MPa, 0.8 mm: bent to reverse radius 278 mm, bending roll 13.4 mm above the lower roll, moment 21.5 N m, bending roll force 239 N, feed resistance",71,N
@@ -92,27 +92,31 @@ K8,"Lever swings under load (60 deg each), chime notch; hoop slot",18; 8,
 K9,"Time per notch, chime; hoop (place, run the punch down by hand, lever, back off, take out)",1.2; 0.8,min
 H1,"Purge and vapour check, hands-on minutes per drum",14,
 H2,Cutting cradle minutes per drum,23.6,
-H3,Slip roll and finishing minutes per drum,15.6,
-H4,Total hands-on minutes per drum,53.1,
-H5,"Drums per hour for two people, work shared evenly",2.26,
+H3,Slip roll and finishing minutes per drum,17.1,
+H4,Total hands-on minutes per drum,54.6,
+H5,"Drums per hour for two people, work shared evenly",2.2,
 H8,"Notches, slit and ring cuts at the cradle, minutes per drum",4.0; 2.7; 9.5,
 H9,Hands-on minutes per drum for 2.5 drums an hour (R7),48.0,
-H6,"Elapsed purge time per drum (fill, soak 10 min, drain), done while the cradle works",22.9,min
+H6,"Elapsed purge time per drum (fill, soak 10 min, drain), done while the cradle works",23.3,min
 H7,"Heads off a drum, both ends, one person (R3)",3.9,min
+H10,"Drain stand cycle per drum: load, fill, soak, drain, tip, close and check",35.3,min
+H11,Drums an hour one drain stand can purge,1.7,
+H12,Drums an hour 2 drain stands can purge (the set has 2),3.39,
+H13,Drums an hour for two people with the purge stands as a limit,2.2,
 I1,Drain and purge stand with tray,15,kg
 I2,"Cutting cradle with posts, beam, shear head, ring head, end cutter, notching punch and tool shelf",196,kg
 I3,Slip roll stand with tables,191,kg
 I4,"Lift 1: Cradle frame, one welded piece",33.7,kg
 I5,"Lift 2: Shear head with its shafts, discs, guard, drive and drop bar",23.7,kg
 I6,Lift 3: Lower pinch roll,21.0,kg
-I7,Lift 4: Ring head with its spacer plate and coupling,20.4,kg
+I7,Lift 4: Ring head with its spacer plate and coupling,20.7,kg
 I8,"Lift 5: Side frame with its legs and bridge, each",20.1,kg
 I9,"Lift 6: Notching punch, carried to the drum",18.7,kg
 I10,"Lift 7: Roller shaft with its two rollers, each",16.3,kg
 I11,"Lift 8: Table frame, each",16.1,kg
-J1,Estimated cost of the constructable design (bom/bom.csv),"3,489",USD
+J1,Estimated cost of the constructable design (bom/bom.csv),"3,566",USD
 J2,Value-engineering target (project.yaml),"3,000",USD
-J3,Under (-) or over (+) the target,+489,USD
+J3,Under (-) or over (+) the target,+566,USD
 J4,Cost driver 1: 4 Vapour check kit,600,USD
 J5,Cost driver 2: 10 Rotary shear head,340,USD
 J6,Cost driver 3: 21 Lever notching punch,330,USD

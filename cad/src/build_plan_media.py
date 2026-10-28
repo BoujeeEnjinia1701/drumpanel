@@ -6,8 +6,8 @@ Run from the repo root:
     python cad/src/build_plan_media.py sheets [101 102 ...]
     python cad/src/build_plan_media.py joints [1 2 ...]
     python cad/src/build_plan_media.py steps [1 2 ...]
-Every picture is drawn from cad/src/model.py (components(), shear_head_local()), so the pictures and the model
-never disagree:
+Every picture is drawn from cad/src/model.py (keyed_components(): the kit 1.9 detailed parts of option A grouped by
+station component; shear_head_local() for the local views), so the pictures and the model never disagree:
     docs/05-build-plan/overview.png        every component pulled apart, numbered in build order
     cad/drawings/DMP-DWG-101 to 123        making sketches for the made components
     docs/05-build-plan/joint-NN.png        close-ups of the joints that need explaining
@@ -39,7 +39,7 @@ _C = None
 def comps():
     global _C
     if _C is None:
-        _C = {c.key: c for c in m.components()}
+        _C = {c.key: c for c in m.keyed_components()}
     return _C
 
 
@@ -159,10 +159,19 @@ def overview():
 
 # ----------------------------------------------------------------- making sketches
 SHEET_REVS = {105: REV2, 109: REV2, 110: REV2, 116: REV2}
+DATE3 = "2026-10-24"
+P3ROW = ("P3", "Redrawn from the kit 1.9 D3 model (every bolt, weld and bearing; DMP-DDR-006)", DATE3, "AC")
+
+
+def sheet_rev(n):
+    """Every making sketch is at Rev P3 since the kit 1.9.1 upgrade."""
+    rev, date, revs = SHEET_REVS.get(n, ("P1", DATE, None))
+    revs = list(revs) if revs else [("P1", "Making sketch for the prototype build plan", DATE, "AC")]
+    return "P3", DATE3, revs + [P3ROW]
 
 
 def sheet(n, shape, name, color, neighbours, title, material, notes, view_shape=None, inset=(24, -58)):
-    rev, date, revs = SHEET_REVS.get(n, ("P1", DATE, None))
+    rev, date, revs = sheet_rev(n)
     return bv.component_sheet(part(name, shape, color), neighbours, project="DrumPanel", dwg_no=f"DMP-DWG-{n}",
                               title=f"DrumPanel {title}: making sketch", material=material, notes=notes, date=date,
                               rev=rev, revisions=revs, view_shape=view_shape, inset_view=inset, out_dir=str(DWG))

@@ -1,8 +1,16 @@
-"""DrumPanel parametric model (build123d), TRL 3, constructable design (DMP-DDR-002).
+"""DrumPanel parametric model (build123d), kit 1.9 interface, TRL 3 (stage P3, detail level D3).
 
 Run from the repo root:
-    python cad/src/model.py            exports cad/step/*.step and cad/stl/*.stl
-    python cad/src/model.py --check    fit checks: no two parts overlap, every joint face touches
+    python .kit/cad_check.py --export  fidelity check of every option; STEP per part (option A) and per assembly
+    python cad/src/model.py            STL of the three hand tools of option A (shear head, notching punch, end cutter)
+    python cad/src/model.py --check    station model fit checks: no two components overlap, every joint face touches,
+                                       the shear head clears the drum in slit and ring modes, the punch fits each notch
+
+Two concept options are modelled to D3 (STANDARDS section 24; Amish, 2026-10-24: "Detail every option"):
+
+  A  Bench set: rotary shears and slip roll (the current design, CHOSEN for the drawing, BOM and build plan; the concept
+     choice is proposed, awaiting Amish, DMP-OPT-001). Detailed in cad/src/option_a.py.
+  B  Lever shear and stretch leveller (alternative, not carried to the drawing, BOM or build plan). cad/src/option_b.py.
 
 The bench set has three stations, laid out as in a workshop:
 
@@ -18,10 +26,11 @@ at +Y, the operator at the slip roll in-feed stands on the -Y side of it), Z up 
 Units mm. The cradle drum is shown with its heads on, the end cutter clamped on the +X chime and the
 shear head parked at the -X end, ready to start. The slip roll holds a drum body being fed in.
 
-components() returns every made or bought component on its own (build plan, checks);
-build_parts() groups them by BOM line (concept media, drawing, masses). Context items (drums,
-the sheet) carry no BOM line. Sizing is in DMP-CAL-001 (docs/04-calcs/sizing.py), which reads
-PARAMS and levels() from here. CONCEPT, NOT FOR FABRICATION.
+station_components() is the station model: one solid per component as designed at TRL 3, which the calculations
+(DMP-CAL-001, docs/04-calcs/sizing.py, reading PARAMS and levels()) and the fit checks below use. components(option)
+is the kit 1.9 detailed model built on the same PARAMS and positions with .kit/cad_parts.py and cad/src/dmp_parts.py;
+build_parts() groups it by BOM line for the concept media and the drawing, keyed_components() by station component
+for the build plan pictures. Context items (drums, the sheet) carry no BOM line. CONCEPT, NOT FOR FABRICATION.
 """
 from __future__ import annotations
 
@@ -100,9 +109,73 @@ PARAMS = {
     "GEAR_R": 30.0,          # module 3, 20 teeth, pitch radius
     "TABLE_TOP": 900.0, "OUT_TABLE_TOP": 913.0,
     "GUARD_GAP": 8.0,        # in-feed slot under the nip guard
+    # Option B, lever shear and stretch leveller (DMP-OPT-001; not carried to the drawing, BOM or build plan)
+    "B_CUT_X": 400.0,        # shear cut point along the drum in the model (slit started 40 mm in from the right end)
+    "B_THROAT": 450.0,       # deep-throat C-frame: cut point to the spine
+    "B_BLADE_L": 100.0,      # straight blades, D2, 100 mm long
+    "B_RAKE": 8.0,           # blade rake (deg), sets the shear force per stroke
+    "B_ARM_FRONT": 220.0,    # arm pivot to the middle of the cut
+    "B_ARM_REAR": 140.0,     # arm pivot to the link pin
+    "B_CRANK": 30.0,         # lever hub pivot to its crank pin
+    "B_LEVER": 1050.0,       # lever hub pivot to the grip centre
+    "B_BITE": 40.0,          # cut length gained per stroke (estimate)
+    "B_RS_Y": 1950.0,        # stretch leveller on the slip roll's place
+    "B_BED_X": 1300.0,       # bed ends at +/- this
+    "B_BED_TOP": 800.0,      # top of the bed channels (UPN 100)
+    "B_PANEL_Z": 880.0,      # panel mid-plane in the grips
+    "B_GRIP_L": 60.0,        # panel length held in each wedge grip
+    "B_WEDGE_DEG": 7.0,      # wedge taper (7 deg so the serrated face out-grips the greased back, DMP-STM-001 B6)
+    "B_STRAIN": 0.02,        # plastic stretch that leaves a panel flat (stretcher levelling practice: 1 to 3 %)
+    "B_RAM_KN": 147.0,       # 15 t hand-pumped hydraulic cylinder
+    "B_RAM_BORE": 52.0,      # its plunger area sets the pressure (15 t at about 700 bar)
+    "B_PUMP_PISTON": 8.0,    # hand pump piston, mm
+    "B_PUMP_RATIO": 25.0,    # hand pump handle ratio
 }
 
 STEEL, BRONZE, PLY = 7850.0, 8800.0, 600.0   # kg/m3
+
+# ---------------------------------------------------------------------------
+# Kit 1.9 interface (STANDARDS section 24): every concept option detailed to D3
+# ---------------------------------------------------------------------------
+TITLE = "DrumPanel"
+OPTIONS = {"A": "Bench set: rotary shears and slip roll", "B": "Lever shear and stretch leveller"}
+PRINCIPLES = {
+    "A": "Cold cut by rolling: a wheel cutter takes the heads out and hand-cranked rotary shear discs on a rail slit the "
+         "body and cut its rings; the curled panels are reverse-bent flat between geared pinch rolls and a set bending roll.",
+    "B": "Cold cut by blades: a bench lever shear with straight blades makes every cut; each curled panel is gripped at its "
+         "ends and stretched past yield by a hand-pumped hydraulic ram, so it comes off flat.",
+}
+CHOSEN = "A"          # the current design carried to the drawing, BOM and build plan; the concept choice is proposed, awaiting Amish
+OPTION_VIEWS = {"A": {"el": 24, "az": -50, "ground_z": 0}, "B": {"el": 24, "az": -50, "ground_z": 0}}
+# Parts that touch by design and may share a few mm3 where curved surfaces meet (name substrings, see cad_check.py)
+ALLOWED_CONTACTS = []
+
+
+def components(option=None):
+    """Kit 1.9: the parts of one concept option as cad_parts.part() dicts (name, shape, material, kind, bom, group,
+    explode; option A parts also carry 'key', the station model component they belong to)."""
+    option = option or CHOSEN
+    if option == "A":
+        import option_a
+        return option_a.build()
+    if option == "B":
+        import option_b
+        return option_b.build()
+    raise KeyError(option)
+
+
+def keyed_components(option="A"):
+    """The detailed parts of option A grouped by station model component (C objects with the station key, name,
+    colour and BOM line), for the build plan pictures."""
+    st = {c.key: c for c in station_components()}
+    by = {}
+    for p in components(option):
+        by.setdefault(p.get("key", "other"), []).append(p["shape"])
+    out = []
+    for k, c in st.items():
+        if k in by:
+            out.append(C(k, c.name, comp(by[k]), c.color, c.bom, c.how, c.group, c.explode))
+    return out
 
 
 def levels(P=PARAMS):
@@ -394,7 +467,10 @@ def punch_lever(P=PARAMS):
     return (cylz(22, 0, 16, 0, 0) - cylz(17, -1, 17, 0, 0)) + box(-10, 10, 21.5, 500, 3, 13)
 
 
-def components(P=PARAMS):
+def station_components(P=PARAMS):
+    """The station model: one solid per component, as designed at TRL 3 (DMP-DDR-002, DMP-DDR-003). The
+    calculations (DMP-CAL-001) and the fit, sweep and punch checks below read this geometry; the kit 1.9 detailed
+    model (components(option)) is built on the same PARAMS and positions."""
     bd = _b()
     L = levels(P)
     z_ax, z_nip, ft = L["z_ax"], L["z_nip"], L["frame_top"]
@@ -726,9 +802,9 @@ BOM_NAMES = {
 }
 
 
-def build_parts(P=PARAMS, comps=None, context=True):
-    """Components grouped by BOM line: list of (name, shape, color, bom, explode). Context items last."""
-    comps = comps or components(P)
+def station_parts(P=PARAMS, comps=None, context=True):
+    """Station model components grouped by BOM line: list of (name, shape, color, bom, explode). Context items last."""
+    comps = comps or station_components(P)
     parts = []
     for bom, (name, color, exp) in BOM_NAMES.items():
         kids = [c.shape for c in comps if c.bom == bom]
@@ -738,6 +814,26 @@ def build_parts(P=PARAMS, comps=None, context=True):
         for c in comps:
             if c.group == "context":
                 parts.append((c.name, c.shape, c.color, None, (0, 0, 0)))
+    return parts
+
+
+def build_parts(option=None, context=True):
+    """The detailed model (components(option)) grouped by BOM line for the concept media and the drawing: list of
+    (name, shape, color, bom, explode). Fasteners and welds go with the BOM line of the part they hold; context last."""
+    option = option or CHOSEN
+    ps = components(option)
+    parts = []
+    for bom, (name, color, exp) in BOM_NAMES.items():
+        kids = [p["shape"] for p in ps if p["kind"] != "context" and p.get("bom") == bom]
+        if kids:
+            parts.append((name, comp(kids), color, bom, exp))
+    rest = [p["shape"] for p in ps if p["kind"] != "context" and p.get("bom") not in BOM_NAMES]
+    if rest:
+        parts.append(("Fasteners and consumables", comp(rest), "#6B7280", 23, (0, 0, 0)))
+    if context:
+        for p in ps:
+            if p["kind"] == "context":
+                parts.append((p["name"], p["shape"], p["color"], None, (0, 0, 0)))
     return parts
 
 
@@ -786,7 +882,7 @@ def check_fits(comps=None, tol=1.0, verbose=True):
     """No two components may overlap (intersection volume at or above tol mm3); every CONTACTS pair must touch
     (within 1.2 mm: the drum on the sloped drain stand is placed 1.1 mm clear of the chock edges at their middle,
     so the sloping drum just clears the high corner of each 40 mm chock)."""
-    comps = comps or components()
+    comps = comps or station_components()
     sol = {c.key: [(s_, s_.bounding_box()) for s_ in _solids(c.shape)] for c in comps}
     bbs = {c.key: c.shape.bounding_box() for c in comps}
     overlaps = []
@@ -843,7 +939,7 @@ def ring_mode_check(P=PARAMS, verbose=True):
     half = P["DRUM_L"] / 2
     body = bd.Pos(0, 0, L["z_ax"]) * drum(P, heads=False)
     body = body - box(-half - 5, half + 5, -6, 6, L["z_ax"], L["z_ax"] + 400)      # the slit, edges spread
-    cs = {c.key: c.shape for c in components(P)}
+    cs = {c.key: c.shape for c in station_components(P)}
     fixed = comp([cs["posts"], cs["beam"]])
     worst = 0.0
     for x1, x2 in ring_passes(P):
@@ -880,7 +976,7 @@ def slit_mode_check(P=PARAMS, verbose=True):
     zt = L["z_ax"] + 200
     for nb in notch_boxes(P, z_top=zt):
         body = body - nb
-    beam = [c.shape for c in components(P) if c.key == "beam"][0]
+    beam = [c.shape for c in station_components(P) if c.key == "beam"][0]
     worst = 0.0
     for xn in (-450.0, -300.0, -147.0, 0.0, 147.0, 300.0, 450.0):
         pl = bd.Pos(xn, 0, L["z_nip"])
@@ -933,11 +1029,21 @@ def punch_check(P=PARAMS, verbose=True):
     return worst, worst_gap
 
 
+def stl_parts():
+    """The three hand tools of the chosen design, from the detailed model, for STL export."""
+    ps = components(CHOSEN)
+    sel = {
+        "rotary-shear-head": lambda p: p.get("key") in ("head_frame", "head_shafts", "head_guard", "discs", "head_case", "head_drive"),
+        "notching-punch": lambda p: p.get("key") in ("punch_frame", "punch_parts"),
+        "end-cutter": lambda p: p.get("key") in ("ec_body", "ec_guide", "ec_drive", "ec_cutter"),
+    }
+    return {k: comp([p["shape"] for p in ps if f(p) and p["kind"] != "context"]) for k, f in sel.items()}
+
+
 if __name__ == "__main__":
     import sys
-    from build123d import export_step, export_stl
-    comps = components()
     if "--check" in sys.argv:
+        comps = station_components()
         ov, gp = check_fits(comps)
         v = ring_mode_check()
         v2 = slit_mode_check()
@@ -945,29 +1051,13 @@ if __name__ == "__main__":
         ok = not (ov or gp) and v < 1 and v2 < 1 and v3 < 1 and g3 < 0.5
         print("constructability checks:", "PASS" if ok else "FAIL")
         sys.exit(0 if ok else 1)
+    from build123d import export_stl
     root = Path(__file__).resolve().parents[1]
-    (root / "step").mkdir(exist_ok=True)
     (root / "stl").mkdir(exist_ok=True)
-    parts = build_parts(comps=comps, context=False)
-    export_step(assembly(parts), str(root / "step" / "drumpanel-bench-set.step"))
-    by = {c.key: c.shape for c in comps}
-    for grp, stem in (("purge", "drain-stand"), ("cut", "cutting-cradle"), ("roll", "slip-roll-stand")):
-        export_step(station(comps, grp), str(root / "step" / f"{stem}.step"))
-    hl = shear_head_local()
-    head = comp([hl[k] for k in HEAD_KEYS])
-    export_step(head, str(root / "step" / "rotary-shear-head.step"))
-    export_step(comp([by[k] for k in ("ec_body", "ec_guide", "ec_drive", "ec_cutter")]), str(root / "step" / "end-cutter.step"))
-    export_step(by["roll_upper"], str(root / "step" / "upper-pinch-roll.step"))
-    pl_ = notch_punch_local()
-    punch = comp([pl_[k] for k in PUNCH_KEYS])
-    export_step(punch, str(root / "step" / "notching-punch.step"))
-    rl = ring_head_local()
-    export_step(comp([hl[k] for k in HEAD_KEYS] + [rl[k] for k in RING_KEYS]), str(root / "step" / "shear-head-with-ring-head.step"))
-    export_stl(punch, str(root / "stl" / "notching-punch.stl"), tolerance=0.2, angular_tolerance=0.3)
-    export_stl(head, str(root / "stl" / "rotary-shear-head.stl"), tolerance=0.2, angular_tolerance=0.3)
-    export_stl(comp([by[k] for k in ("ec_body", "ec_guide", "ec_drive", "ec_cutter")]), str(root / "stl" / "end-cutter.stl"),
-               tolerance=0.2, angular_tolerance=0.3)
+    for name, shape in stl_parts().items():
+        export_stl(shape, str(root / "stl" / f"{name}.stl"), tolerance=0.15, angular_tolerance=0.3)
+        print(f"wrote cad/stl/{name}.stl")
     L = levels()
     print(f"cradle drum axis {L['z_ax']:.1f} mm; drum top {L['drum_top']:.1f} mm; roller contact {L['contact_deg']:.1f} deg "
           f"from vertical; sheet {L['sheet_l']:.0f} x {L['sheet_w']:.0f} mm")
-    print("wrote cad/step/*.step and cad/stl/*.stl")
+    print("STEP files: python .kit/cad_check.py --export (cad/step/A/, cad/step/A-assembly.step, cad/step/B-assembly.step)")

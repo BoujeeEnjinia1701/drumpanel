@@ -1,0 +1,35 @@
+{
+ "level": "D3",
+ "stage": "P3",
+ "hash": "0181e147eb0a4a40",
+ "options": {
+  "A": {
+   "title": "Bench set: rotary shears and slip roll",
+   "parts": 818,
+   "made_or_bought": 296,
+   "fasteners": 324,
+   "welds": 198,
+   "bare": [],
+   "bare_share": 0.0,
+   "interference": [],
+   "mass_kg": 402.9,
+   "step_files": 296
+  },
+  "B": {
+   "title": "Lever shear and stretch leveller",
+   "parts": 439,
+   "made_or_bought": 132,
+   "fasteners": 149,
+   "welds": 158,
+   "bare": [],
+   "bare_share": 0.0,
+   "interference": [],
+   "mass_kg": 347.2,
+   "step_files": 0
+  }
+ },
+ "failures": [],
+ "warnings": [],
+ "passed": true,
+ "seconds": 113.9
+}

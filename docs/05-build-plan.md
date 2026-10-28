@@ -3,9 +3,9 @@ doc_id: DMP-BLD-001
 title: DrumPanel prototype build plan
 project: DrumPanel
 doc_type: Build plan
-version: "0.3"
+version: "0.4"
 status: Draft
-date: '2026-10-03'
+date: '2026-10-24'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -21,6 +21,10 @@ revisions:
   date: '2026-10-03'
   author: Amish Chadha
   change: "Throughput check names the TRL 4 timed trial as the test that decides R7 (DMP-DDR-004, Amish's round-2 decision 5A)"
+- version: "0.4"
+  date: '2026-10-24'
+  author: Amish Chadha
+  change: "Kit 1.9.1 upgrade: pictures and sketches redrawn from the D3 model (every bolt, weld and bearing); fixings found while detailing (DMP-DDR-006): pivot pin held by an M8 cross bolt, side frame foot plates 120 x 80 mm with nuts inside the long rails, tool shelf holes measured from the floor, lid clips; first checks use the product requirement IDs of DMP-PRS-001 and add PR-013 to PR-016"
 ---
 
 # DrumPanel prototype build plan
@@ -33,7 +37,7 @@ revisions:
 
 *Figure 1. Every component pulled apart and numbered in build order.*
 
-The prototype is a hand-powered bench set in three stations that turns an empty 208 L oil drum into flat steel without fire: a drain and purge stand where the drum is washed out with water and checked for vapour, a cutting cradle where the heads are cut out and the body is slit and cut into three panels, and a slip roll that bends the curled panels flat. Beside the cradle stand a lever notching punch, which notches the drum on its slit line before it is slit, and a ring head, a second shear head that is bolted to the first so the ring cuts are made two at a time; both live on a shelf on the left rail post. The overview shows the 24 groups of parts in the order you make or fit them. Nearly everything is sawn, drilled and stick-welded from square tube and plate; the three rolls are turned on a lathe; the slitting discs, the end cutter wheel, the punches and dies, bearings, bushes, gears, chains, the gas detector and the hand tools are bought or made by a tool shop. The parts cost about USD 3,489 from the bill of materials, USD 489 over the USD 3,000 value-engineering target.
+The prototype is a hand-powered bench set in three stations that turns an empty 208 L oil drum into flat steel without fire: a drain and purge stand where the drum is washed out with water and checked for vapour, a cutting cradle where the heads are cut out and the body is slit and cut into three panels, and a slip roll that bends the curled panels flat. Beside the cradle stand a lever notching punch, which notches the drum on its slit line before it is slit, and a ring head, a second shear head that is bolted to the first so the ring cuts are made two at a time; both live on a shelf on the left rail post. The overview shows the 24 groups of parts in the order you make or fit them. Nearly everything is sawn, drilled and stick-welded from square tube and plate; the three rolls are turned on a lathe; the slitting discs, the end cutter wheel, the punches and dies, bearings, bushes, gears, chains, the gas detector and the hand tools are bought or made by a tool shop. The parts cost about USD 3,566 from the bill of materials, USD 566 over the USD 3,000 value-engineering target.
 
 > **Safety:** An empty oil drum can still hold flammable vapour and explode when cut, ground or heated. No drum comes near the workshop's welding area, and no drum is cut until it has been purged and has passed the vapour check below 5 % LEL. Building the bench set involves stick welding, grinding and lifts of up to 34 kg; using it involves sharp cut edges and in-running nips at the discs and rolls. Work only within the safety stops of section 6. Nothing in this plan authorises cutting a drum; the first cut is TRL 4 work.
 
@@ -58,15 +62,18 @@ The concept named eight tools in words; some could not be made or could not work
 | Side frames | Not considered | Bolted to the base; rolls fitted in order | The lower roll cannot go between welded frames |
 | Rail posts | Not drawn | 712.5 mm each side of the middle on two cross members | Room for the end cutter and the parked head |
 | Notches | Cut with a hacksaw | Punched with a lever notching punch; the chime notches widened to 60 mm (Figure 23) | Four notches in about 4 minutes instead of 8 |
+| Pivot pin (2026-10-24) | Held by an R-clip below the head plate | Held by an M8 bolt through the drop bar and the pin, which is 66 mm long (DMP-DDR-006, Q1) | The clip would have been inside the welded drop bar |
+| Side frame feet (2026-10-24) | 80 x 80 mm foot plates | 120 x 80 mm foot plates, both M12 bolts inboard of the leg, nuts inside the long rails (DMP-DDR-006, Q2) | Two M12 washers do not fit beside a 50 mm leg on an 80 mm plate |
+| Lid, keepers, table legs (2026-10-24) | No fixings shown | Angle clips for the lid, keeper plates for the slide blocks, levelling screws under the table legs (DMP-DDR-006, Q5 to Q7) | Every part fastened to its neighbour |
 | Ring cuts, faster | One cut a pass | A ring head bolted to the shear head, so two cuts are made each pass (Figure 26) | Three passes instead of six |
 | Shear head crank | On the upper shaft, 200 mm | On a raised crank shaft in a closed 2.33 to 1 chain drive case, 155 mm (Figure 19) | A crank on the upper shaft sweeps through the drum wall; two ring cuts on one crank stay under 150 N |
 | Bending roll setting | Screws with marked handwheels | Fine-pitch screws with dials of 0.025 mm and lock nuts (Figure 33) | The setting must be within 0.29 mm and must hold |
 
 ## 3. Making the components
 
-Make and check each component before the assembly step that needs it. Sizes are in millimetres. "Left" and "right" are as seen from the front (the drain stand side); "front" is toward the drain stand, "back" toward the slip roll. Workshop tolerance is 0.5 mm unless a step says otherwise. Weld with 3.2 mm E6013 electrodes; fillets are 4 mm on 3 mm tube and 6 mm on plate. Mark every part with its name in paint marker as you make it. No drum is in the workshop while welding or grinding.
+Make and check each component before the assembly step that needs it. Sizes are in millimetres. "Left" and "right" are as seen from the front (the drain stand side); "front" is toward the drain stand, "back" toward the slip roll. Workshop tolerance is 0.5 mm unless a step says otherwise. Weld with 3.2 mm E6013 electrodes; fillets are 4 mm on 3 mm tube and 6 mm on plate. Fit the guard slots and gauge them: 7 to 8 mm, never more than 8 mm. Mark every part with its name in paint marker as you make it. No drum is in the workshop while welding or grinding.
 
-### 3.1 Drain and purge stand
+### 3.1 Drain and purge stand (make 2)
 
 ![Figure 2. Making sketch of the drain stand](../cad/drawings/DMP-DWG-101.png)
 
@@ -168,7 +175,7 @@ The tray stands on the floor under the bung end, its near edge 60 mm beyond the 
 1. Cut each post 926.5 mm with square ends.
 2. Cut a base plate 200 x 100 mm with four 11 mm holes on a 75 x 140 mm rectangle, and a cap plate 120 x 80 mm with two 11 mm holes 80 mm apart on its centre line.
 3. Weld the post to the middle of both plates, square both ways.
-4. Left post only: drill two 11 mm holes straight across it, 550 and 700 mm up from the frame top, for the tool shelf's bolts.
+4. Left post only: drill two 11 mm holes straight across it, 550 and 700 mm up from the floor, for the tool shelf's bolts.
 
 **How it fits the parts next to it.**
 
@@ -235,11 +242,11 @@ The tray stands on the floor under the bung end, its near edge 60 mm beyond the 
 
 1. Cut the head plate 120 x 120 mm; drill a 31 mm hole in its middle and a 10.5 mm hole 45 mm from it.
 2. Cut the drop bar 126 mm and weld it square under the middle of the head plate.
-3. Cut the pivot pin 30 mm bar, 55 mm long; weld a 40 mm collar at its top; drill a 6 mm hole for an R-clip.
+3. Cut the pivot pin from 30 mm bar, 66 mm long; weld a 40 mm collar at its top; cross-drill it 9 mm, 15 mm above its lower end. Cross-drill both walls of the drop bar 9 mm, 17 mm below the head plate, on the same line.
 4. Make a 10 mm index pin on a lanyard.
 5. Weld the lower end of the drop bar to the middle of the shear head's top plate, over the nip line, once the head frame is made (section 3.9).
 
-**How it fits the parts next to it.** The pin drops down through the swivel plate and the head plate and takes an R-clip below; the index pin locks the head in its slit or ring position.
+**How it fits the parts next to it.** The pin drops down through the swivel plate and the head plate into the drop bar and is held by an M8 bolt through the drop bar and the pin; the index pin locks the head in its slit or ring position.
 
 **Check before moving on.** With the index pin out the head turns freely through 90 degrees; the index pin drops in at both positions.
 
@@ -413,9 +420,9 @@ Cut the two chime notches first, with the back face of the punch on the drum end
 
 1. Cut two cross rails 800 mm and two long rails 1,000 mm.
 2. Weld the long rails between the cross rails, 120 mm in front of and 190 mm behind the pinch line (centres), the cross rails 1,060 mm apart.
-3. Drill two 13 mm holes per side frame foot in the long rails, 50 mm apart, 467.5 mm each side of the middle.
+3. Drill two 13 mm holes per side frame foot through the top wall of the long rails, 35 mm apart, centred 410 mm each side of the middle, and a 24 mm access hole under each in the bottom wall for the nut.
 
-**How it fits the parts next to it.** Each side frame foot bolts to a long rail with two M12 bolts.
+**How it fits the parts next to it.** Each side frame foot bolts to a long rail with two M12 bolts; their nuts go inside the rail, reached through two 24 mm access holes in its bottom wall.
 
 **Check before moving on.** The base does not rock on a flat floor; shim it if needed.
 
@@ -431,7 +438,7 @@ Cut the two chime notches first, with the back face of the punch on the drum end
 
 1. Cut the plate 370 x 250 mm. Bore 40 mm for the lower roll bush, 110 mm up from the bottom edge and 150 mm from the front edge.
 2. Cut the pinch slot 60 mm wide from 140 mm up to the top edge, centred over the bore, and the bending slot 60 mm wide from 80 mm up to the top, centred 90 mm behind the bore. File both smooth and parallel.
-3. Weld two legs 694 mm long under the plate, at 30 and 340 mm from its front edge, each with an 80 x 80 x 6 mm foot plate drilled for two M12 bolts.
+3. Weld two legs 694 mm long under the plate, at 30 and 340 mm from its front edge, each with a 120 x 80 x 6 mm foot plate that reaches 65 mm inboard of the leg, drilled for two 13 mm holes 35 mm apart inboard of the leg.
 4. Make the top bridge: 25 x 25 mm bar 370 mm long, with an M16 threaded hole over the pinch slot and an M20 threaded hole over the bending slot; drill it for two M10 bolts into the plate's front and back prongs.
 
 **How it fits the parts next to it.**
@@ -504,7 +511,7 @@ Cut the two chime notches first, with the back face of the punch on the drum end
 
 ![Figure 35. Joint 11: crank and chain drive](05-build-plan/joint-11.png)
 
-*Figure 35. Joint 11. The 13 tooth sprocket on the crank shaft drives the 39 tooth sprocket on the lower roll. Chain guard off and chain not drawn.*
+*Figure 35. Joint 11. The 13 tooth sprocket on the crank shaft drives the 39 tooth sprocket on the lower roll through the #40 chain. Chain guard off.*
 
 **Check before moving on.** The sprockets line up under a straightedge; one crank turn moves a panel 63 mm.
 
@@ -518,9 +525,10 @@ Cut the two chime notches first, with the back face of the punch on the drum end
 
 **How to make it.**
 
-1. In-feed guard 920 x 92 mm, its lower edge rolled to a 4 mm radius; out-feed guard 920 x 79 mm; lid 920 x 204 mm joining them over the rolls.
+1. In-feed guard 920 x 92 mm, its lower edge rolled to a 4 mm radius, leaving a slot 7 to 8 mm high over the table (never more than 8 mm); out-feed guard 920 x 79 mm; lid 920 x 204 mm joining them over the rolls.
 2. Chain guard: a box 30 x 355 x 180 mm round both sprockets, with holes for the shafts.
-3. Gear guard: a box 65 x 90 x 145 mm over the pinch gears.
+3. Gear guard: a box 65 x 90 x 145 mm over the pinch gears, with a 96 x 17 mm fixing tab at its open edge for two M6 screws into the side frame.
+4. Four lid clips from 20 x 20 x 2 mm angle, 24 mm long: each screws to a side frame's inside face with an M5 screw, and the lid bolts to it with an M5 bolt.
 
 **How it fits the parts next to it.**
 
@@ -554,7 +562,7 @@ All guards are held by M6 screws, so a tool is needed to remove them.
 
 - **Drain tray:** HDPE oil drain tray about 600 x 500 x 150 mm.
 - **Purge kit:** 15 m of 19 mm hose, 3/4 in bung hose adaptor, 2 in bung drain spout, a non-sparking (brass or bronze) bung wrench, a tap fitted to a spare drum as the settling drum, biodegradable detergent.
-- **Vapour check kit:** a portable combustible gas detector with a catalytic bead or infrared LEL sensor, a sampling pump and a 1 m probe hose, its alarm settable at 5 % LEL (a 4-gas meter is fine), and 50 % LEL bump-test gas with a regulator. Read its manual; set the alarm before first use.
+- **Vapour check kit:** a portable combustible gas detector with a catalytic bead or infrared LEL sensor, a sampling pump and a 1 m probe hose, its alarm settable at 5 % LEL (a 4-gas meter is fine), its LEL channel calibrated on pentane or set with the maker's correction factor for heavy hydrocarbon vapour, and bump-test gas with a regulator. Read its manual; set the alarm before first use.
 - **Pillow blocks:** four UCP205 (25 mm bore).
 - **Slitting discs:** four D2 discs 101 x 10 mm, 25 mm bore, 58 to 60 HRC (two for the shear head, two for the ring head).
 - **End cutter wheel:** one hardened wheel 50 x 6 mm, sold as a drum deheader or rotary cutter spare; bore it to suit the arm if needed.
@@ -572,7 +580,7 @@ In each picture the parts already fitted are grey and the part being fitted is i
 
 ![Step 1](05-build-plan/step-01.png)
 
-Screw the chocks to the saddles, the tall pair at the far end. Set the tray under the bung end. Place the stand on a drained floor away from the welding area.
+Screw the chocks to the saddles, the tall pair at the far end. Set the tray under the bung end. Place the stand on a drained floor away from the welding area. Build and place the second stand and tray the same way, 1.6 m to the left of the first, so one drum can soak while the next is filled.
 
 ### Step 2: cradle frame on its levelling feet
 
@@ -608,7 +616,7 @@ Slide the trolley onto one end of the beam with its lower wheels fitted. Two peo
 
 ![Step 7](05-build-plan/step-07.png)
 
-Two people: lift the head (about 20 kg with its drop bar), push the pivot pin up through the swivel plate and head plate, and fit the R-clip. Put the index pin in at the slit position.
+Two people: lift the head (about 20 kg with its drop bar), push the pivot pin down through the swivel plate and head plate into the drop bar, and fit the M8 cross bolt with its nut. Put the index pin in at the slit position.
 
 ### Step 8: shafts, discs, guard and drive case
 
@@ -678,24 +686,28 @@ Stand the tables at the front and back, tops level with the rolls, and fix the l
 
 ## 5. First checks
 
-These are the checks a TRL 4 test report would record; this plan only lists them. Requirement numbers are those of DMP-REQ-001. None involves cutting a drum until S4 and S5 are passed.
+These are the checks a TRL 4 test report would record; this plan only lists them. Requirement numbers are those of DMP-PRS-001, with the former number of DMP-REQ-001 in brackets. None involves cutting a drum until S4 and S5 are passed.
 
 *Table 2. First checks.*
 
 | Check | Requirement | How | Pass when |
 | --- | --- | --- | --- |
-| Gas detector | R2 | Bump test with 50 % LEL gas; alarm set at 5 % LEL | Alarm sounds; reading within the maker's limits |
-| Purge and check | R1, R2 | One accepted drum through fill, soak, drain and check | Reading below 5 % LEL at both bungs; no flame or heat used |
-| Drain stand | R11 | Fill a drum on the stand; look for movement | The stand does not move or rock with a full drum |
-| Heads off | R3, R6 | Time both heads off one drum; spring scale on the crank | Under 10 min; crank force 150 N or less |
-| Notches | R6 | Punch the two chime notches and the two hoop slots on the same drum; spring scale on the punch lever | Clean notches, the shear head passes them; lever force 150 N or less |
-| Slit | R4, R6 | Slit a purged drum; measure the cut line against a straight line | Deviation 5 mm or less; crank force 150 N or less; the crank turns without touching the drum |
-| Ring and hoop cuts | R6, R12 | Three passes with the ring head bolted on; spring scale on the crank | Three panels about 233 x 1,800 mm; crank force 150 N or less |
-| Trial setting | R5 | First panel of the batch through the slip roll, adjusting the bending roll by its dials | Flat within 10 mm over 1 m after the passes; the dial reading and the number of passes recorded; a second drum set to that reading comes out flat |
-| Slip roll effort | R6 | Spring scale on the crank with three panels | 150 N or less |
-| Guards | R10 | A competent person checks every guard opening against ISO 13857 as built | Every opening meets the standard |
-| Throughput | R7 | Half-day trial by two people, each task timed | Drums per hour recorded against the estimate of 2.26 and the target of 2.5; this trial decides R7 (DMP-DDR-004) |
-| Parts cost | R9 | Sum the receipts | Recorded against the value-engineering target |
+| Gas detector | PR-002 (R2) | Bump test with 50 % LEL gas; alarm set at 5 % LEL | Alarm sounds; reading within the maker's limits |
+| Purge and check | PR-001 (R1), PR-002 (R2) | One accepted drum through fill, soak, drain and check | Reading below 5 % LEL at both bungs; no flame or heat used |
+| Drain stand | PR-011 (R11) | Fill a drum on the stand; look for movement | The stand does not move or rock with a full drum |
+| Heads off | PR-003 (R3), PR-006 (R6) | Time both heads off one drum; spring scale on the crank | Under 10 min; crank force 150 N or less |
+| Notches | PR-006 (R6) | Punch the two chime notches and the two hoop slots on the same drum; spring scale on the punch lever | Clean notches, the shear head passes them; lever force 150 N or less |
+| Slit | PR-004 (R4), PR-006 (R6) | Slit a purged drum; measure the cut line against a straight line | Deviation 5 mm or less; crank force 150 N or less; the crank turns without touching the drum |
+| Ring and hoop cuts | PR-006 (R6), PR-012 (R12) | Three passes with the ring head bolted on; spring scale on the crank | Three panels about 233 x 1,800 mm; crank force 150 N or less |
+| Trial setting | PR-005 (R5) | First panel of the batch through the slip roll, adjusting the bending roll by its dials | Flat within 10 mm over 1 m after the passes; the dial reading and the number of passes recorded; on the next drums the first panel of each, checked with the straightedge and the dial trimmed, comes out flat, and a panel out of tolerance comes flat on a second pass |
+| Slip roll effort | PR-006 (R6) | Spring scale on the crank with three panels | 150 N or less |
+| Guards | PR-010 (R10) | A competent person checks every guard opening against ISO 13857 as built | Every opening meets the standard |
+| Throughput | PR-007 (R7) | Half-day trial by two people, each task timed | Drums per hour recorded against the estimate of 2.20 and the target of 2.5; this trial decides PR-007 (DMP-DDR-004) |
+| Parts cost | PR-009 (R9) | Sum the receipts | Recorded against the value-engineering target |
+| Drum acceptance | PR-013 | Run the intake of a mixed delivery of drums against the acceptance sheet | Only drums labelled for non-volatile oils with flash points above 60 °C are taken in; fire-resistant hydraulic fluids and all others are set aside to return |
+| Purge water | PR-014 | One full purge into the tray and the settling drum | No water or oil reaches the ground; the skimmed oil goes into a closed container |
+| Hand power only | PR-015 | Walk through every station | No electric, fuel or air connection anywhere |
+| Pictogram sheets | PR-016 | Apprentices follow each of the six sheets without help | Each step done as shown, in their language |
 
 ## 6. Safety stops
 
@@ -724,11 +736,11 @@ Stop at each point. Carry on only when everything listed is true.
 
 ## 8. Where the numbers come from
 
-- Model and constructability checks: `cad/src/model.py` (`python cad/src/model.py --check`); STEP and STL exports in `cad/step/` and `cad/stl/`.
+- Model: `cad/src/model.py` with `cad/src/option_a.py` and `cad/src/dmp_parts.py` (kit 1.9 detail level D3, 818 parts; `python .kit/cad_check.py --export`, result in `cad/fidelity.json`); station model checks with `python cad/src/model.py --check`; STEP per part in `cad/step/A/` and the assembly in `cad/step/A-assembly.step`; STL of the shear head, notching punch and end cutter in `cad/stl/`.
 - Pictures: `cad/src/build_plan_media.py`, using `.kit/build_views.py`; written to `docs/05-build-plan/` and `cad/drawings/DMP-DWG-101` to `DMP-DWG-123`.
-- General arrangement: `cad/drawings/DMP-DWG-001.pdf`, Rev P2.
-- Calculations: `docs/04-calcs/01-sizing.md` (DMP-CAL-001 v0.2) and `docs/04-calcs/sizing.py`.
+- General arrangement: `cad/drawings/DMP-DWG-001.pdf`, Rev P3.
+- Calculations: `docs/04-calcs/01-sizing.md` (DMP-CAL-001 v0.3) and `docs/04-calcs/sizing.py`.
 - Bill of materials: `bom/bom.csv`.
-- Decisions: `docs/decisions/0001-trl2-review-decisions.md` (DMP-DDR-001), `docs/decisions/0002-design-for-construction.md` (DMP-DDR-002) and `docs/decisions/0003-requirement-decisions-2026-10-03.md` (DMP-DDR-003).
-- Requirements: `docs/03-requirements.md` (DMP-REQ-001 v0.4).
-- Design decisions register: `docs/06-design-decisions.md` (DMP-DEC-001 v0.2).
+- Decisions: `docs/decisions/0001-trl2-review-decisions.md` (DMP-DDR-001), `docs/decisions/0002-design-for-construction.md` (DMP-DDR-002), `docs/decisions/0003-requirement-decisions-2026-10-03.md` (DMP-DDR-003) and `docs/decisions/0006-design-for-construction-at-d3.md` (DMP-DDR-006).
+- Requirements: `docs/03-requirements.md` (DMP-PRS-001 v0.6).
+- Design decisions register: `docs/06-design-decisions.md` (DMP-DEC-001 v0.4).

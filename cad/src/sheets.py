@@ -1,4 +1,4 @@
-"""DrumPanel general arrangement drawing DMP-DWG-001 (Rev P2).
+"""DrumPanel general arrangement drawing DMP-DWG-001 (Rev P3, from the kit 1.9 D3 model of option A).
 
 Run from the repo root:  python cad/src/sheets.py
 Builds cad/drawings/DMP-DWG-001.svg, .pdf and .png from the parametric model (bench set only; the drums and
@@ -23,10 +23,11 @@ work = ROOT / "cad/drawings/_views"
 views = project_views(bench, work)
 
 s = Sheet(project="DrumPanel", title="Drum opening bench set: general arrangement of the three stations",
-          dwg_no="DMP-DWG-001", rev="P2", author="Amish Chadha", date="2026-10-03", concept=True, scale=None,
+          dwg_no="DMP-DWG-001", rev="P3", author="Amish Chadha", date="2026-10-24", concept=True, scale=None,
           material="S275 RHS and plate; C45 rolls; D2 discs; bronze bushes. See bom/bom.csv",
           revisions=[("P1", "Preliminary GA from the constructable TRL 3 model (DMP-DDR-002)", "2026-10-03", "AC"),
-                     ("P2", "Notching punch, ring head, raised head drive, dial adjusters, tool shelf (DMP-DDR-003)", "2026-10-03", "AC")])
+                     ("P2", "Notching punch, ring head, raised head drive, dial adjusters, tool shelf (DMP-DDR-003)", "2026-10-03", "AC"),
+                     ("P3", "Redrawn from the D3 model; fixings of DMP-DDR-006", "2026-10-24", "AC")])
 s.add_ortho(views, ["front", "top", "right"])
 s.add_svg(views["iso"], 276, 40, 140, 70, label="Isometric view", sublabel="Not to scale; drums and panels not shown")
 w = [x1 - x0 for x0, x1 in L["panels"]]

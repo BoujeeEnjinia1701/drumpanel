@@ -1,10 +1,10 @@
-"""DrumPanel concept media from the TRL 3 parametric model (constructable design, DMP-DDR-002).
+"""DrumPanel concept media from the kit 1.9 detailed model of option A (D3; constructable design, DMP-DDR-002).
 
 Run from the repo root:  python cad/src/concept_media.py [hero|cutaway|exploded|flow|web|blueprint ...]
 With no argument it draws everything; on a small machine run one picture per process. Geometry comes from
 cad/src/model.py; the material flow values come from DMP-CAL-001 (docs/04-calcs/sizing.py). The pictures are
 made with the pieces of .kit/concept.py render_all, one at a time, and the web model is exported here with a
-coarse tessellation (linear deflection 1.0 mm, angular 0.35 rad) so model.glb stays a few MB.
+coarse tessellation (linear deflection 2.0 mm, angular 0.6 rad) so model.glb of the detailed model stays under about 20 MB.
 
 Layout: the drain and purge stand at the front (-Y) with a drum on it, the cutting cradle in the middle with a
 drum, the end cutter on its right-hand chime, the shear head parked at its left end and the tool shelf (notching
@@ -23,7 +23,7 @@ import concept as K  # noqa: E402
 from concept import Part  # noqa: E402
 from model import build_parts, comp, box  # noqa: E402
 
-PROJECT, TITLE, DWG, DATE = "DrumPanel", "Bench set concept: purge, cold cut and roll flat", "DMP-DWG-010", "2026-10-03"
+PROJECT, TITLE, DWG, DATE = "DrumPanel", "Bench set concept: purge, cold cut and roll flat", "DMP-DWG-010", "2026-10-24"
 MD = ROOT / "media"
 
 
@@ -39,7 +39,7 @@ def with_figure(ps, gap=400.0):
 
 def hero():
     return K._render(with_figure(parts()), MD / "hero.png", title=PROJECT,
-                     note="Seen from the front right and above, 24 deg elevation. Front: drain and purge stand; middle: "
+                     note="Seen from the front right and above, 24 deg elevation. Front: two drain and purge stands; middle: "
                           "cutting cradle; back: slip roll. Grey figure: 1.75 m person for scale")
 
 
@@ -73,7 +73,7 @@ def web():
         sh.label = p.name
         kids.append(sh)
     MD.mkdir(exist_ok=True)
-    export_gltf(comp(kids), str(MD / "model.glb"), binary=True, linear_deflection=1.0, angular_deflection=0.35)
+    export_gltf(comp(kids), str(MD / "model.glb"), binary=True, linear_deflection=2.0, angular_deflection=0.6)
     (MD / "viewer.html").write_text(f"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{PROJECT}: {TITLE}</title>
@@ -112,10 +112,11 @@ def blueprint():
     shown = with_figure(ps)
     views = project_views(comp([p.shape for p in ps]), MD / "_views")
     views["iso"] = project_views(comp([p.shape for p in shown]), MD / "_views_fig")["iso"]
-    s = Sheet(project=PROJECT, title=TITLE, dwg_no=DWG, rev="P2", author="Amish Chadha", date=DATE, theme="blueprint",
-              material="Massing model for concept communication",
-              revisions=[("P1", "Concept sheet from the constructable TRL 3 model", DATE, "AC"),
-                         ("P2", "Amish's requirement decisions of 2026-10-03 (DMP-DDR-003)", DATE, "AC")])
+    s = Sheet(project=PROJECT, title=TITLE, dwg_no=DWG, rev="P3", author="Amish Chadha", date=DATE, theme="blueprint",
+              material="Detailed model (kit 1.9, D3) for concept communication",
+              revisions=[("P1", "Concept sheet from the constructable TRL 3 model", "2026-10-03", "AC"),
+                         ("P2", "Amish's requirement decisions of 2026-10-03 (DMP-DDR-003)", "2026-10-03", "AC"),
+                         ("P3", "Drawn from the D3 model of option A (kit 1.9.1)", DATE, "AC")])
     s.add_ortho(views)
     s.add_svg(views["iso"], 276, 37, 140, 113, label="Isometric view", sublabel="Not to scale; figure is a 1.75 m person")
     s.add_notes("Key figures", [
@@ -125,9 +126,9 @@ def blueprint():
         "Crank and lever forces 20 to 136 N (limit 150 N)",
         "Notches by lever punch; two ring cuts a pass",
         "Bending roll set by a trial pass and a 0.025 mm dial",
-        "About 2.3 drums an hour for two people (est.)",
+        "About 2.2 drums an hour for two people (est.)",
         "Cradle about 196 kg; slip roll stand about 191 kg (est.)",
-        "Estimated cost USD 3,489; target USD 3,000",
+        "Estimated cost USD 3,566; target USD 3,000",
     ], x=276, y=168, width=140)
     s.save(MD / "concept-blueprint")
     import shutil
